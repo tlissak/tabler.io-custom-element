@@ -123,6 +123,75 @@
         grid-template-columns: 1fr 0.7fr 1fr;
         gap: 12px;
       }
+
+      .tabs-content {
+        display: grid;
+        gap: 8px;
+      }
+
+      .tabs-content h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .tabs-content p {
+        margin: 0;
+      }
+
+      .editor-demo {
+        display: grid;
+        gap: 12px;
+      }
+
+      .metric {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--tblr-body-color);
+      }
+
+      .metric-label {
+        margin: 0;
+        color: var(--tblr-muted-color);
+      }
+
+      .flex-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        padding: 0 12px;
+        border: 1px solid var(--tblr-border-color);
+        border-radius: 999px;
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+        font-weight: 600;
+      }
+
+      .modal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .toast-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .copy-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .spinner-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
@@ -279,6 +348,126 @@
         </tblr-card>
       </section>
 
+      <h1 class="section-title">TBLR Alerts and Toasts</h1>
+      <p>Inline alerts, timed countdown alerts, and toast notifications.</p>
+
+      <section class="panel" aria-label="Alert examples">
+        <tblr-alert variant="primary" open>
+          <strong>This is informative.</strong><br>
+          You can tell by how useful the alert is. Non closable
+        </tblr-alert>
+
+        <tblr-alert variant="success" open closable >
+          <strong>Your changes have been saved.</strong><br>
+          You can safely exit the page now.
+        </tblr-alert>
+
+        <tblr-alert variant="warning" open closable  countdown="rtl">
+          <strong>Your session is ending.</strong><br>
+          This alert shows a countdown bar and seconds remaining.
+        </tblr-alert>
+
+        <div class="toast-actions">
+          <tblr-button id="toast-primary">Primary toast</tblr-button>
+          <tblr-button id="toast-success" variant="success">Success toast</tblr-button>
+          <tblr-button id="toast-warning" variant="warning">Warning toast</tblr-button>
+          <tblr-button id="toast-danger" variant="danger">Danger toast</tblr-button>
+        </div>
+      </section>
+
+      <h1 class="section-title">TBLR Copy Button</h1>
+      <p>Copy direct values or values from other elements.</p>
+
+      <section class="panel" aria-label="Copy button examples">
+        <div class="copy-row">
+          <span>Direct value</span>
+          <tblr-copy-button value="Tabler components"></tblr-copy-button>
+        </div>
+
+        <div class="copy-row">
+          <span id="copy-phone">+1 (234) 456-7890</span>
+          <tblr-copy-button from="copy-phone" copy-label="Copy phone"></tblr-copy-button>
+        </div>
+
+        <div class="copy-row">
+          <tblr-input id="copy-input" value="User input" style="max-width: 300px;"></tblr-input>
+          <tblr-copy-button from="copy-input.value" success-label="Input copied"></tblr-copy-button>
+        </div>
+
+        <div class="copy-row">
+          <a id="copy-link" href="https://tabler.io">Tabler Website</a>
+          <tblr-copy-button from="copy-link[href]" tooltip-placement="right"></tblr-copy-button>
+        </div>
+
+        <div class="copy-row">
+          <span>Missing target</span>
+          <tblr-copy-button from="missing-target" error-label="Nothing to copy"></tblr-copy-button>
+        </div>
+
+        <div class="copy-row">
+          <span>Clipboard API only</span>
+          <tblr-copy-button
+            value="Copied with navigator.clipboard.writeText()"
+            copy-label="Copy with Clipboard API"
+            error-label="Clipboard API unavailable"
+            no-fallback
+          ></tblr-copy-button>
+        </div>
+      </section>
+
+      <h1 class="section-title">TBLR Spinners</h1>
+      <p>Border, grow, and animated dot loading indicators.</p>
+
+      <section class="panel" aria-label="Spinner examples">
+        <div class="spinner-row">
+          <tblr-spinner></tblr-spinner>
+          <tblr-spinner color="blue"></tblr-spinner>
+          <tblr-spinner color="azure"></tblr-spinner>
+          <tblr-spinner color="indigo"></tblr-spinner>
+          <tblr-spinner color="purple"></tblr-spinner>
+          <tblr-spinner color="pink"></tblr-spinner>
+          <tblr-spinner color="red"></tblr-spinner>
+          <tblr-spinner color="orange"></tblr-spinner>
+          <tblr-spinner color="yellow"></tblr-spinner>
+          <tblr-spinner color="lime"></tblr-spinner>
+          <tblr-spinner color="green"></tblr-spinner>
+          <tblr-spinner color="teal"></tblr-spinner>
+          <tblr-spinner color="cyan"></tblr-spinner>
+        </div>
+
+        <div class="spinner-row">
+          <tblr-spinner size="sm"></tblr-spinner>
+          <tblr-spinner></tblr-spinner>
+          <tblr-spinner size="lg"></tblr-spinner>
+        </div>
+
+        <div class="spinner-row">
+          <tblr-spinner type="grow"></tblr-spinner>
+          <tblr-spinner type="grow" color="green"></tblr-spinner>
+          <tblr-spinner type="grow" color="danger"></tblr-spinner>
+          <tblr-spinner type="dots"></tblr-spinner>
+          <tblr-spinner type="dots" color="success"></tblr-spinner>
+        </div>
+
+        <div class="spinner-row">
+          <tblr-button disabled>
+            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
+            Button
+          </tblr-button>
+          <tblr-button variant="danger" disabled>
+            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
+            Button
+          </tblr-button>
+          <tblr-button variant="success" disabled>
+            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
+            Button
+          </tblr-button>
+          <tblr-button>
+            Loading<tblr-spinner type="dots" size="sm" label="Loading"></tblr-spinner>
+          </tblr-button>
+        </div>
+      </section>
+
       <h1 class="section-title">TBLR Form Controls</h1>
       <p>Tabler-style inputs, selects, and search controls.</p>
 
@@ -422,6 +611,18 @@
         </div>
       </section>
 
+      <h1 class="section-title">TBLR Rich Editor</h1>
+      <p>WYSIWYG editing with colors, indent controls, undo/redo, and HTML source view.</p>
+
+      <section class="panel editor-demo" aria-label="Rich text editor example">
+        <tblr-rich-editor
+          name="message"
+          label="Message"
+          placeholder="Write a formatted message..."
+          value="&lt;p&gt;Hello &lt;strong&gt;Tabler&lt;/strong&gt; components.&lt;/p&gt;&lt;blockquote&gt;Use the toolbar to change color, indent content, undo changes, or edit the HTML source.&lt;/blockquote&gt;"
+        ></tblr-rich-editor>
+      </section>
+
       <h1 class="section-title">TBLR Colorpicker</h1>
       <p>Color palettes and native color input styles.</p>
 
@@ -444,12 +645,223 @@
           value="#066fd1"
         ></tblr-colorpicker>
       </section>
+
+      <h1 class="section-title">TBLR Tabs</h1>
+      <p>Horizontal and vertical tab navigation.</p>
+
+      <section class="panel" aria-label="Tabs examples">
+        <tblr-tabs value="overview">
+          <tblr-tab label="Overview" value="overview">
+            <div class="tabs-content">
+              <h3>Overview</h3>
+              <p>Use horizontal tabs when sections are peers in the same workflow.</p>
+            </div>
+          </tblr-tab>
+          <tblr-tab label="Activity" value="activity">
+            <div class="tabs-content">
+              <h3>Activity</h3>
+              <p>Tab state is reflected through the value attribute and change event.</p>
+            </div>
+          </tblr-tab>
+          <tblr-tab label="Disabled" value="disabled" disabled>
+            <div class="tabs-content">
+              <h3>Disabled</h3>
+              <p>This pane is unavailable.</p>
+            </div>
+          </tblr-tab>
+        </tblr-tabs>
+
+        <tblr-tabs vertical value="settings">
+          <tblr-tab label="Settings" value="settings">
+            <div class="tabs-content">
+              <h3>Settings</h3>
+              <p>Vertical tabs work well for longer labels or persistent side navigation.</p>
+            </div>
+          </tblr-tab>
+          <tblr-tab label="Billing" value="billing">
+            <div class="tabs-content">
+              <h3>Billing</h3>
+              <p>Panels remain in the light DOM and the inactive panes are hidden.</p>
+            </div>
+          </tblr-tab>
+          <tblr-tab label="Notifications" value="notifications">
+            <div class="tabs-content">
+              <h3>Notifications</h3>
+              <p>Keyboard navigation supports arrow keys, Home, and End.</p>
+            </div>
+          </tblr-tab>
+        </tblr-tabs>
+      </section>
+
+      <h1 class="section-title">TBLR Grid</h1>
+      <p>Responsive and fixed column grid layouts.</p>
+
+      <section class="panel" aria-label="Grid examples">
+        <tblr-grid columns="3" gap="md">
+          <tblr-card>
+            <p class="metric">128</p>
+            <p class="metric-label">New orders</p>
+          </tblr-card>
+          <tblr-card>
+            <p class="metric">42%</p>
+            <p class="metric-label">Conversion rate</p>
+          </tblr-card>
+          <tblr-card>
+            <p class="metric">$8.4k</p>
+            <p class="metric-label">Revenue</p>
+          </tblr-card>
+        </tblr-grid>
+
+        <tblr-grid min="16rem" gap="lg" dense>
+          <tblr-grid-item span="2">
+            <tblr-card title="Wide responsive item">
+              This grid item spans two columns on wider screens and collapses to one column on mobile.
+            </tblr-card>
+          </tblr-grid-item>
+          <tblr-card title="Standard item">
+            Auto-fit grids fill the available width with stable minimum item sizes.
+          </tblr-card>
+          <tblr-card title="Standard item">
+            Use row-gap and column-gap attributes when spacing needs to differ.
+          </tblr-card>
+        </tblr-grid>
+      </section>
+
+      <h1 class="section-title">TBLR Flexbox</h1>
+      <p>Direction, wrapping, spacing, and alignment utilities for flexible layouts.</p>
+
+      <section class="panel" aria-label="Flexbox examples">
+        <tblr-flex align="center" justify="between" gap="md" wrap>
+          <tblr-flex gap="sm" align="center" wrap>
+            <span class="flex-chip">Draft</span>
+            <span class="flex-chip">Assigned</span>
+            <span class="flex-chip">High priority</span>
+          </tblr-flex>
+          <tblr-flex gap="sm" align="center">
+            <tblr-button variant="light">Cancel</tblr-button>
+            <tblr-button variant="primary">Save changes</tblr-button>
+          </tblr-flex>
+        </tblr-flex>
+
+        <tblr-flex wrap gap="md" align="stretch">
+          <tblr-flex-item grow="1" basis="14rem">
+            <tblr-card title="Backlog">12 open tasks ready for review.</tblr-card>
+          </tblr-flex-item>
+          <tblr-flex-item grow="2" basis="18rem">
+            <tblr-card title="In progress">Flexible items can grow at different rates.</tblr-card>
+          </tblr-flex-item>
+          <tblr-flex-item grow="1" basis="14rem">
+            <tblr-card title="Done">8 tasks completed this week.</tblr-card>
+          </tblr-flex-item>
+        </tblr-flex>
+
+        <tblr-flex direction="column" gap="sm">
+          <tblr-card title="Column layout">Use direction=&quot;column&quot; for stacked flows.</tblr-card>
+          <tblr-card title="Custom gaps">Use gap, row-gap, and column-gap tokens or CSS lengths.</tblr-card>
+        </tblr-flex>
+      </section>
+
+      <h1 class="section-title">TBLR Pagination</h1>
+      <p>Page controls for compact and larger result sets.</p>
+
+      <section class="panel" aria-label="Pagination examples">
+        <tblr-pagination page="4" pages="12"></tblr-pagination>
+        <tblr-pagination page="8" pages="24" siblings="2" boundary="1" previous="Prev" next="Next"></tblr-pagination>
+        <tblr-pagination compact page="2" pages="6"></tblr-pagination>
+      </section>
+
+      <h1 class="section-title">TBLR Modals</h1>
+      <p>Simple, sized, scrollable, form, and status modal examples.</p>
+
+      <section class="panel" aria-label="Modal examples">
+        <div class="modal-actions">
+          <tblr-button id="open-simple-modal">Simple modal</tblr-button>
+          <tblr-button id="open-large-modal" variant="light">Large modal</tblr-button>
+          <tblr-button id="open-scrollable-modal" variant="light">Scrollable modal</tblr-button>
+          <tblr-button id="open-form-modal" variant="light">Modal with form</tblr-button>
+          <tblr-button id="open-success-modal" variant="success">Success modal</tblr-button>
+          <tblr-button id="open-danger-modal" variant="danger">Danger modal</tblr-button>
+        </div>
+      </section>
+
+      <tblr-modal id="simple-modal" title="Modal title" cancel="Close" action="Save changes">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt.</p>
+      </tblr-modal>
+
+      <tblr-modal id="large-modal" size="lg" title="Large modal" cancel="Close" action="Save changes">
+        <p>Use the large modal size when the content needs more horizontal room, such as previews, details, or comparison layouts.</p>
+      </tblr-modal>
+
+      <tblr-modal id="scrollable-modal" title="Scrollable modal" scrollable cancel="Close" action="Save changes">
+        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+        <p>Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor fringilla.</p>
+        <p>Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui.</p>
+        <p>Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+      </tblr-modal>
+
+      <tblr-modal id="form-modal" title="New report" size="lg" cancel="Cancel" action="Create new report">
+        <div class="form-grid">
+          <tblr-input label="Name" placeholder="Report name"></tblr-input>
+          <tblr-select label="Report type" value="simple" options="simple:Simple|advanced:Advanced"></tblr-select>
+          <tblr-input class="form-wide" label="Report url" prefix="https://tabler.io/reports/" placeholder="weekly-report"></tblr-input>
+          <tblr-input class="form-wide" label="Additional information" textarea rows="4"></tblr-input>
+        </div>
+      </tblr-modal>
+
+      <tblr-modal id="success-modal" status="success" title="Payment succeeded" action="Go to dashboard">
+        <p>Your payment has been successfully submitted. Your invoice has been sent to your email address.</p>
+      </tblr-modal>
+
+      <tblr-modal id="danger-modal" status="danger" title="Are you sure?" cancel="Cancel" action="Delete 84 items">
+        <p>Do you really want to remove 84 files? This cannot be undone.</p>
+      </tblr-modal>
     </main>
 
     <script type="module">
       import { defineTblr } from '../src/core/bundle.js';
 
       await defineTblr();
+
+      const modalTriggers = {
+        'open-simple-modal': 'simple-modal',
+        'open-large-modal': 'large-modal',
+        'open-scrollable-modal': 'scrollable-modal',
+        'open-form-modal': 'form-modal',
+        'open-success-modal': 'success-modal',
+        'open-danger-modal': 'danger-modal',
+      };
+
+      for (const [triggerId, modalId] of Object.entries(modalTriggers)) {
+        document.getElementById(triggerId)?.addEventListener('click', () => {
+          document.getElementById(modalId)?.show();
+        });
+      }
+
+      document.querySelectorAll('tblr-modal').forEach(modal => {
+        modal.addEventListener('action', () => modal.hide('action'));
+      });
+
+      const toastMessages = {
+        'toast-primary': ['primary', 'This is super informative', 'You can tell by how useful the alert is.'],
+        'toast-success': ['success', 'Your changes have been saved', 'You can safely exit the page now.'],
+        'toast-warning': ['warning', 'Your session has ended', 'Please login again to continue.'],
+        'toast-danger': ['danger', 'Your account has been deleted', 'We are sorry to see you go.'],
+      };
+
+      for (const [buttonId, [variant, title, message]] of Object.entries(toastMessages)) {
+        document.getElementById(buttonId)?.addEventListener('click', () => {
+          const alert = document.createElement('tblr-alert');
+          alert.setAttribute('variant', variant);
+          alert.setAttribute('closable', '');
+          //alert.setAttribute('duration', '8000');
+          alert.setAttribute('countdown', 'rtl');
+          alert.innerHTML = `<strong>${title}</strong><br>${message}`;
+          document.body.append(alert);
+          alert.toast();
+        });
+      }
     </script>
   </body>
 </html>

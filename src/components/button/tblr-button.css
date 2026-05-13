@@ -34,6 +34,14 @@
     box-shadow 0.15s ease-in-out;
 }
 
+.btn ::slotted(tblr-spinner) {
+  --tblr-spinner-color: currentColor;
+  --tblr-spinner-size: 1em;
+  --tblr-spinner-border-width: 0.15em;
+  --tblr-spinner-dot-size: 0.25em;
+  --tblr-spinner-dot-gap: 0.1875em;
+}
+
 :host([square]) .btn {
   border-radius: 0;
 }

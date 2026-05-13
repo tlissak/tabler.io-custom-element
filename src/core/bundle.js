@@ -37,18 +37,30 @@ class ComponentRegistry {
 const registry = new ComponentRegistry();
 
 const modules = {
+  'tblr-alert': () => import('../components/alert/tblr-alert.js'),
   'tblr-button': () => import('../components/button/tblr-button.js'),
   'tblr-card': () => import('../components/card/tblr-card.js'),
   'tblr-checkbox': () => import('../components/checkbox/tblr-checkbox.js'),
   'tblr-colorpicker': () => import('../components/colorpicker/tblr-colorpicker.js'),
+  'tblr-copy-button': () => import('../components/copy-button/tblr-copy-button.js'),
   'tblr-datepicker': () => import('../components/datepicker/tblr-datepicker.js'),
   'tblr-file-input': () => import('../components/file-input/tblr-file-input.js'),
+  'tblr-flex': () => import('../components/flex/tblr-flex.js'),
+  'tblr-flex-item': () => import('../components/flex/tblr-flex.js'),
+  'tblr-grid': () => import('../components/grid/tblr-grid.js'),
+  'tblr-grid-item': () => import('../components/grid/tblr-grid.js'),
   'tblr-icon': () => import('../components/icon/tblr-icon.js'),
   'tblr-input': () => import('../components/input/tblr-input.js'),
+  'tblr-modal': () => import('../components/modal/tblr-modal.js'),
+  'tblr-pagination': () => import('../components/pagination/tblr-pagination.js'),
   'tblr-radio': () => import('../components/radio/tblr-radio.js'),
+  'tblr-rich-editor': () => import('../components/rich-editor/tblr-rich-editor.js'),
   'tblr-select': () => import('../components/select/tblr-select.js'),
   'tblr-search': () => import('../components/search/tblr-search.js'),
+  'tblr-spinner': () => import('../components/spinner/tblr-spinner.js'),
   'tblr-switch': () => import('../components/switch/tblr-switch.js'),
+  'tblr-tab': () => import('../components/tabs/tblr-tabs.js'),
+  'tblr-tabs': () => import('../components/tabs/tblr-tabs.js'),
 };
 
 for (const [tag, loader] of Object.entries(modules)) {

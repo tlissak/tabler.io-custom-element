@@ -1,0 +1,140 @@
+:host {
+  display: block;
+  color: var(--tblr-tabs-color, var(--tblr-body-color, #182433));
+  font-family: var(--tblr-tabs-font-family, var(--tblr-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif));
+  font-size: var(--tblr-tabs-font-size, var(--tblr-font-size-md, 0.875rem));
+  line-height: var(--tblr-tabs-line-height, var(--tblr-line-height, 1.4285714286));
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.tabs {
+  display: grid;
+  min-width: 0;
+}
+
+.tabs-horizontal {
+  gap: var(--tblr-tabs-gap, 1rem);
+}
+
+.tabs-vertical {
+  grid-template-columns: minmax(var(--tblr-tabs-vertical-list-width, 12rem), max-content) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--tblr-tabs-vertical-gap, 1.25rem);
+}
+
+.tab-list {
+  display: flex;
+  min-width: 0;
+  border-color: var(--tblr-tabs-border-color, var(--tblr-border-color, #dce1e7));
+}
+
+.tabs-horizontal .tab-list {
+  flex-wrap: wrap;
+  gap: var(--tblr-tabs-list-gap, 0);
+  border-bottom: var(--tblr-tabs-border-width, var(--tblr-border-width, 1px)) solid var(--tblr-tabs-border-color, var(--tblr-border-color, #dce1e7));
+}
+
+.tabs-vertical .tab-list {
+  flex-direction: column;
+  border-right: var(--tblr-tabs-border-width, var(--tblr-border-width, 1px)) solid var(--tblr-tabs-border-color, var(--tblr-border-color, #dce1e7));
+}
+
+.tab {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--tblr-tabs-link-color, var(--tblr-muted-color, #667382));
+  font: inherit;
+  font-weight: var(--tblr-tabs-link-font-weight, var(--tblr-font-weight-medium, 500));
+  line-height: 1.25;
+  text-align: start;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tabs-horizontal .tab {
+  min-height: var(--tblr-tabs-link-height, 2.5rem);
+  padding: var(--tblr-tabs-link-padding-y, 0.625rem) var(--tblr-tabs-link-padding-x, 1rem);
+  border-bottom: var(--tblr-tabs-active-border-width, 2px) solid transparent;
+  transform: translateY(var(--tblr-tabs-border-width, var(--tblr-border-width, 1px)));
+}
+
+.tabs-vertical .tab {
+  width: 100%;
+  min-height: var(--tblr-tabs-vertical-link-height, 2.25rem);
+  padding: var(--tblr-tabs-vertical-link-padding-y, 0.5rem) var(--tblr-tabs-vertical-link-padding-x, 0.875rem);
+  border-right: var(--tblr-tabs-active-border-width, 2px) solid transparent;
+  transform: translateX(var(--tblr-tabs-border-width, var(--tblr-border-width, 1px)));
+}
+
+.tab:hover:not(:disabled) {
+  color: var(--tblr-tabs-link-hover-color, var(--tblr-primary, #206bc4));
+}
+
+.tab:focus-visible {
+  z-index: 1;
+  border-radius: var(--tblr-tabs-focus-radius, var(--tblr-radius, 4px));
+  outline: 0;
+  box-shadow: var(--tblr-tabs-focus-ring, var(--tblr-focus-ring, 0 0 0 0.25rem rgb(32 107 196 / 25%)));
+}
+
+.tab[aria-selected="true"] {
+  color: var(--tblr-tabs-active-color, var(--tblr-primary, #206bc4));
+  border-color: var(--tblr-tabs-active-border-color, var(--tblr-primary, #206bc4));
+}
+
+.tab:disabled {
+  color: var(--tblr-tabs-disabled-color, var(--tblr-muted-color, #667382));
+  cursor: not-allowed;
+  opacity: var(--tblr-disabled-opacity, 0.65);
+}
+
+.tab-panels {
+  min-width: 0;
+  color: var(--tblr-tabs-panel-color, inherit);
+}
+
+.tabs-horizontal .tab-panels {
+  padding-top: var(--tblr-tabs-panel-padding-top, 0);
+}
+
+.tabs-vertical .tab-panels {
+  padding-top: var(--tblr-tabs-vertical-panel-padding-top, 0.5rem);
+}
+
+.tab-panels ::slotted(tblr-tab) {
+  display: block;
+}
+
+.tab-panels ::slotted(tblr-tab[hidden]) {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .tabs-vertical {
+    grid-template-columns: 1fr;
+    gap: var(--tblr-tabs-gap, 1rem);
+  }
+
+  .tabs-vertical .tab-list {
+    border-right: 0;
+    border-bottom: var(--tblr-tabs-border-width, var(--tblr-border-width, 1px)) solid var(--tblr-tabs-border-color, var(--tblr-border-color, #dce1e7));
+  }
+
+  .tabs-vertical .tab {
+    border-right: 0;
+    border-bottom: var(--tblr-tabs-active-border-width, 2px) solid transparent;
+    transform: translateY(var(--tblr-tabs-border-width, var(--tblr-border-width, 1px)));
+  }
+}

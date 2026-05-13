@@ -1,0 +1,158 @@
+:host {
+  display: inline-flex;
+  color: var(--tblr-copy-button-color, var(--tblr-muted-color, #667382));
+  font-family: var(--tblr-copy-button-font-family, var(--tblr-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif));
+  font-size: var(--tblr-copy-button-font-size, var(--tblr-font-size-sm, 0.8125rem));
+  line-height: 1;
+  vertical-align: middle;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.copy-button {
+  position: relative;
+  display: inline-flex;
+}
+
+.button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tblr-copy-button-size, 2rem);
+  height: var(--tblr-copy-button-size, 2rem);
+  border: var(--tblr-copy-button-border-width, var(--tblr-border-width, 1px)) solid var(--tblr-copy-button-border-color, transparent);
+  border-radius: var(--tblr-copy-button-border-radius, var(--tblr-radius, 4px));
+  background: var(--tblr-copy-button-bg, transparent);
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--tblr-copy-button-hover-border-color, var(--tblr-border-color, #dce1e7));
+  background: var(--tblr-copy-button-hover-bg, var(--tblr-secondary-hover, #eef1f5));
+  color: var(--tblr-copy-button-hover-color, var(--tblr-body-color, #182433));
+}
+
+.button:focus-visible {
+  outline: 0;
+  box-shadow: var(--tblr-copy-button-focus-ring, var(--tblr-focus-ring, 0 0 0 0.25rem rgb(32 107 196 / 25%)));
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: var(--tblr-copy-button-disabled-opacity, var(--tblr-disabled-opacity, 0.65));
+}
+
+.icon {
+  display: none;
+  width: var(--tblr-copy-button-icon-size, 1.125rem);
+  height: var(--tblr-copy-button-icon-size, 1.125rem);
+}
+
+.icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.copy-button[data-state="copy"] .icon-copy,
+.copy-button[data-state="success"] .icon-success,
+.copy-button[data-state="error"] .icon-error {
+  display: inline-flex;
+}
+
+.copy-button[data-state="success"] {
+  color: var(--success-color, #2fb344);
+}
+
+.copy-button[data-state="error"] {
+  color: var(--error-color, var(--tblr-danger, #d63939));
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 20;
+  max-width: var(--tblr-copy-button-tooltip-max-width, 14rem);
+  padding: var(--tblr-copy-button-tooltip-padding-y, 0.25rem) var(--tblr-copy-button-tooltip-padding-x, 0.5rem);
+  border-radius: var(--tblr-copy-button-tooltip-radius, var(--tblr-radius, 4px));
+  background: var(--tblr-copy-button-tooltip-bg, #182433);
+  color: var(--tblr-copy-button-tooltip-color, #ffffff);
+  font-size: var(--tblr-copy-button-tooltip-font-size, 0.75rem);
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(0.25rem);
+  transition:
+    opacity 0.12s ease-in-out,
+    transform 0.12s ease-in-out;
+}
+
+.copy-button:hover .tooltip,
+.button:focus-visible + .tooltip,
+.copy-button[data-state="success"] .tooltip,
+.copy-button[data-state="error"] .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tooltip-top .tooltip {
+  right: 50%;
+  bottom: calc(100% + 0.375rem);
+  transform: translate(50%, 0.25rem);
+}
+
+.tooltip-top:hover .tooltip,
+.tooltip-top .button:focus-visible + .tooltip,
+.tooltip-top[data-state="success"] .tooltip,
+.tooltip-top[data-state="error"] .tooltip {
+  transform: translate(50%, 0);
+}
+
+.tooltip-bottom .tooltip {
+  top: calc(100% + 0.375rem);
+  right: 50%;
+  transform: translate(50%, -0.25rem);
+}
+
+.tooltip-bottom:hover .tooltip,
+.tooltip-bottom .button:focus-visible + .tooltip,
+.tooltip-bottom[data-state="success"] .tooltip,
+.tooltip-bottom[data-state="error"] .tooltip {
+  transform: translate(50%, 0);
+}
+
+.tooltip-left .tooltip {
+  top: 50%;
+  right: calc(100% + 0.375rem);
+  transform: translate(0.25rem, -50%);
+}
+
+.tooltip-left:hover .tooltip,
+.tooltip-left .button:focus-visible + .tooltip,
+.tooltip-left[data-state="success"] .tooltip,
+.tooltip-left[data-state="error"] .tooltip {
+  transform: translate(0, -50%);
+}
+
+.tooltip-right .tooltip {
+  top: 50%;
+  left: calc(100% + 0.375rem);
+  transform: translate(-0.25rem, -50%);
+}
+
+.tooltip-right:hover .tooltip,
+.tooltip-right .button:focus-visible + .tooltip,
+.tooltip-right[data-state="success"] .tooltip,
+.tooltip-right[data-state="error"] .tooltip {
+  transform: translate(0, -50%);
+}

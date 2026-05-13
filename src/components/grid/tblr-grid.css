@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  color: var(--tblr-grid-color, var(--tblr-body-color, #182433));
+  font-family: var(--tblr-grid-font-family, var(--tblr-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif));
+  font-size: var(--tblr-grid-font-size, var(--tblr-font-size-md, 0.875rem));
+  line-height: var(--tblr-grid-line-height, var(--tblr-line-height, 1.4285714286));
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: var(--tblr-grid-template-columns, repeat(auto-fit, minmax(min(14rem, 100%), 1fr)));
+  grid-auto-flow: row;
+  align-items: var(--tblr-grid-align-items, stretch);
+  justify-items: var(--tblr-grid-justify-items, stretch);
+  row-gap: var(--tblr-grid-row-gap, var(--tblr-grid-gap, 1rem));
+  column-gap: var(--tblr-grid-column-gap, var(--tblr-grid-gap, 1rem));
+  min-width: 0;
+}
+
+.grid-dense {
+  grid-auto-flow: row dense;
+}
+
+.grid > slot {
+  display: contents;
+}
+
+.grid ::slotted(*) {
+  min-width: 0;
+}
+
+.grid ::slotted(tblr-grid-item) {
+  display: block;
+  grid-column: span var(--tblr-grid-item-column-span, 1);
+  grid-row: span var(--tblr-grid-item-row-span, 1);
+  align-self: var(--tblr-grid-item-align-self, auto);
+  justify-self: var(--tblr-grid-item-justify-self, auto);
+}
+
+@media (max-width: 640px) {
+  .grid ::slotted(tblr-grid-item) {
+    grid-column: 1 / -1;
+  }
+}

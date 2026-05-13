@@ -15,26 +15,28 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Search
 - [x] Datepicker
 - [x] Icon
-- [ ] Alert
-- [ ] Toast
-- [ ] Spinner
-- [ ] Pagination
+- [x] WYSIWYG Rich Text Editor
+- [x] Alert Toast and Notification
+- [x] Spinner
+- [x] Pagination
+- [x] Tabs
+- [x] Grid
+- [x] Flexbox
+- [x] Modal
+- [x] Copy to clipboard
+- [ ] Carousel
+- [ ] Collapse - Accordion
+- [ ] Breadcrumb
+- [ ] Progress
+- [ ] Dropdown List with search filters
+- [ ] Nav
+- [ ] Badge
 - [ ] Tooltip
 - [ ] Popover
-- [ ] Accordion
 - [ ] List Group
 - [ ] Image
 - [ ] Figure
 - [ ] Table
-- [ ] Tabs
-- [ ] Carousel
-- [ ] Collapse
-- [ ] Breadcrumb
-- [ ] Progress
-- [ ] Modal
-- [ ] Dropdown
-- [ ] Nav
-- [ ] Badge
 
 
 ## Global theme variables
@@ -149,6 +151,98 @@ Cards autoload with the rest of the components.
 </tblr-card>
 ```
 
+## Alerts and toast notifications
+
+Alerts support inline messages, closable alerts, timed alerts, countdown bars, and toast notifications.
+
+```html
+<tblr-alert variant="primary" open closable>
+  <strong>This is informative.</strong><br>
+  You can tell by how useful the alert is.
+</tblr-alert>
+
+<tblr-alert variant="success" open closable duration="3000">
+  Your changes have been saved.
+</tblr-alert>
+
+<tblr-alert variant="warning" open closable duration="10000" countdown="rtl">
+  This alert will close automatically.
+</tblr-alert>
+```
+
+Create toast notifications by calling `toast()`. Toasts move into a fixed toast stack and are removed from the DOM after they close.
+
+```js
+const toast = Object.assign(document.createElement('tblr-alert'), {
+  innerHTML: '<strong>Saved</strong><br>Changes were stored successfully.',
+});
+
+toast.setAttribute('variant', 'success');
+toast.setAttribute('closable', '');
+toast.setAttribute('duration', '3000');
+toast.setAttribute('countdown', 'rtl');
+document.body.append(toast);
+toast.toast();
+```
+
+## Copy button
+
+Copy buttons copy text from a `value` attribute or another element referenced with `from`.
+
+```html
+<tblr-copy-button value="Tabler components"></tblr-copy-button>
+
+<span id="phone">+1 (234) 456-7890</span>
+<tblr-copy-button from="phone"></tblr-copy-button>
+
+<tblr-input id="copy-input" value="User input"></tblr-input>
+<tblr-copy-button from="copy-input.value"></tblr-copy-button>
+
+<a id="copy-link" href="https://tabler.io">Tabler</a>
+<tblr-copy-button from="copy-link[href]"></tblr-copy-button>
+```
+
+Customize feedback labels and duration:
+
+```html
+<tblr-copy-button
+  value="Custom labels are easy"
+  copy-label="Click to copy"
+  success-label="Copied!"
+  error-label="Could not copy"
+  feedback-duration="1500"
+></tblr-copy-button>
+```
+
+`tblr-copy-button` uses the modern async Clipboard API, `navigator.clipboard.writeText()`, when it is available. Browsers generally require a secure context such as HTTPS or localhost and a user interaction for clipboard writes. A legacy `document.execCommand('copy')` fallback is used when the Clipboard API is unavailable.
+
+Use `no-fallback` when you want Clipboard API-only behavior:
+
+```html
+<tblr-copy-button
+  value="Copied with navigator.clipboard.writeText()"
+  no-fallback
+></tblr-copy-button>
+```
+
+## Spinners
+
+Spinners show loading state with Tabler-style border, grow, and animated dot variants.
+
+```html
+<tblr-spinner></tblr-spinner>
+<tblr-spinner color="green"></tblr-spinner>
+<tblr-spinner size="sm"></tblr-spinner>
+
+<tblr-spinner type="grow" color="red"></tblr-spinner>
+<tblr-spinner type="dots" color="primary" label="Loading content"></tblr-spinner>
+
+<tblr-button disabled>
+  <tblr-spinner size="sm" label="Saving"></tblr-spinner>
+  Saving
+</tblr-button>
+```
+
 ## Form controls
 
 Inputs, selects, search controls, and datepickers autoload with the rest of the components.
@@ -204,6 +298,161 @@ Inputs, selects, search controls, and datepickers autoload with the rest of the 
 ></tblr-file-input>
 
 <tblr-input label="Autosize textarea" textarea autosize rows="2" placeholder="Type something..."></tblr-input>
+```
+
+## WYSIWYG rich text editor
+
+The rich text editor stores HTML in its `value` property and attribute. Toolbar actions include text formatting, lists, alignment, indent/outdent, text color, undo/redo, links, clear formatting, and source editing.
+
+```html
+<tblr-rich-editor
+  name="body"
+  label="Message"
+  placeholder="Write something..."
+  value="<p>Hello <strong>world</strong>.</p>"
+></tblr-rich-editor>
+```
+
+Editor events bubble and cross the shadow boundary:
+
+```js
+document.querySelector('tblr-rich-editor').addEventListener('input', event => {
+  console.log(event.target.value);
+});
+```
+
+## Tabs
+
+Tabs support horizontal navigation by default and vertical navigation with the `vertical` attribute.
+
+```html
+<tblr-tabs value="profile">
+  <tblr-tab label="Profile" value="profile">
+    Profile content.
+  </tblr-tab>
+  <tblr-tab label="Activity" value="activity">
+    Activity content.
+  </tblr-tab>
+  <tblr-tab label="Disabled" value="disabled" disabled>
+    Disabled content.
+  </tblr-tab>
+</tblr-tabs>
+
+<tblr-tabs vertical value="settings">
+  <tblr-tab label="Settings" value="settings">
+    Settings content.
+  </tblr-tab>
+  <tblr-tab label="Billing" value="billing">
+    Billing content.
+  </tblr-tab>
+</tblr-tabs>
+```
+
+Listen for tab changes with the bubbling `change` event:
+
+```js
+document.querySelector('tblr-tabs').addEventListener('change', event => {
+  console.log(event.detail.value);
+});
+```
+
+## Grid
+
+Grids support fixed columns or responsive auto-fit columns. Use `tblr-grid-item` when an item needs to span columns.
+
+```html
+<tblr-grid columns="3" gap="md">
+  <tblr-card title="One">First card.</tblr-card>
+  <tblr-card title="Two">Second card.</tblr-card>
+  <tblr-card title="Three">Third card.</tblr-card>
+</tblr-grid>
+
+<tblr-grid min="16rem" gap="lg" dense>
+  <tblr-grid-item span="2">
+    <tblr-card title="Wide">This item spans two columns on wider screens.</tblr-card>
+  </tblr-grid-item>
+  <tblr-card title="Standard">Standard item.</tblr-card>
+  <tblr-card title="Standard">Standard item.</tblr-card>
+</tblr-grid>
+```
+
+## Flexbox
+
+Flexbox layouts support direction, wrapping, gaps, alignment, justification, and optional item sizing.
+
+```html
+<tblr-flex align="center" justify="between" gap="md">
+  <tblr-button variant="primary">Save changes</tblr-button>
+  <tblr-button variant="light">Cancel</tblr-button>
+</tblr-flex>
+
+<tblr-flex wrap gap="md">
+  <tblr-flex-item grow="1" basis="16rem">
+    <tblr-card title="Flexible item">This item can grow from a fixed basis.</tblr-card>
+  </tblr-flex-item>
+  <tblr-flex-item grow="1" basis="16rem">
+    <tblr-card title="Flexible item">Items wrap when space is limited.</tblr-card>
+  </tblr-flex-item>
+</tblr-flex>
+```
+
+## Pagination
+
+Pagination renders page buttons, previous and next controls, and ellipses for larger page sets.
+
+```html
+<tblr-pagination page="4" pages="12"></tblr-pagination>
+
+<tblr-pagination
+  page="8"
+  pages="24"
+  siblings="2"
+  boundary="1"
+  previous="Prev"
+  next="Next"
+></tblr-pagination>
+```
+
+Listen for page changes with the bubbling `change` event:
+
+```js
+document.querySelector('tblr-pagination').addEventListener('change', event => {
+  console.log(event.detail.page);
+});
+```
+
+## Modals
+
+Modals support Tabler-style sizes, scrollable bodies, full-width layouts, status states, and footer actions.
+
+```html
+<tblr-button id="open-modal">Open modal</tblr-button>
+
+<tblr-modal
+  id="example-modal"
+  title="Modal title"
+  cancel="Close"
+  action="Save changes"
+>
+  <p>Modal content.</p>
+</tblr-modal>
+
+<tblr-modal size="lg" title="Large modal" cancel="Close" action="Save changes">
+  <p>Large modal content.</p>
+</tblr-modal>
+
+<tblr-modal status="danger" title="Are you sure?" cancel="Cancel" action="Delete 84 items">
+  <p>Do you really want to remove these files? This cannot be undone.</p>
+</tblr-modal>
+```
+
+Open and close modals from JavaScript:
+
+```js
+const modal = document.querySelector('#example-modal');
+
+document.querySelector('#open-modal').addEventListener('click', () => modal.show());
+modal.addEventListener('action', () => modal.hide('action'));
 ```
 
 Form control events bubble and cross the shadow boundary:
