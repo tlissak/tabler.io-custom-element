@@ -1,0 +1,34 @@
+:host {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--tblr-icon-size, 1.25rem);
+  height: var(--tblr-icon-size, 1.25rem);
+  color: var(--tblr-icon-color, currentColor);
+  line-height: 1;
+  vertical-align: -0.125em;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.icon {
+  display: inline-flex;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+
+.icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  stroke-width: var(--tblr-icon-stroke-width, 2);
+}
+
+.icon[data-state="loading"],
+.icon[data-state="empty"],
+.icon[data-state="error"] {
+  opacity: var(--tblr-icon-placeholder-opacity, 0.45);
+}

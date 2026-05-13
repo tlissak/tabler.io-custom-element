@@ -1,0 +1,58 @@
+:root {
+  color-scheme: light;
+
+  --tblr-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --tblr-font-size-sm: 0.8125rem;
+  --tblr-font-size-md: 0.875rem;
+  --tblr-font-size-lg: 1rem;
+  --tblr-line-height: 1.4285714286;
+  --tblr-font-weight-medium: 500;
+
+  --tblr-body-color: #182433;
+  --tblr-muted-color: #667382;
+  --tblr-body-bg: #f6f8fb;
+  --tblr-card-bg: #ffffff;
+  --tblr-card-color: var(--tblr-body-color);
+  --tblr-card-header-bg: #f6f8fb;
+  --tblr-card-footer-bg: #f6f8fb;
+  --tblr-card-footer-color: var(--tblr-muted-color);
+  --tblr-card-shadow: 0 1px 2px rgb(24 36 51 / 4%);
+  --tblr-card-padding-x: 1rem;
+  --tblr-card-padding-y: 1rem;
+  --tblr-card-footer-padding-y: 0.75rem;
+  --tblr-card-middle-min-height: 13.5rem;
+  --tblr-card-middle-gap: 1rem;
+  --tblr-card-middle-content-width: 24rem;
+  --tblr-card-title-font-size: 1rem;
+  --tblr-card-title-font-weight: 600;
+  --tblr-border-color: #dce1e7;
+
+  --tblr-primary: #206bc4;
+  --tblr-primary-hover: #1c5aa6;
+  --tblr-primary-active: #1a5195;
+  --tblr-primary-foreground: #ffffff;
+
+  --tblr-secondary: #f6f8fb;
+  --tblr-secondary-hover: #eef1f5;
+  --tblr-secondary-active: #e6ebf1;
+  --tblr-secondary-foreground: #182433;
+
+  --tblr-danger: #d63939;
+  --tblr-danger-hover: #b92f2f;
+  --tblr-danger-active: #a62a2a;
+  --tblr-danger-foreground: #ffffff;
+
+  --tblr-radius: 4px;
+  --tblr-radius-sm: 3px;
+  --tblr-radius-lg: 7px;
+  --tblr-border-width: 1px;
+  --tblr-focus-ring: 0 0 0 0.25rem rgb(32 107 196 / 25%);
+  --tblr-shadow-button: inset 0 1px 0 rgb(255 255 255 / 15%);
+  --tblr-disabled-opacity: 0.65;
+
+  --tblr-icon-size: 1.25rem;
+  --tblr-icon-color: currentColor;
+  --tblr-icon-stroke-width: 2;
+  --tblr-icon-placeholder-opacity: 0.45;
+  --tblr-icon-base-url: 'https://cdn.jsdelivr.net/npm/@tabler/icons@3.44.0/icons';
+}

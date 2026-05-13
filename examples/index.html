@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TBLR Custom Elements Example</title>
+    <link rel="stylesheet" href="../src/styles/theme.css">
+    <style>
+      :root {
+        font-family: var(--tblr-font-sans);
+        color: var(--tblr-body-color);
+        background: var(--tblr-body-bg);
+      }
+
+      body {
+        margin: 0;
+        color: var(--tblr-body-color);
+        background: var(--tblr-body-bg);
+      }
+
+      main {
+        width: min(980px, calc(100% - 32px));
+        margin: 48px auto;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 650;
+      }
+
+      .section-title {
+        margin-top: 40px;
+      }
+
+      p {
+        margin: 0 0 24px;
+        color: var(--tblr-muted-color);
+      }
+
+      .panel {
+        display: grid;
+        gap: 20px;
+        padding: 24px;
+        border: 1px solid var(--tblr-border-color);
+        border-radius: var(--tblr-radius-lg);
+        background: var(--tblr-card-bg);
+        box-shadow: 0 8px 24px rgb(24 36 51 / 6%);
+      }
+
+      .group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .label {
+        width: 100%;
+        margin: 0;
+        font-size: 13px;
+        font-weight: 650;
+        color: var(--tblr-muted-color);
+      }
+
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+
+      .card-stack {
+        display: grid;
+        gap: 16px;
+      }
+
+      .empty-title {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--tblr-body-color);
+      }
+
+      .empty-text {
+        max-width: 360px;
+        margin: 0;
+        color: var(--tblr-muted-color);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+
+      .form-wide {
+        grid-column: 1 / -1;
+      }
+
+      .form-stack {
+        display: grid;
+        gap: 12px;
+      }
+
+      .inline-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .notification-list {
+        display: grid;
+      }
+
+      .notification-row {
+        padding: 14px 0;
+        border-bottom: 1px solid var(--tblr-border-color);
+      }
+
+      .dob-grid {
+        display: grid;
+        grid-template-columns: 1fr 0.7fr 1fr;
+        gap: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>TBLR Button Example</h1>
+      <p>Basic usage examples for the <code>&lt;tblr-button&gt;</code> custom element.</p>
+
+      <section class="panel" aria-label="Button examples">
+        <div class="group">
+          <p class="label">Standard Buttons</p>
+          <tblr-button variant="primary"><tblr-icon name="check"></tblr-icon>Primary</tblr-button>
+          <tblr-button variant="secondary">Secondary</tblr-button>
+          <tblr-button variant="success">Success</tblr-button>
+          <tblr-button variant="warning">Warning</tblr-button>
+          <tblr-button variant="danger"><tblr-icon name="trash"></tblr-icon>Danger</tblr-button>
+          <tblr-button variant="info">Info</tblr-button>
+          <tblr-button variant="dark">Dark</tblr-button>
+          <tblr-button variant="light">Light</tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">Outline Buttons</p>
+          <tblr-button variant="primary" appearance="outline">Primary</tblr-button>
+          <tblr-button variant="secondary" appearance="outline">Secondary</tblr-button>
+          <tblr-button variant="success" appearance="outline">Success</tblr-button>
+          <tblr-button variant="warning" appearance="outline">Warning</tblr-button>
+          <tblr-button variant="danger" appearance="outline">Danger</tblr-button>
+          <tblr-button variant="info" appearance="outline">Info</tblr-button>
+          <tblr-button variant="dark" appearance="outline">Dark</tblr-button>
+          <tblr-button variant="light" appearance="outline">Light</tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">Ghost Buttons</p>
+          <tblr-button variant="primary" appearance="ghost">Primary</tblr-button>
+          <tblr-button variant="secondary" appearance="ghost">Secondary</tblr-button>
+          <tblr-button variant="success" appearance="ghost">Success</tblr-button>
+          <tblr-button variant="warning" appearance="ghost">Warning</tblr-button>
+          <tblr-button variant="danger" appearance="ghost">Danger</tblr-button>
+          <tblr-button variant="info" appearance="ghost">Info</tblr-button>
+          <tblr-button variant="dark" appearance="ghost">Dark</tblr-button>
+          <tblr-button variant="light" appearance="ghost">Light</tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">Square Buttons</p>
+          <tblr-button variant="primary" square>Primary</tblr-button>
+          <tblr-button variant="secondary" square>Secondary</tblr-button>
+          <tblr-button variant="success" square>Success</tblr-button>
+          <tblr-button variant="warning" square>Warning</tblr-button>
+          <tblr-button variant="danger" square>Danger</tblr-button>
+          <tblr-button variant="info" square>Info</tblr-button>
+          <tblr-button variant="dark" square>Dark</tblr-button>
+          <tblr-button variant="light" square>Light</tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">Action buttons</p>
+          <tblr-button action state="hover" label="Edit hover"><tblr-icon name="edit"></tblr-icon></tblr-button>
+          <tblr-button action state="focus" label="Copy focus"><tblr-icon name="copy"></tblr-icon></tblr-button>
+          <tblr-button action label="Settings"><tblr-icon name="settings"></tblr-icon></tblr-button>
+          <tblr-button action state="active" label="Clipboard active"><tblr-icon name="clipboard"></tblr-icon></tblr-button>
+          <tblr-button action label="Close"><tblr-icon name="x"></tblr-icon></tblr-button>
+          <tblr-button action disabled label="Disabled action"><tblr-icon name="trash"></tblr-icon></tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">Buttons with icon</p>
+          <tblr-button variant="light"><span>Save</span><tblr-icon name="arrow-right"></tblr-icon></tblr-button>
+          <tblr-button variant="light"><tblr-icon name="plus"></tblr-icon><span>Add</span></tblr-button>
+          <tblr-button variant="light"><tblr-icon name="bell"></tblr-icon><span>Notifications</span></tblr-button>
+          <tblr-button variant="light"><tblr-icon name="settings"></tblr-icon><span>Settings</span></tblr-button>
+          <tblr-button variant="light"><tblr-icon name="heart"></tblr-icon><span>Love</span></tblr-button>
+          <tblr-button variant="light"><tblr-icon name="x"></tblr-icon><span>Close</span></tblr-button>
+          <tblr-button variant="light"><tblr-icon name="check"></tblr-icon><span>Confirm</span></tblr-button>
+          <tblr-button variant="light"><span>Next</span><tblr-icon name="chevron-right"></tblr-icon></tblr-button>
+          <tblr-button variant="light"><tblr-icon name="chevron-left"></tblr-icon><span>Previous</span></tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">Sizes</p>
+          <tblr-button variant="light" size="xs">Button</tblr-button>
+          <tblr-button variant="light" size="xs" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="xs"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
+          <tblr-button variant="light" size="xs">Button<tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="sm">Button</tblr-button>
+          <tblr-button variant="light" size="sm" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="sm"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
+          <tblr-button variant="light" size="sm">Button<tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="md">Button</tblr-button>
+          <tblr-button variant="light" size="md" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="md"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
+          <tblr-button variant="light" size="md">Button<tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="lg">Button</tblr-button>
+          <tblr-button variant="light" size="lg" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="lg"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
+          <tblr-button variant="light" size="lg">Button<tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="xl">Button</tblr-button>
+          <tblr-button variant="light" size="xl" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
+          <tblr-button variant="light" size="xl"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
+          <tblr-button variant="light" size="xl">Button<tblr-icon name="star"></tblr-icon></tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">State</p>
+          <tblr-button disabled>Disabled</tblr-button>
+        </div>
+
+        <div class="group">
+          <p class="label">Icons</p>
+          <tblr-icon name="home" label="Home"></tblr-icon>
+          <tblr-icon name="heart" filled label="Favorite"></tblr-icon>
+          <tblr-icon name="bell" size="28" stroke="1.75" label="Notifications"></tblr-icon>
+        </div>
+      </section>
+
+      <h1 class="section-title">TBLR Card Example</h1>
+      <p>Tabler-style cards for common content blocks.</p>
+
+      <section class="cards-grid" aria-label="Card examples">
+        <tblr-card>
+          Simple card content. Cards use the default Tabler-like border, radius, background, and spacing.
+        </tblr-card>
+
+        <tblr-card title="Card with title">
+          This card renders the title inside the card body, above the slotted content.
+        </tblr-card>
+
+        <tblr-card title="Card with header background" header-bg>
+          The title is placed in a separated header with a subtle background.
+        </tblr-card>
+
+        <tblr-card title="Card without border" no-border>
+          Use this when the surrounding layout already provides enough separation.
+        </tblr-card>
+
+        <tblr-card title="Card with title" subtitle="A short subtitle adds secondary context.">
+          The subtitle sits below the title and uses the global muted color token.
+        </tblr-card>
+      </section>
+
+      <h1 class="section-title">Card Footer and Middle Alignment</h1>
+      <p>Footer and centered body patterns based on Tabler card layouts.</p>
+
+      <section class="card-stack" aria-label="Card footer and middle alignment examples">
+        <tblr-card title="Card title" header footer="Last updated 3 mins ago">
+          This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+        </tblr-card>
+
+        <tblr-card middle>
+          <h2 class="empty-title">No results found</h2>
+          <p class="empty-text">Try adjusting your search or filter to find what you're looking for.</p>
+          <tblr-button><tblr-icon name="search"></tblr-icon>Search again</tblr-button>
+        </tblr-card>
+      </section>
+
+      <h1 class="section-title">TBLR Form Controls</h1>
+      <p>Tabler-style inputs, selects, and search controls.</p>
+
+      <section class="panel" aria-label="Form control examples">
+        <div class="form-grid">
+          <tblr-input label="Text" placeholder="Input placeholder"></tblr-input>
+          <tblr-input label="Required" placeholder="Required..." required></tblr-input>
+          <tblr-input label="Disabled" value="Well, she turned me into a newt." disabled></tblr-input>
+          <tblr-input label="Readonly" value="Well, how'd you become king, then?" readonly></tblr-input>
+          <tblr-input label="Password" type="password" value="secret-password" toggle-password></tblr-input>
+
+          <tblr-input
+            class="form-wide"
+            label="Textarea"
+            textarea
+            rows="5"
+            maxlength="100"
+            value="Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed!"
+          ></tblr-input>
+
+          <tblr-select
+            label="Select"
+            value="one"
+            options="one:One|two:Two|three:Three"
+          ></tblr-select>
+
+          <tblr-select
+            label="Select multiple"
+            multiple
+            size="3"
+            value="one,two"
+            options="one:One|two:Two|three:Three"
+          ></tblr-select>
+
+          <tblr-input label="Input group" placeholder="Search for..." action="Go!"></tblr-input>
+          <tblr-input label="Prepend text" prefix="https://" placeholder="subdomain"></tblr-input>
+          <tblr-input label="Append text" suffix=".tabler.io" placeholder="yourfancydomain"></tblr-input>
+
+          <tblr-search label="Icon search" placeholder="Search..."></tblr-search>
+          <tblr-search label="Separated search" placeholder="Search for..." button></tblr-search>
+          <tblr-search label="Rounded search" placeholder="Search..." rounded></tblr-search>
+          <tblr-datepicker label="Datepicker" value="2020-06-20"></tblr-datepicker>
+          <tblr-datepicker label="Datepicker icon end" value="2020-06-20" icon="end"></tblr-datepicker>
+          <tblr-datepicker label="Datepicker icon start" value="2020-06-20" icon="start" open></tblr-datepicker>
+          <tblr-input label="Rounded input" placeholder="Text.." rounded></tblr-input>
+          <tblr-input label="Flush input" placeholder="Text.." flush></tblr-input>
+        </div>
+      </section>
+
+      <h1 class="section-title">TBLR Choice Controls</h1>
+      <p>Radio buttons, checkboxes, switches, file inputs, and masked-looking fields.</p>
+
+      <section class="panel" aria-label="Choice control examples">
+        <div class="form-grid">
+          <div class="form-stack">
+            <p class="label">Radios</p>
+            <tblr-radio name="radio-example" label="Option 1" checked></tblr-radio>
+            <tblr-radio name="radio-example" label="Option 2"></tblr-radio>
+            <tblr-radio name="radio-example" label="Option 3" disabled></tblr-radio>
+            <tblr-radio name="radio-example" label="Option 4" checked disabled></tblr-radio>
+          </div>
+
+          <div class="form-stack">
+            <p class="label">Inline Radios</p>
+            <div class="inline-controls">
+              <tblr-radio name="inline-radio-example" label="Option 1" checked inline></tblr-radio>
+              <tblr-radio name="inline-radio-example" label="Option 2" inline></tblr-radio>
+              <tblr-radio name="inline-radio-example" label="Option 3" disabled inline></tblr-radio>
+            </div>
+          </div>
+
+          <div class="form-stack">
+            <p class="label">Checkboxes</p>
+            <tblr-checkbox label="Checkbox input"></tblr-checkbox>
+            <tblr-checkbox label="Disabled checkbox input" disabled></tblr-checkbox>
+            <tblr-checkbox label="Checked checkbox input" checked></tblr-checkbox>
+          </div>
+
+          <div class="form-stack">
+            <p class="label">Inline Checkboxes</p>
+            <div class="inline-controls">
+              <tblr-checkbox label="Option 1" inline></tblr-checkbox>
+              <tblr-checkbox label="Option 2" disabled inline></tblr-checkbox>
+              <tblr-checkbox label="Option 3" checked inline></tblr-checkbox>
+            </div>
+          </div>
+
+          <div class="form-stack form-wide">
+            <p class="label">Checkboxes with description</p>
+            <tblr-checkbox
+              label="Default checkbox"
+              description="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+            ></tblr-checkbox>
+            <tblr-checkbox
+              label="Longer checkbox item that wraps on to two separate lines"
+              description="Alias aut, consequuntur cumque esse eveniet incidunt laborum minus molestiae."
+            ></tblr-checkbox>
+            <tblr-checkbox label="Default checkbox without description"></tblr-checkbox>
+          </div>
+
+          <div class="form-stack">
+            <p class="label">Toggle switches</p>
+            <tblr-switch label="Option 1" checked></tblr-switch>
+            <tblr-switch label="Option 2"></tblr-switch>
+            <tblr-switch label="Option 3" disabled></tblr-switch>
+          </div>
+
+          <div class="form-stack">
+            <p class="label">Single switch</p>
+            <tblr-switch label="I agree with terms and conditions"></tblr-switch>
+          </div>
+
+          <div class="form-stack form-wide">
+            <p class="label">Notification</p>
+            <div class="notification-list">
+              <tblr-switch class="notification-row" label="Push Notifications" checked align-end></tblr-switch>
+              <tblr-switch class="notification-row" label="SMS Notifications" align-end></tblr-switch>
+              <tblr-switch class="notification-row" label="Email Notifications" checked align-end></tblr-switch>
+            </div>
+          </div>
+
+          <tblr-file-input
+            class="form-wide"
+            label="Custom File Input"
+            button="Parcourir..."
+            placeholder="Aucun fichier sélectionné."
+          ></tblr-file-input>
+
+          <div class="form-stack form-wide">
+            <p class="label">Date of birth</p>
+            <div class="dob-grid">
+              <tblr-select value="june" options="january:January|february:February|march:March|april:April|may:May|june:June|july:July|august:August|september:September|october:October|november:November|december:December"></tblr-select>
+              <tblr-select value="20" options="18:18|19:19|20:20|21:21|22:22"></tblr-select>
+              <tblr-select value="1989" options="1987:1987|1988:1988|1989:1989|1990:1990|1991:1991"></tblr-select>
+            </div>
+          </div>
+
+          <tblr-input label="Text mask" placeholder="__/__/____"></tblr-input>
+          <tblr-input label="Telephone mask" placeholder="(__) ____-____"></tblr-input>
+          <tblr-input class="form-wide" label="Autosize textarea" textarea autosize rows="2" placeholder="Type something..."></tblr-input>
+        </div>
+      </section>
+
+      <h1 class="section-title">TBLR Colorpicker</h1>
+      <p>Color palettes and native color input styles.</p>
+
+      <section class="panel" aria-label="Colorpicker examples">
+        <tblr-colorpicker
+          label="Color Input Check"
+          type="check"
+          value="#ffffff"
+        ></tblr-colorpicker>
+
+        <tblr-colorpicker
+          label="Color Input Radio"
+          type="radio"
+          value="#ffffff"
+        ></tblr-colorpicker>
+
+        <tblr-colorpicker
+          label="Color picker"
+          type="picker"
+          value="#066fd1"
+        ></tblr-colorpicker>
+      </section>
+    </main>
+
+    <script type="module">
+      import { defineTblr } from '../src/main.js';
+
+      await defineTblr();
+    </script>
+  </body>
+</html>

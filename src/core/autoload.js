@@ -1,0 +1,63 @@
+import { registry } from './registry.js';
+
+const modules = {
+  'tblr-button': () => import('../components/button/tblr-button.js'),
+  'tblr-card': () => import('../components/card/tblr-card.js'),
+  'tblr-checkbox': () => import('../components/checkbox/tblr-checkbox.js'),
+  'tblr-colorpicker': () => import('../components/colorpicker/tblr-colorpicker.js'),
+  'tblr-datepicker': () => import('../components/datepicker/tblr-datepicker.js'),
+  'tblr-file-input': () => import('../components/file-input/tblr-file-input.js'),
+  'tblr-icon': () => import('../components/icon/tblr-icon.js'),
+  'tblr-input': () => import('../components/input/tblr-input.js'),
+  'tblr-radio': () => import('../components/radio/tblr-radio.js'),
+  'tblr-select': () => import('../components/select/tblr-select.js'),
+  'tblr-search': () => import('../components/search/tblr-search.js'),
+  'tblr-switch': () => import('../components/switch/tblr-switch.js'),
+};
+
+for (const [tag, loader] of Object.entries(modules)) {
+  registry.register(tag, loader);
+}
+
+export async function autoload(root = document) {
+  if (typeof window === 'undefined') return;
+
+  const tags = new Set();
+
+  if (root instanceof HTMLElement && root.tagName.toLowerCase().startsWith('tblr-')) {
+    tags.add(root.tagName.toLowerCase());
+  }
+
+  root.querySelectorAll?.('*').forEach(el => {
+    const tag = el.tagName.toLowerCase();
+
+    if (tag.startsWith('tblr-')) {
+      tags.add(tag);
+    }
+  });
+
+  await registry.loadAll([...tags]);
+}
+
+export function watchAutoload(root = document.body) {
+  if (typeof window === 'undefined') return;
+
+  autoload(root);
+
+  const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach(node => {
+        if (node instanceof HTMLElement) {
+          autoload(node);
+        }
+      });
+    }
+  });
+
+  observer.observe(root, {
+    childList: true,
+    subtree: true,
+  });
+
+  return observer;
+}
