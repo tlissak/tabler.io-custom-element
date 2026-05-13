@@ -105,7 +105,6 @@ class TblrNavItem extends HTMLElement {
     super();
     this.root = this.attachShadow({ mode: 'open' });
     this.handleClick = this.handleClick.bind(this);
-    this.handleSlotChange = this.handleSlotChange.bind(this);
     this.parentObserver = new MutationObserver(() => this.render());
     this.childObserver = new MutationObserver(() => this.render());
   }
@@ -193,7 +192,6 @@ class TblrNavItem extends HTMLElement {
     `;
 
     this.root.querySelector('.nav-link')?.addEventListener('click', this.handleClick);
-    this.root.querySelector('slot[name="children"]')?.addEventListener('slotchange', this.handleSlotChange);
   }
 
   renderLinkAttributes(href, target, rel, disabled) {
@@ -224,10 +222,6 @@ class TblrNavItem extends HTMLElement {
       composed: true,
       detail: { open },
     }));
-  }
-
-  handleSlotChange() {
-    this.render();
   }
 
   assignChildSlots() {
