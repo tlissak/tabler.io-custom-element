@@ -1,1095 +1,1506 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TBLR Custom Elements Example</title>
     <link rel="stylesheet" href="../src/styles/theme.css">
     <style>
-      :root {
-        font-family: var(--tblr-font-sans);
-        color: var(--tblr-body-color);
-        background: var(--tblr-body-bg);
-      }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
 
-      body {
-        margin: 0;
-        color: var(--tblr-body-color);
-        background: var(--tblr-body-bg);
-      }
+        :root {
+            font-family: var(--tblr-font-sans);
+            color: var(--tblr-body-color);
+            background: var(--tblr-body-bg);
+            scroll-behavior: smooth;
+        }
 
-      main {
-        width: min(980px, calc(100% - 32px));
-        margin: 48px auto;
-      }
+        body {
+            margin: 0;
+            color: var(--tblr-body-color);
+            background: var(--tblr-body-bg);
+        }
 
-      h1 {
-        margin: 0 0 8px;
-        font-size: 28px;
-        font-weight: 650;
-      }
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
 
-      .section-title {
-        margin-top: 40px;
-      }
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            padding: 1em 0;
+            border-right: 1px solid var(--tblr-border-color);
+            background: #FFF;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
 
-      p {
-        margin: 0 0 24px;
-        color: var(--tblr-muted-color);
-      }
+        .sidebar-nav {
+            padding: 0 12px;
+        }
 
-      .panel {
-        display: grid;
-        gap: 20px;
-        padding: 24px;
-        border: 1px solid var(--tblr-border-color);
-        border-radius: var(--tblr-radius-lg);
-        background: var(--tblr-card-bg);
-        box-shadow: 0 8px 24px rgb(24 36 51 / 6%);
-      }
+        main {
+            flex: 1;
+            padding: 48px;
+            min-width: 640px;
+        }
 
-      .group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
-      }
+        h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 650;
+        }
 
-      .label {
-        width: 100%;
-        margin: 0;
-        font-size: 13px;
-        font-weight: 650;
-        color: var(--tblr-muted-color);
-      }
+        .section-title {
+            margin-top: 48px;
+        }
 
-      .cards-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 16px;
-      }
+        p {
+            margin: 0 0 24px;
+            color: var(--tblr-muted-color);
+        }
 
-      .card-stack {
-        display: grid;
-        gap: 16px;
-      }
+        .flex {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
 
-      .empty-title {
-        margin: 0;
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--tblr-body-color);
-      }
+        }
 
-      .empty-text {
-        max-width: 360px;
-        margin: 0;
-        color: var(--tblr-muted-color);
-      }
+        .panel {
+            display: flex;
+            gap: 32px;
+            padding: 24px;
+            border: 1px solid var(--tblr-border-color);
+            border-radius: var(--tblr-radius-lg);
+            background: var(--tblr-card-bg);
+            box-shadow: 0 8px 24px rgb(24 36 51 / 6%);
+            align-items: flex-start;
+        }
 
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 16px;
-      }
+        .panel-main {
+            flex: 1;
+            display: grid;
+            gap: 24px;
+            min-width: 0;
+        }
 
-      .form-wide {
-        grid-column: 1 / -1;
-      }
+        .panel-sidebar {
+            flex-shrink: 0;
+            position: sticky;
+            top: 24px;
+        }
 
-      .form-stack {
-        display: grid;
-        gap: 12px;
-      }
+        .group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
 
-      .inline-controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 24px;
-        align-items: center;
-      }
+        .label {
+            width: 100%;
+            margin: 0;
+            font-size: 13px;
+            font-weight: 650;
+            color: var(--tblr-muted-color);
+        }
 
-      .notification-list {
-        display: grid;
-      }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
 
-      .notification-row {
-        padding: 14px 0;
-        border-bottom: 1px solid var(--tblr-border-color);
-      }
+        .card-stack {
+            display: grid;
+            gap: 16px;
+        }
 
-      .dob-grid {
-        display: grid;
-        grid-template-columns: 1fr 0.7fr 1fr;
-        gap: 12px;
-      }
+        .empty-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--tblr-body-color);
+        }
 
-      .tabs-content {
-        display: grid;
-        gap: 8px;
-      }
+        .empty-text {
+            max-width: 360px;
+            margin: 0;
+            color: var(--tblr-muted-color);
+        }
 
-      .tabs-content h3 {
-        margin: 0;
-        font-size: 16px;
-      }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
 
-      .tabs-content p {
-        margin: 0;
-      }
+        .form-wide {
+            grid-column: 1 / -1;
+        }
 
-      .editor-demo {
-        display: grid;
-        gap: 12px;
-      }
+        .form-stack {
+            display: grid;
+            gap: 12px;
+        }
 
-      .metric {
-        margin: 0;
-        font-size: 28px;
-        font-weight: 700;
-        color: var(--tblr-body-color);
-      }
+        .inline-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+        }
 
-      .metric-label {
-        margin: 0;
-        color: var(--tblr-muted-color);
-      }
+        .notification-list {
+            display: grid;
+        }
 
-      .flex-chip {
-        display: inline-flex;
-        align-items: center;
-        min-height: 32px;
-        padding: 0 12px;
-        border: 1px solid var(--tblr-border-color);
-        border-radius: 999px;
-        background: var(--tblr-bg-surface);
-        color: var(--tblr-body-color);
-        font-weight: 600;
-      }
+        .notification-row {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--tblr-border-color);
+        }
 
-      .modal-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
+        .dob-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.7fr 1fr;
+            gap: 12px;
+        }
 
-      .toast-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
+        .tabs-content {
+            display: grid;
+            gap: 8px;
+        }
 
-      .copy-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-      }
+        .tabs-content h3 {
+            margin: 0;
+            font-size: 16px;
+        }
 
-      .spinner-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        align-items: center;
-      }
+        .tabs-content p {
+            margin: 0;
+        }
 
-      .badge-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-      }
+        .editor-demo {
+            display: grid;
+            gap: 12px;
+        }
 
-      .badge-anchor {
-        position: relative;
-      }
+        .metric {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--tblr-body-color);
+        }
 
-      .nav-demo {
-        max-width: 320px;
-      }
+        .metric-label {
+            margin: 0;
+            color: var(--tblr-muted-color);
+        }
 
-      .code-demo {
-        display: grid;
-        gap: 16px;
-      }
+        .flex-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 0 12px;
+            border: 1px solid var(--tblr-border-color);
+            border-radius: 999px;
+            background: var(--tblr-bg-surface);
+            color: var(--tblr-body-color);
+            font-weight: 600;
+        }
 
-      .number-demo {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        align-items: center;
-      }
+        .modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
 
-      .number-tile {
-        display: grid;
-        gap: 4px;
-        min-width: 180px;
-        padding: 12px;
-        border: 1px solid var(--tblr-border-color);
-        border-radius: var(--tblr-radius-lg);
-        background: var(--tblr-card-bg);
-      }
+        .toast-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
 
-      .number-tile tblr-format-number {
-        --tblr-format-number-font-size: 20px;
-        --tblr-format-number-font-weight: 700;
-      }
+        .copy-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .spinner-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .badge-anchor {
+            position: relative;
+        }
+
+        .nav-demo {
+            max-width: 320px;
+        }
+
+        .code-demo {
+            display: grid;
+            gap: 16px;
+        }
+
+        .number-demo {
+            gap: 16px;
+            align-items: center;
+        }
+
+        .number-tile {
+            display: grid;
+            gap: 4px;
+            min-width: 180px;
+            padding: 12px;
+            border: 1px solid var(--tblr-border-color);
+            border-radius: var(--tblr-radius-lg);
+            background: var(--tblr-card-bg);
+        }
+
+        .number-tile tblr-format-number {
+            --tblr-format-number-font-size: 20px;
+            --tblr-format-number-font-weight: 700;
+        }
+
+        main.section {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+        }
+
+        /*section.panel + .panel-sidebar{ float: right; }*/
     </style>
-  </head>
-  <body>
+</head>
+<body>
+<nav style="background: #FFF; position: sticky; top: 0; z-index: 1000;">
+    <tblr-nav>
+        <tblr-nav-item label="Tabler.io Components" href="#"></tblr-nav-item>
+    </tblr-nav>
+</nav>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-nav">
+            <tblr-nav vertical label="Components">
+                <tblr-nav-item label="Buttons & Icons" href="#buttons"></tblr-nav-item>
+                <tblr-nav-item label="Badges" href="#badges"></tblr-nav-item>
+                <tblr-nav-item label="Navigation" href="#navigation"></tblr-nav-item>
+                <tblr-nav-item label="Code Preview" href="#code-preview"></tblr-nav-item>
+                <tblr-nav-item label="Format Number" href="#format-number"></tblr-nav-item>
+                <tblr-nav-item label="Cards" href="#cards"></tblr-nav-item>
+                <tblr-nav-item label="Alerts & Toasts" href="#alerts"></tblr-nav-item>
+                <tblr-nav-item label="Copy Button" href="#copy-button"></tblr-nav-item>
+                <tblr-nav-item label="Spinners" href="#spinners"></tblr-nav-item>
+                <tblr-nav-item label="Form Controls" href="#form-controls"></tblr-nav-item>
+                <tblr-nav-item label="Choice Controls" href="#choice-controls"></tblr-nav-item>
+                <tblr-nav-item label="Rich Editor" href="#rich-editor"></tblr-nav-item>
+                <tblr-nav-item label="TinyMCE Editor" href="#tinymce"></tblr-nav-item>
+                <tblr-nav-item label="Colorpicker" href="#colorpicker"></tblr-nav-item>
+                <tblr-nav-item label="Tabs" href="#tabs"></tblr-nav-item>
+                <tblr-nav-item label="Grid" href="#grid"></tblr-nav-item>
+                <tblr-nav-item label="Flexbox" href="#flexbox"></tblr-nav-item>
+                <tblr-nav-item label="Pagination" href="#pagination"></tblr-nav-item>
+                <tblr-nav-item label="Modals" href="#modals"></tblr-nav-item>
+            </tblr-nav>
+        </div>
+    </aside>
+
     <main>
-      <h1>TBLR Button Example</h1>
-      <p>Basic usage examples for the <code>&lt;tblr-button&gt;</code> custom element.</p>
-
-      <section class="panel" aria-label="Button examples">
-        <div class="group">
-          <p class="label">Standard Buttons</p>
-          <tblr-button variant="primary"><tblr-icon name="check"></tblr-icon>Primary</tblr-button>
-          <tblr-button variant="secondary">Secondary</tblr-button>
-          <tblr-button variant="success">Success</tblr-button>
-          <tblr-button variant="warning">Warning</tblr-button>
-          <tblr-button variant="danger"><tblr-icon name="trash"></tblr-icon>Danger</tblr-button>
-          <tblr-button variant="info">Info</tblr-button>
-          <tblr-button variant="dark">Dark</tblr-button>
-          <tblr-button variant="light">Light</tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">Outline Buttons</p>
-          <tblr-button variant="primary" appearance="outline">Primary</tblr-button>
-          <tblr-button variant="secondary" appearance="outline">Secondary</tblr-button>
-          <tblr-button variant="success" appearance="outline">Success</tblr-button>
-          <tblr-button variant="warning" appearance="outline">Warning</tblr-button>
-          <tblr-button variant="danger" appearance="outline">Danger</tblr-button>
-          <tblr-button variant="info" appearance="outline">Info</tblr-button>
-          <tblr-button variant="dark" appearance="outline">Dark</tblr-button>
-          <tblr-button variant="light" appearance="outline">Light</tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">Ghost Buttons</p>
-          <tblr-button variant="primary" appearance="ghost">Primary</tblr-button>
-          <tblr-button variant="secondary" appearance="ghost">Secondary</tblr-button>
-          <tblr-button variant="success" appearance="ghost">Success</tblr-button>
-          <tblr-button variant="warning" appearance="ghost">Warning</tblr-button>
-          <tblr-button variant="danger" appearance="ghost">Danger</tblr-button>
-          <tblr-button variant="info" appearance="ghost">Info</tblr-button>
-          <tblr-button variant="dark" appearance="ghost">Dark</tblr-button>
-          <tblr-button variant="light" appearance="ghost">Light</tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">Square Buttons</p>
-          <tblr-button variant="primary" square>Primary</tblr-button>
-          <tblr-button variant="secondary" square>Secondary</tblr-button>
-          <tblr-button variant="success" square>Success</tblr-button>
-          <tblr-button variant="warning" square>Warning</tblr-button>
-          <tblr-button variant="danger" square>Danger</tblr-button>
-          <tblr-button variant="info" square>Info</tblr-button>
-          <tblr-button variant="dark" square>Dark</tblr-button>
-          <tblr-button variant="light" square>Light</tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">Action buttons</p>
-          <tblr-button action state="hover" label="Edit hover"><tblr-icon name="edit"></tblr-icon></tblr-button>
-          <tblr-button action state="focus" label="Copy focus"><tblr-icon name="copy"></tblr-icon></tblr-button>
-          <tblr-button action label="Settings"><tblr-icon name="settings"></tblr-icon></tblr-button>
-          <tblr-button action state="active" label="Clipboard active"><tblr-icon name="clipboard"></tblr-icon></tblr-button>
-          <tblr-button action label="Close"><tblr-icon name="x"></tblr-icon></tblr-button>
-          <tblr-button action disabled label="Disabled action"><tblr-icon name="trash"></tblr-icon></tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">Buttons with icon</p>
-          <tblr-button variant="light"><span>Save</span><tblr-icon name="arrow-right"></tblr-icon></tblr-button>
-          <tblr-button variant="light"><tblr-icon name="plus"></tblr-icon><span>Add</span></tblr-button>
-          <tblr-button variant="light"><tblr-icon name="bell"></tblr-icon><span>Notifications</span></tblr-button>
-          <tblr-button variant="light"><tblr-icon name="settings"></tblr-icon><span>Settings</span></tblr-button>
-          <tblr-button variant="light"><tblr-icon name="heart"></tblr-icon><span>Love</span></tblr-button>
-          <tblr-button variant="light"><tblr-icon name="x"></tblr-icon><span>Close</span></tblr-button>
-          <tblr-button variant="light"><tblr-icon name="check"></tblr-icon><span>Confirm</span></tblr-button>
-          <tblr-button variant="light"><span>Next</span><tblr-icon name="chevron-right"></tblr-icon></tblr-button>
-          <tblr-button variant="light"><tblr-icon name="chevron-left"></tblr-icon><span>Previous</span></tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">Sizes</p>
-          <tblr-button variant="light" size="xs">Button</tblr-button>
-          <tblr-button variant="light" size="xs" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="xs"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
-          <tblr-button variant="light" size="xs">Button<tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="sm">Button</tblr-button>
-          <tblr-button variant="light" size="sm" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="sm"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
-          <tblr-button variant="light" size="sm">Button<tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="md">Button</tblr-button>
-          <tblr-button variant="light" size="md" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="md"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
-          <tblr-button variant="light" size="md">Button<tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="lg">Button</tblr-button>
-          <tblr-button variant="light" size="lg" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="lg"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
-          <tblr-button variant="light" size="lg">Button<tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="xl">Button</tblr-button>
-          <tblr-button variant="light" size="xl" icon-only label="Favorite"><tblr-icon name="star"></tblr-icon></tblr-button>
-          <tblr-button variant="light" size="xl"><tblr-icon name="star"></tblr-icon>Button</tblr-button>
-          <tblr-button variant="light" size="xl">Button<tblr-icon name="star"></tblr-icon></tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">State</p>
-          <tblr-button disabled>Disabled</tblr-button>
-        </div>
-
-        <div class="group">
-          <p class="label">Icons</p>
-          <tblr-icon name="home" label="Home"></tblr-icon>
-          <tblr-icon name="heart" filled label="Favorite"></tblr-icon>
-          <tblr-icon name="bell" size="28" stroke="1.75" label="Notifications"></tblr-icon>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Badges</h1>
-      <p>Small labels, counters, links, and dot indicators in Tabler colors.</p>
-
-      <section class="panel" aria-label="Badge examples">
-        <div class="badge-list">
-          <p class="label">Solid colors</p>
-          <tblr-badge color="blue">Blue</tblr-badge>
-          <tblr-badge color="azure">Azure</tblr-badge>
-          <tblr-badge color="indigo">Indigo</tblr-badge>
-          <tblr-badge color="purple">Purple</tblr-badge>
-          <tblr-badge color="pink">Pink</tblr-badge>
-          <tblr-badge color="red">Red</tblr-badge>
-          <tblr-badge color="orange">Orange</tblr-badge>
-          <tblr-badge color="yellow">Yellow</tblr-badge>
-          <tblr-badge color="lime">Lime</tblr-badge>
-          <tblr-badge color="green">Green</tblr-badge>
-          <tblr-badge color="teal">Teal</tblr-badge>
-          <tblr-badge color="cyan">Cyan</tblr-badge>
-        </div>
-
-        <div class="badge-list">
-          <p class="label">Light colors</p>
-          <tblr-badge color="blue" light>Blue</tblr-badge>
-          <tblr-badge color="azure" light>Azure</tblr-badge>
-          <tblr-badge color="indigo" light>Indigo</tblr-badge>
-          <tblr-badge color="purple" light>Purple</tblr-badge>
-          <tblr-badge color="pink" light>Pink</tblr-badge>
-          <tblr-badge color="red" light>Red</tblr-badge>
-          <tblr-badge color="orange" light>Orange</tblr-badge>
-          <tblr-badge color="yellow" light>Yellow</tblr-badge>
-          <tblr-badge color="lime" light>Lime</tblr-badge>
-          <tblr-badge color="green" light>Green</tblr-badge>
-          <tblr-badge color="teal" light>Teal</tblr-badge>
-          <tblr-badge color="cyan" light>Cyan</tblr-badge>
-        </div>
-
-        <div class="badge-list">
-          <p class="label">Pill counters and sizes</p>
-          <tblr-badge color="blue" pill size="sm">1</tblr-badge>
-          <tblr-badge color="azure" pill>2</tblr-badge>
-          <tblr-badge color="indigo" pill>3</tblr-badge>
-          <tblr-badge color="purple" pill>4</tblr-badge>
-          <tblr-badge color="pink" pill>5</tblr-badge>
-          <tblr-badge color="red" pill>6</tblr-badge>
-          <tblr-badge color="orange" pill>7</tblr-badge>
-          <tblr-badge color="yellow" pill>8</tblr-badge>
-          <tblr-badge color="lime" pill>9</tblr-badge>
-          <tblr-badge color="green" pill>10</tblr-badge>
-          <tblr-badge color="teal" pill>11</tblr-badge>
-          <tblr-badge color="cyan" pill size="lg">12</tblr-badge>
-        </div>
-
-        <div class="badge-list">
-          <p class="label">Dot badges</p>
-          <tblr-badge color="green" light dot dot-color="green">Online</tblr-badge>
-          <tblr-badge color="yellow" light dot dot-color="yellow">Away</tblr-badge>
-          <tblr-badge color="red" light dot dot-color="red">Busy</tblr-badge>
-          <tblr-badge color="blue" light dot dot-color="#206bc4" animated>Syncing</tblr-badge>
-          <tblr-badge color="purple" light dot dot-color="pink" animated>Processing</tblr-badge>
-          <tblr-badge color="red" dot animated label="Unread"></tblr-badge>
-        </div>
-
-        <div class="badge-list">
-          <p class="label">Links and buttons</p>
-          <tblr-badge href="https://tabler.io" color="azure" light pill>Tabler link</tblr-badge>
-          <tblr-button variant="light">Notifications <tblr-badge color="red">2</tblr-badge></tblr-button>
-          <tblr-button class="badge-anchor" variant="light">
-            Profile
-            <tblr-badge color="red" dot notification animated label="Unread profile updates"></tblr-badge>
-          </tblr-button>
-          <tblr-badge size="sm">Small</tblr-badge>
-          <tblr-badge size="lg">Large</tblr-badge>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Navigation</h1>
-      <p>Horizontal navigation with right-aligned items and vertical navigation with collapsed groups.</p>
-
-      <section class="panel" aria-label="Navigation examples">
-        <tblr-nav label="Primary navigation">
-          <tblr-nav-item label="Overview" href="#overview" active>
-            <tblr-icon slot="icon" name="home"></tblr-icon>
-          </tblr-nav-item>
-          <tblr-nav-item label="Projects" href="#projects">
-            <tblr-icon slot="icon" name="briefcase"></tblr-icon>
-          </tblr-nav-item>
-          <tblr-nav-item label="Reports" href="#reports">
-            <tblr-icon slot="icon" name="chart-bar"></tblr-icon>
-          </tblr-nav-item>
-          <tblr-nav-item label="Account" href="#account" align="right">
-            <tblr-icon slot="icon" name="user"></tblr-icon>
-            <tblr-badge slot="suffix" color="red" pill>3</tblr-badge>
-          </tblr-nav-item>
-        </tblr-nav>
-
-        <tblr-nav class="nav-demo" vertical label="Sidebar navigation">
-          <tblr-nav-item label="Dashboard" href="#dashboard" active>
-            <tblr-icon slot="icon" name="dashboard"></tblr-icon>
-          </tblr-nav-item>
-          <tblr-nav-item label="Management" open>
-            <tblr-icon slot="icon" name="folders"></tblr-icon>
-            <tblr-badge slot="suffix" color="blue" light>4</tblr-badge>
-            <tblr-nav-item label="Projects" href="#nav-projects"></tblr-nav-item>
-            <tblr-nav-item label="Tasks" href="#nav-tasks"></tblr-nav-item>
-            <tblr-nav-item label="Teams" href="#nav-teams"></tblr-nav-item>
-          </tblr-nav-item>
-          <tblr-nav-item label="Settings">
-            <tblr-icon slot="icon" name="settings"></tblr-icon>
-            <tblr-nav-item label="Profile" href="#nav-profile"></tblr-nav-item>
-            <tblr-nav-item label="Billing" href="#nav-billing"></tblr-nav-item>
-            <tblr-nav-item label="Security" href="#nav-security"></tblr-nav-item>
-          </tblr-nav-item>
-          <tblr-nav-item label="Disabled item" disabled>
-            <tblr-icon slot="icon" name="lock"></tblr-icon>
-          </tblr-nav-item>
-        </tblr-nav>
-      </section>
-
-      <h1 class="section-title">TBLR Code Preview</h1>
-      <p>Styled pre/code blocks with optional copy, line numbers, wrapping, and language labels.</p>
-
-      <section class="panel code-demo" aria-label="Code preview examples">
-        <tblr-code-preview language="js" title="button.js" copy line-numbers>
-const button = document.querySelector('tblr-button');
-
-button.addEventListener('click', () => {
-  console.log('Clicked');
-});
-        </tblr-code-preview>
-
-        <tblr-code-preview
-          language="html"
-          title="card.html"
-          theme="plain"
-          wrap
-          copy
-          value="&lt;tblr-card title=&quot;Card title&quot; subtitle=&quot;Short supporting text&quot;&gt;Card content&lt;/tblr-card&gt;"
-        ></tblr-code-preview>
-      </section>
-
-      <h1 class="section-title">TBLR Format Number</h1>
-      <p>Manual decimal separators, thousand separators, currency symbols, symbol position, and precision.</p>
-
-      <section class="panel number-demo" aria-label="Format number examples">
-        <div class="number-tile">
-          <span class="metric-label">US currency</span>
-          <tblr-format-number value="1234567.8" precision="2" currency-symbol="$"></tblr-format-number>
-        </div>
-
-        <div class="number-tile">
-          <span class="metric-label">European currency</span>
-          <tblr-format-number
-            value="1234567.8"
-            thousand-separator="."
-            decimal-separator=","
-            precision="2"
-            currency-symbol="EUR"
-            symbol-position="right"
-            symbol-space=" &nbsp; "
-          ></tblr-format-number>
-        </div>
-
-        <div class="number-tile">
-          <span class="metric-label">No decimals</span>
-          <tblr-format-number value="9876543.21" precision="0" thousand-separator=" "></tblr-format-number>
-        </div>
-
-        <div class="number-tile">
-          <span class="metric-label">Inferred precision</span>
-          <tblr-format-number value="-48219.375" thousand-separator="," decimal-separator="."></tblr-format-number>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Card Example</h1>
-      <p>Tabler-style cards for common content blocks.</p>
-
-      <section class="cards-grid" aria-label="Card examples">
-        <tblr-card>
-          Simple card content. Cards use the default Tabler-like border, radius, background, and spacing.
-        </tblr-card>
-
-        <tblr-card title="Card with title">
-          This card renders the title inside the card body, above the slotted content.
-        </tblr-card>
-
-        <tblr-card title="Card with header background" header-bg>
-          The title is placed in a separated header with a subtle background.
-        </tblr-card>
-
-        <tblr-card title="Card without border" no-border>
-          Use this when the surrounding layout already provides enough separation.
-        </tblr-card>
-
-        <tblr-card title="Card with title" subtitle="A short subtitle adds secondary context.">
-          The subtitle sits below the title and uses the global muted color token.
-        </tblr-card>
-      </section>
-
-      <h1 class="section-title">Card Footer and Middle Alignment</h1>
-      <p>Footer and centered body patterns based on Tabler card layouts.</p>
-
-      <section class="card-stack" aria-label="Card footer and middle alignment examples">
-        <tblr-card title="Card title" header footer="Last updated 3 mins ago">
-          This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-        </tblr-card>
-
-        <tblr-card middle>
-          <h2 class="empty-title">No results found</h2>
-          <p class="empty-text">Try adjusting your search or filter to find what you're looking for.</p>
-          <tblr-button><tblr-icon name="search"></tblr-icon>Search again</tblr-button>
-        </tblr-card>
-      </section>
-
-      <h1 class="section-title">TBLR Alerts and Toasts</h1>
-      <p>Inline alerts, timed countdown alerts, and toast notifications.</p>
-
-      <section class="panel" aria-label="Alert examples">
-        <tblr-alert variant="primary" open>
-          <strong>This is informative.</strong><br>
-          You can tell by how useful the alert is. Non closable
-        </tblr-alert>
-
-        <tblr-alert variant="success" open closable >
-          <strong>Your changes have been saved.</strong><br>
-          You can safely exit the page now.
-        </tblr-alert>
-
-        <tblr-alert variant="warning" open closable  countdown="rtl">
-          <strong>Your session is ending.</strong><br>
-          This alert shows a countdown bar and seconds remaining.
-        </tblr-alert>
-
-        <div class="toast-actions">
-          <tblr-button id="toast-primary">Primary toast</tblr-button>
-          <tblr-button id="toast-success" variant="success">Success toast</tblr-button>
-          <tblr-button id="toast-warning" variant="warning">Warning toast</tblr-button>
-          <tblr-button id="toast-danger" variant="danger">Danger toast</tblr-button>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Copy Button</h1>
-      <p>Copy direct values or values from other elements.</p>
-
-      <section class="panel" aria-label="Copy button examples">
-        <div class="copy-row">
-          <span>Direct value</span>
-          <tblr-copy-button value="Tabler components"></tblr-copy-button>
-        </div>
-
-        <div class="copy-row">
-          <span id="copy-phone">+1 (234) 456-7890</span>
-          <tblr-copy-button from="copy-phone" copy-label="Copy phone"></tblr-copy-button>
-        </div>
-
-        <div class="copy-row">
-          <tblr-input id="copy-input" value="User input" style="max-width: 300px;"></tblr-input>
-          <tblr-copy-button from="copy-input.value" success-label="Input copied"></tblr-copy-button>
-        </div>
-
-        <div class="copy-row">
-          <a id="copy-link" href="https://tabler.io">Tabler Website</a>
-          <tblr-copy-button from="copy-link[href]" tooltip-placement="right"></tblr-copy-button>
-        </div>
-
-        <div class="copy-row">
-          <span>Missing target</span>
-          <tblr-copy-button from="missing-target" error-label="Nothing to copy"></tblr-copy-button>
-        </div>
-
-        <div class="copy-row">
-          <span>Clipboard API only</span>
-          <tblr-copy-button
-            value="Copied with navigator.clipboard.writeText()"
-            copy-label="Copy with Clipboard API"
-            error-label="Clipboard API unavailable"
-            no-fallback
-          ></tblr-copy-button>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Spinners</h1>
-      <p>Border, grow, and animated dot loading indicators.</p>
-
-      <section class="panel" aria-label="Spinner examples">
-        <div class="spinner-row">
-          <tblr-spinner></tblr-spinner>
-          <tblr-spinner color="blue"></tblr-spinner>
-          <tblr-spinner color="azure"></tblr-spinner>
-          <tblr-spinner color="indigo"></tblr-spinner>
-          <tblr-spinner color="purple"></tblr-spinner>
-          <tblr-spinner color="pink"></tblr-spinner>
-          <tblr-spinner color="red"></tblr-spinner>
-          <tblr-spinner color="orange"></tblr-spinner>
-          <tblr-spinner color="yellow"></tblr-spinner>
-          <tblr-spinner color="lime"></tblr-spinner>
-          <tblr-spinner color="green"></tblr-spinner>
-          <tblr-spinner color="teal"></tblr-spinner>
-          <tblr-spinner color="cyan"></tblr-spinner>
-        </div>
-
-        <div class="spinner-row">
-          <tblr-spinner size="sm"></tblr-spinner>
-          <tblr-spinner></tblr-spinner>
-          <tblr-spinner size="lg"></tblr-spinner>
-        </div>
-
-        <div class="spinner-row">
-          <tblr-spinner type="grow"></tblr-spinner>
-          <tblr-spinner type="grow" color="green"></tblr-spinner>
-          <tblr-spinner type="grow" color="danger"></tblr-spinner>
-          <tblr-spinner type="dots"></tblr-spinner>
-          <tblr-spinner type="dots" color="success"></tblr-spinner>
-        </div>
-
-        <div class="spinner-row">
-          <tblr-button disabled>
-            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
-            Button
-          </tblr-button>
-          <tblr-button variant="danger" disabled>
-            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
-            Button
-          </tblr-button>
-          <tblr-button variant="success" disabled>
-            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
-            Button
-          </tblr-button>
-          <tblr-button>
-            Loading<tblr-spinner type="dots" size="sm" label="Loading"></tblr-spinner>
-          </tblr-button>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Form Controls</h1>
-      <p>Tabler-style inputs, selects, and search controls.</p>
-
-      <section class="panel" aria-label="Form control examples">
-        <div class="form-grid">
-          <tblr-input label="Text" placeholder="Input placeholder"></tblr-input>
-          <tblr-input label="Required" placeholder="Required..." required></tblr-input>
-          <tblr-input label="Disabled" value="Well, she turned me into a newt." disabled></tblr-input>
-          <tblr-input label="Readonly" value="Well, how'd you become king, then?" readonly></tblr-input>
-          <tblr-input label="Password" type="password" value="secret-password" toggle-password></tblr-input>
-
-          <tblr-input
-            class="form-wide"
-            label="Textarea"
-            textarea
-            rows="5"
-            maxlength="100"
-            value="Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed!"
-          ></tblr-input>
-
-          <tblr-select
-            label="Select"
-            value="one"
-            options="one:One|two:Two|three:Three"
-          ></tblr-select>
-
-          <tblr-select
-            label="Select multiple"
-            multiple
-            size="3"
-            value="one,two"
-            options="one:One|two:Two|three:Three"
-          ></tblr-select>
-
-          <tblr-input label="Input group" placeholder="Search for..." action="Go!"></tblr-input>
-          <tblr-input label="Prepend text" prefix="https://" placeholder="subdomain"></tblr-input>
-          <tblr-input label="Append text" suffix=".tabler.io" placeholder="yourfancydomain"></tblr-input>
-
-          <tblr-search label="Icon search" placeholder="Search..."></tblr-search>
-          <tblr-search label="Separated search" placeholder="Search for..." button></tblr-search>
-          <tblr-search label="Rounded search" placeholder="Search..." rounded></tblr-search>
-          <tblr-datepicker label="Datepicker" value="2020-06-20"></tblr-datepicker>
-          <tblr-datepicker label="Datepicker icon end" value="2020-06-20" icon="end"></tblr-datepicker>
-          <tblr-datepicker label="Datepicker icon start" value="2020-06-20" icon="start" open></tblr-datepicker>
-          <tblr-input label="Rounded input" placeholder="Text.." rounded></tblr-input>
-          <tblr-input label="Flush input" placeholder="Text.." flush></tblr-input>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Choice Controls</h1>
-      <p>Radio buttons, checkboxes, switches, file inputs, and masked-looking fields.</p>
-
-      <section class="panel" aria-label="Choice control examples">
-        <div class="form-grid">
-          <div class="form-stack">
-            <p class="label">Radios</p>
-            <tblr-radio name="radio-example" label="Option 1" checked></tblr-radio>
-            <tblr-radio name="radio-example" label="Option 2"></tblr-radio>
-            <tblr-radio name="radio-example" label="Option 3" disabled></tblr-radio>
-            <tblr-radio name="radio-example" label="Option 4" checked disabled></tblr-radio>
-          </div>
-
-          <div class="form-stack">
-            <p class="label">Inline Radios</p>
-            <div class="inline-controls">
-              <tblr-radio name="inline-radio-example" label="Option 1" checked inline></tblr-radio>
-              <tblr-radio name="inline-radio-example" label="Option 2" inline></tblr-radio>
-              <tblr-radio name="inline-radio-example" label="Option 3" disabled inline></tblr-radio>
-            </div>
-          </div>
-
-          <div class="form-stack">
-            <p class="label">Checkboxes</p>
-            <tblr-checkbox label="Checkbox input"></tblr-checkbox>
-            <tblr-checkbox label="Disabled checkbox input" disabled></tblr-checkbox>
-            <tblr-checkbox label="Checked checkbox input" checked></tblr-checkbox>
-          </div>
-
-          <div class="form-stack">
-            <p class="label">Inline Checkboxes</p>
-            <div class="inline-controls">
-              <tblr-checkbox label="Option 1" inline></tblr-checkbox>
-              <tblr-checkbox label="Option 2" disabled inline></tblr-checkbox>
-              <tblr-checkbox label="Option 3" checked inline></tblr-checkbox>
-            </div>
-          </div>
-
-          <div class="form-stack form-wide">
-            <p class="label">Checkboxes with description</p>
-            <tblr-checkbox
-              label="Default checkbox"
-              description="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
-            ></tblr-checkbox>
-            <tblr-checkbox
-              label="Longer checkbox item that wraps on to two separate lines"
-              description="Alias aut, consequuntur cumque esse eveniet incidunt laborum minus molestiae."
-            ></tblr-checkbox>
-            <tblr-checkbox label="Default checkbox without description"></tblr-checkbox>
-          </div>
-
-          <div class="form-stack">
-            <p class="label">Toggle switches</p>
-            <tblr-switch label="Option 1" checked></tblr-switch>
-            <tblr-switch label="Option 2"></tblr-switch>
-            <tblr-switch label="Option 3" disabled></tblr-switch>
-          </div>
-
-          <div class="form-stack">
-            <p class="label">Single switch</p>
-            <tblr-switch label="I agree with terms and conditions"></tblr-switch>
-          </div>
-
-          <div class="form-stack form-wide">
-            <p class="label">Notification</p>
-            <div class="notification-list">
-              <tblr-switch class="notification-row" label="Push Notifications" checked align-end></tblr-switch>
-              <tblr-switch class="notification-row" label="SMS Notifications" align-end></tblr-switch>
-              <tblr-switch class="notification-row" label="Email Notifications" checked align-end></tblr-switch>
-            </div>
-          </div>
-
-          <tblr-file-input
-            class="form-wide"
-            label="Custom File Input"
-            button="Parcourir..."
-            placeholder="Aucun fichier sélectionné."
-          ></tblr-file-input>
-
-          <div class="form-stack form-wide">
-            <p class="label">Date of birth</p>
-            <div class="dob-grid">
-              <tblr-select value="june" options="january:January|february:February|march:March|april:April|may:May|june:June|july:July|august:August|september:September|october:October|november:November|december:December"></tblr-select>
-              <tblr-select value="20" options="18:18|19:19|20:20|21:21|22:22"></tblr-select>
-              <tblr-select value="1989" options="1987:1987|1988:1988|1989:1989|1990:1990|1991:1991"></tblr-select>
-            </div>
-          </div>
-
-          <tblr-input label="Text mask" placeholder="__/__/____"></tblr-input>
-          <tblr-input label="Telephone mask" placeholder="(__) ____-____"></tblr-input>
-          <tblr-input class="form-wide" label="Autosize textarea" textarea autosize rows="2" placeholder="Type something..."></tblr-input>
-        </div>
-      </section>
-
-      <h1 class="section-title">TBLR Rich Editor</h1>
-      <p>WYSIWYG editing with colors, indent controls, undo/redo, and HTML source view.</p>
-
-      <section class="panel editor-demo" aria-label="Rich text editor example">
-        <tblr-rich-editor
-          name="message"
-          label="Message"
-          placeholder="Write a formatted message..."
-          value="&lt;p&gt;Hello &lt;strong&gt;Tabler&lt;/strong&gt; components.&lt;/p&gt;&lt;blockquote&gt;Use the toolbar to change color, indent content, undo changes, or edit the HTML source.&lt;/blockquote&gt;"
-        ></tblr-rich-editor>
-      </section>
-
-      <h1 class="section-title">TBLR TinyMCE Editor</h1>
-      <p>TinyMCE loaded behind a custom element with value, form, and event integration.</p>
-
-      <section class="panel editor-demo" aria-label="TinyMCE editor example">
-        <tblr-tinymce-editor lazy
-          name="tinymce-message"
-          label="TinyMCE message"
-          placeholder="Write with TinyMCE..."
-          height="320"
-          value="&lt;p&gt;Hello from &lt;strong&gt;TinyMCE&lt;/strong&gt; inside a Tabler custom element.&lt;/p&gt;"
-        ></tblr-tinymce-editor>
-      </section>
-
-      <h1 class="section-title">TBLR Colorpicker</h1>
-      <p>Color palettes and native color input styles.</p>
-
-      <section class="panel" aria-label="Colorpicker examples">
-        <tblr-colorpicker
-          label="Color Input Check"
-          type="check"
-          value="#ffffff"
-        ></tblr-colorpicker>
-
-        <tblr-colorpicker
-          label="Color Input Radio"
-          type="radio"
-          value="#ffffff"
-        ></tblr-colorpicker>
-
-        <tblr-colorpicker
-          label="Color picker"
-          type="picker"
-          value="#066fd1"
-        ></tblr-colorpicker>
-      </section>
-
-      <h1 class="section-title">TBLR Tabs</h1>
-      <p>Horizontal and vertical tab navigation.</p>
-
-      <section class="panel" aria-label="Tabs examples">
-        <tblr-tabs value="overview">
-          <tblr-tab label="Overview" value="overview">
-            <div class="tabs-content">
-              <h3>Overview</h3>
-              <p>Use horizontal tabs when sections are peers in the same workflow.</p>
-            </div>
-          </tblr-tab>
-          <tblr-tab label="Activity" value="activity">
-            <div class="tabs-content">
-              <h3>Activity</h3>
-              <p>Tab state is reflected through the value attribute and change event.</p>
-            </div>
-          </tblr-tab>
-          <tblr-tab label="Disabled" value="disabled" disabled>
-            <div class="tabs-content">
-              <h3>Disabled</h3>
-              <p>This pane is unavailable.</p>
-            </div>
-          </tblr-tab>
-        </tblr-tabs>
-
-        <tblr-tabs vertical value="settings">
-          <tblr-tab label="Settings" value="settings">
-            <div class="tabs-content">
-              <h3>Settings</h3>
-              <p>Vertical tabs work well for longer labels or persistent side navigation.</p>
-            </div>
-          </tblr-tab>
-          <tblr-tab label="Billing" value="billing">
-            <div class="tabs-content">
-              <h3>Billing</h3>
-              <p>Panels remain in the light DOM and the inactive panes are hidden.</p>
-            </div>
-          </tblr-tab>
-          <tblr-tab label="Notifications" value="notifications">
-            <div class="tabs-content">
-              <h3>Notifications</h3>
-              <p>Keyboard navigation supports arrow keys, Home, and End.</p>
-            </div>
-          </tblr-tab>
-        </tblr-tabs>
-      </section>
-
-      <h1 class="section-title">TBLR Grid</h1>
-      <p>Responsive and fixed column grid layouts.</p>
-
-      <section class="panel" aria-label="Grid examples">
-        <tblr-grid columns="3" gap="md">
-          <tblr-card>
-            <p class="metric">128</p>
-            <p class="metric-label">New orders</p>
-          </tblr-card>
-          <tblr-card>
-            <p class="metric">42%</p>
-            <p class="metric-label">Conversion rate</p>
-          </tblr-card>
-          <tblr-card>
-            <p class="metric">$8.4k</p>
-            <p class="metric-label">Revenue</p>
-          </tblr-card>
-        </tblr-grid>
-
-        <tblr-grid min="16rem" gap="lg" dense>
-          <tblr-grid-item span="2">
-            <tblr-card title="Wide responsive item">
-              This grid item spans two columns on wider screens and collapses to one column on mobile.
-            </tblr-card>
-          </tblr-grid-item>
-          <tblr-card title="Standard item">
-            Auto-fit grids fill the available width with stable minimum item sizes.
-          </tblr-card>
-          <tblr-card title="Standard item">
-            Use row-gap and column-gap attributes when spacing needs to differ.
-          </tblr-card>
-        </tblr-grid>
-      </section>
-
-      <h1 class="section-title">TBLR Flexbox</h1>
-      <p>Direction, wrapping, spacing, and alignment utilities for flexible layouts.</p>
-
-      <section class="panel" aria-label="Flexbox examples">
-        <tblr-flex align="center" justify="between" gap="md" wrap>
-          <tblr-flex gap="sm" align="center" wrap>
-            <span class="flex-chip">Draft</span>
-            <span class="flex-chip">Assigned</span>
-            <span class="flex-chip">High priority</span>
-          </tblr-flex>
-          <tblr-flex gap="sm" align="center">
-            <tblr-button variant="light">Cancel</tblr-button>
-            <tblr-button variant="primary">Save changes</tblr-button>
-          </tblr-flex>
-        </tblr-flex>
-
-        <tblr-flex wrap gap="md" align="stretch">
-          <tblr-flex-item grow="1" basis="14rem">
-            <tblr-card title="Backlog">12 open tasks ready for review.</tblr-card>
-          </tblr-flex-item>
-          <tblr-flex-item grow="2" basis="18rem">
-            <tblr-card title="In progress">Flexible items can grow at different rates.</tblr-card>
-          </tblr-flex-item>
-          <tblr-flex-item grow="1" basis="14rem">
-            <tblr-card title="Done">8 tasks completed this week.</tblr-card>
-          </tblr-flex-item>
-        </tblr-flex>
-
-        <tblr-flex direction="column" gap="sm">
-          <tblr-card title="Column layout">Use direction=&quot;column&quot; for stacked flows.</tblr-card>
-          <tblr-card title="Custom gaps">Use gap, row-gap, and column-gap tokens or CSS lengths.</tblr-card>
-        </tblr-flex>
-      </section>
-
-      <h1 class="section-title">TBLR Pagination</h1>
-      <p>Page controls for compact and larger result sets.</p>
-
-      <section class="panel" aria-label="Pagination examples">
-        <tblr-pagination page="4" pages="12"></tblr-pagination>
-        <tblr-pagination page="8" pages="24" siblings="2" boundary="1" previous="Prev" next="Next"></tblr-pagination>
-        <tblr-pagination compact page="2" pages="6"></tblr-pagination>
-      </section>
-
-      <h1 class="section-title">TBLR Modals</h1>
-      <p>Simple, sized, scrollable, form, and status modal examples.</p>
-
-      <section class="panel" aria-label="Modal examples">
-        <div class="modal-actions">
-          <tblr-button id="open-simple-modal">Simple modal</tblr-button>
-          <tblr-button id="open-large-modal" variant="light">Large modal</tblr-button>
-          <tblr-button id="open-scrollable-modal" variant="light">Scrollable modal</tblr-button>
-          <tblr-button id="open-form-modal" variant="light">Modal with form</tblr-button>
-          <tblr-button id="open-success-modal" variant="success">Success modal</tblr-button>
-          <tblr-button id="open-danger-modal" variant="danger">Danger modal</tblr-button>
-        </div>
-      </section>
-
-      <tblr-modal id="simple-modal" title="Modal title" cancel="Close" action="Save changes">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti dolorem eveniet facere fuga iste nemo nesciunt.</p>
-      </tblr-modal>
-
-      <tblr-modal id="large-modal" size="lg" title="Large modal" cancel="Close" action="Save changes">
-        <p>Use the large modal size when the content needs more horizontal room, such as previews, details, or comparison layouts.</p>
-      </tblr-modal>
-
-      <tblr-modal id="scrollable-modal" title="Scrollable modal" scrollable cancel="Close" action="Save changes">
-        <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-        <p>Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor fringilla.</p>
-        <p>Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui.</p>
-        <p>Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-      </tblr-modal>
-
-      <tblr-modal id="form-modal" title="New report" size="lg" cancel="Cancel" action="Create new report">
-        <div class="form-grid">
-          <tblr-input label="Name" placeholder="Report name"></tblr-input>
-          <tblr-select label="Report type" value="simple" options="simple:Simple|advanced:Advanced"></tblr-select>
-          <tblr-input class="form-wide" label="Report url" prefix="https://tabler.io/reports/" placeholder="weekly-report"></tblr-input>
-          <tblr-input class="form-wide" label="Additional information" textarea rows="4"></tblr-input>
-        </div>
-      </tblr-modal>
-
-      <tblr-modal id="success-modal" status="success" title="Payment succeeded" action="Go to dashboard">
-        <p>Your payment has been successfully submitted. Your invoice has been sent to your email address.</p>
-      </tblr-modal>
-
-      <tblr-modal id="danger-modal" status="danger" title="Are you sure?" cancel="Cancel" action="Delete 84 items">
-        <p>Do you really want to remove 84 files? This cannot be undone.</p>
-      </tblr-modal>
+        <section id="buttons">
+            <h1>TBLR Button & Icon</h1>
+            <p>Basic usage examples for the <code>&lt;tblr-button&gt;</code> and <code>&lt;tblr-icon&gt;</code> custom
+                elements.</p>
+
+            <section class="flex" aria-label="Button examples">
+                <div class="panel panel-main">
+                    <div class="group">
+                        <p class="label">Standard Buttons</p>
+                        <tblr-button variant="primary">
+                            <tblr-icon name="check"></tblr-icon>
+                            Primary
+                        </tblr-button>
+                        <tblr-button variant="secondary">Secondary</tblr-button>
+                        <tblr-button variant="success">Success</tblr-button>
+                        <tblr-button variant="warning">Warning</tblr-button>
+                        <tblr-button variant="danger">
+                            <tblr-icon name="trash"></tblr-icon>
+                            Danger
+                        </tblr-button>
+                        <tblr-button variant="info">Info</tblr-button>
+                        <tblr-button variant="dark">Dark</tblr-button>
+                        <tblr-button variant="light">Light</tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Outline Buttons</p>
+                        <tblr-button variant="primary" appearance="outline">Primary</tblr-button>
+                        <tblr-button variant="secondary" appearance="outline">Secondary</tblr-button>
+                        <tblr-button variant="success" appearance="outline">Success</tblr-button>
+                        <tblr-button variant="warning" appearance="outline">Warning</tblr-button>
+                        <tblr-button variant="danger" appearance="outline">Danger</tblr-button>
+                        <tblr-button variant="info" appearance="outline">Info</tblr-button>
+                        <tblr-button variant="dark" appearance="outline">Dark</tblr-button>
+                        <tblr-button variant="light" appearance="outline">Light</tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Ghost Buttons</p>
+                        <tblr-button variant="primary" appearance="ghost">Primary</tblr-button>
+                        <tblr-button variant="secondary" appearance="ghost">Secondary</tblr-button>
+                        <tblr-button variant="success" appearance="ghost">Success</tblr-button>
+                        <tblr-button variant="warning" appearance="ghost">Warning</tblr-button>
+                        <tblr-button variant="danger" appearance="ghost">Danger</tblr-button>
+                        <tblr-button variant="info" appearance="ghost">Info</tblr-button>
+                        <tblr-button variant="dark" appearance="ghost">Dark</tblr-button>
+                        <tblr-button variant="light" appearance="ghost">Light</tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Square Buttons</p>
+                        <tblr-button variant="primary" square>Primary</tblr-button>
+                        <tblr-button variant="secondary" square>Secondary</tblr-button>
+                        <tblr-button variant="success" square>Success</tblr-button>
+                        <tblr-button variant="warning" square>Warning</tblr-button>
+                        <tblr-button variant="danger" square>Danger</tblr-button>
+                        <tblr-button variant="info" square>Info</tblr-button>
+                        <tblr-button variant="dark" square>Dark</tblr-button>
+                        <tblr-button variant="light" square>Light</tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Action buttons</p>
+                        <tblr-button action state="hover" label="Edit hover">
+                            <tblr-icon name="edit"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button action state="focus" label="Copy focus">
+                            <tblr-icon name="copy"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button action label="Settings">
+                            <tblr-icon name="settings"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button action state="active" label="Clipboard active">
+                            <tblr-icon name="clipboard"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button action label="Close">
+                            <tblr-icon name="x"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button action disabled label="Disabled action">
+                            <tblr-icon name="trash"></tblr-icon>
+                        </tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Buttons with icon</p>
+                        <tblr-button variant="light"><span>Save</span>
+                            <tblr-icon name="arrow-right"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light">
+                            <tblr-icon name="plus"></tblr-icon>
+                            <span>Add</span></tblr-button>
+                        <tblr-button variant="light">
+                            <tblr-icon name="bell"></tblr-icon>
+                            <span>Notifications</span></tblr-button>
+                        <tblr-button variant="light">
+                            <tblr-icon name="settings"></tblr-icon>
+                            <span>Settings</span></tblr-button>
+                        <tblr-button variant="light">
+                            <tblr-icon name="heart"></tblr-icon>
+                            <span>Love</span></tblr-button>
+                        <tblr-button variant="light">
+                            <tblr-icon name="x"></tblr-icon>
+                            <span>Close</span></tblr-button>
+                        <tblr-button variant="light">
+                            <tblr-icon name="check"></tblr-icon>
+                            <span>Confirm</span></tblr-button>
+                        <tblr-button variant="light"><span>Next</span>
+                            <tblr-icon name="chevron-right"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light">
+                            <tblr-icon name="chevron-left"></tblr-icon>
+                            <span>Previous</span></tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Sizes</p>
+                        <tblr-button variant="light" size="xs">Button</tblr-button>
+                        <tblr-button variant="light" size="xs" icon-only label="Favorite">
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="xs">
+                            <tblr-icon name="star"></tblr-icon>
+                            Button
+                        </tblr-button>
+                        <tblr-button variant="light" size="xs">Button
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="sm">Button</tblr-button>
+                        <tblr-button variant="light" size="sm" icon-only label="Favorite">
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="sm">
+                            <tblr-icon name="star"></tblr-icon>
+                            Button
+                        </tblr-button>
+                        <tblr-button variant="light" size="sm">Button
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="md">Button</tblr-button>
+                        <tblr-button variant="light" size="md" icon-only label="Favorite">
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="md">
+                            <tblr-icon name="star"></tblr-icon>
+                            Button
+                        </tblr-button>
+                        <tblr-button variant="light" size="md">Button
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="lg">Button</tblr-button>
+                        <tblr-button variant="light" size="lg" icon-only label="Favorite">
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="lg">
+                            <tblr-icon name="star"></tblr-icon>
+                            Button
+                        </tblr-button>
+                        <tblr-button variant="light" size="lg">Button
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="xl">Button</tblr-button>
+                        <tblr-button variant="light" size="xl" icon-only label="Favorite">
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                        <tblr-button variant="light" size="xl">
+                            <tblr-icon name="star"></tblr-icon>
+                            Button
+                        </tblr-button>
+                        <tblr-button variant="light" size="xl">Button
+                            <tblr-icon name="star"></tblr-icon>
+                        </tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">State</p>
+                        <tblr-button disabled>Disabled</tblr-button>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Icons</p>
+                        <tblr-icon name="home" label="Home"></tblr-icon>
+                        <tblr-icon name="heart" filled label="Favorite"></tblr-icon>
+                        <tblr-icon name="bell" size="28" stroke="1.75" label="Notifications"></tblr-icon>
+                    </div>
+                </div>
+
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-button variant="primary"&gt;
+                        &lt;tblr-icon name="check"&gt;&lt;/tblr-icon&gt;
+                        Primary
+                        &lt;/tblr-button&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="badges">
+            <h1 class="section-title">TBLR Badges</h1>
+            <p>Small labels, counters, links, and dot indicators in Tabler colors.</p>
+
+            <section class="flex" aria-label="Badge examples">
+                <div class="panel panel-main">
+                    <div class="badge-list">
+                        <p class="label">Solid colors</p>
+                        <tblr-badge color="blue">Blue</tblr-badge>
+                        <tblr-badge color="azure">Azure</tblr-badge>
+                        <tblr-badge color="indigo">Indigo</tblr-badge>
+                        <tblr-badge color="purple">Purple</tblr-badge>
+                        <tblr-badge color="pink">Pink</tblr-badge>
+                        <tblr-badge color="red">Red</tblr-badge>
+                        <tblr-badge color="orange">Orange</tblr-badge>
+                        <tblr-badge color="yellow">Yellow</tblr-badge>
+                        <tblr-badge color="lime">Lime</tblr-badge>
+                        <tblr-badge color="green">Green</tblr-badge>
+                        <tblr-badge color="teal">Teal</tblr-badge>
+                        <tblr-badge color="cyan">Cyan</tblr-badge>
+                    </div>
+
+                    <div class="badge-list">
+                        <p class="label">Light colors</p>
+                        <tblr-badge color="blue" light>Blue</tblr-badge>
+                        <tblr-badge color="azure" light>Azure</tblr-badge>
+                        <tblr-badge color="indigo" light>Indigo</tblr-badge>
+                        <tblr-badge color="purple" light>Purple</tblr-badge>
+                        <tblr-badge color="pink" light>Pink</tblr-badge>
+                        <tblr-badge color="red" light>Red</tblr-badge>
+                        <tblr-badge color="orange" light>Orange</tblr-badge>
+                        <tblr-badge color="yellow" light>Yellow</tblr-badge>
+                        <tblr-badge color="lime" light>Lime</tblr-badge>
+                        <tblr-badge color="green" light>Green</tblr-badge>
+                        <tblr-badge color="teal" light>Teal</tblr-badge>
+                        <tblr-badge color="cyan" light>Cyan</tblr-badge>
+                    </div>
+
+                    <div class="badge-list">
+                        <p class="label">Pill counters and sizes</p>
+                        <tblr-badge color="blue" pill size="sm">1</tblr-badge>
+                        <tblr-badge color="azure" pill>2</tblr-badge>
+                        <tblr-badge color="indigo" pill>3</tblr-badge>
+                        <tblr-badge color="purple" pill>4</tblr-badge>
+                        <tblr-badge color="pink" pill>5</tblr-badge>
+                        <tblr-badge color="red" pill>6</tblr-badge>
+                        <tblr-badge color="orange" pill>7</tblr-badge>
+                        <tblr-badge color="yellow" pill>8</tblr-badge>
+                        <tblr-badge color="lime" pill>9</tblr-badge>
+                        <tblr-badge color="green" pill>10</tblr-badge>
+                        <tblr-badge color="teal" pill>11</tblr-badge>
+                        <tblr-badge color="cyan" pill size="lg">12</tblr-badge>
+                    </div>
+
+                    <div class="badge-list">
+                        <p class="label">Dot badges</p>
+                        <tblr-badge color="green" light dot dot-color="green">Online</tblr-badge>
+                        <tblr-badge color="yellow" light dot dot-color="yellow">Away</tblr-badge>
+                        <tblr-badge color="red" light dot dot-color="red">Busy</tblr-badge>
+                        <tblr-badge color="blue" light dot dot-color="#206bc4" animated>Syncing</tblr-badge>
+                        <tblr-badge color="purple" light dot dot-color="pink" animated>Processing</tblr-badge>
+                        <tblr-badge color="red" dot animated label="Unread"></tblr-badge>
+                    </div>
+
+                    <div class="badge-list">
+                        <p class="label">Links and buttons</p>
+                        <tblr-badge href="https://tabler.io" color="azure" light pill>Tabler link</tblr-badge>
+                        <tblr-button variant="light">Notifications
+                            <tblr-badge color="red">2</tblr-badge>
+                        </tblr-button>
+                        <tblr-button class="badge-anchor" variant="light">
+                            Profile
+                            <tblr-badge color="red" dot notification animated
+                                        label="Unread profile updates"></tblr-badge>
+                        </tblr-button>
+                        <tblr-badge size="sm">Small</tblr-badge>
+                        <tblr-badge size="lg">Large</tblr-badge>
+                    </div>
+                </div>
+
+
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-badge color="blue"&gt;Blue&lt;/tblr-badge&gt;
+                        &lt;tblr-badge color="green" light dot dot-color="green"&gt;Online&lt;/tblr-badge&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="navigation">
+            <h1 class="section-title">TBLR Navigation</h1>
+            <p>Horizontal navigation with right-aligned items and vertical navigation with collapsed groups.</p>
+
+            <section class="flex" aria-label="Navigation examples">
+                <div class="panel panel-main">
+                    <tblr-nav label="Primary navigation">
+                        <tblr-nav-item label="Overview" href="#overview" active>
+                            <tblr-icon slot="icon" name="home"></tblr-icon>
+                        </tblr-nav-item>
+                        <tblr-nav-item label="Projects" href="#projects">
+                            <tblr-icon slot="icon" name="briefcase"></tblr-icon>
+                        </tblr-nav-item>
+                        <tblr-nav-item label="Reports" href="#reports">
+                            <tblr-icon slot="icon" name="chart-bar"></tblr-icon>
+                        </tblr-nav-item>
+                        <tblr-nav-item label="Account" href="#account" align="right">
+                            <tblr-icon slot="icon" name="user"></tblr-icon>
+                            <tblr-badge slot="suffix" color="red" pill>3</tblr-badge>
+                        </tblr-nav-item>
+                    </tblr-nav>
+
+                    <tblr-nav class="nav-demo" vertical label="Sidebar navigation">
+                        <tblr-nav-item label="Dashboard" href="#dashboard" active>
+                            <tblr-icon slot="icon" name="dashboard"></tblr-icon>
+                        </tblr-nav-item>
+                        <tblr-nav-item label="Management" open>
+                            <tblr-icon slot="icon" name="folders"></tblr-icon>
+                            <tblr-badge slot="suffix" color="blue" light>4</tblr-badge>
+                            <tblr-nav-item label="Projects" href="#nav-projects"></tblr-nav-item>
+                            <tblr-nav-item label="Tasks" href="#nav-tasks"></tblr-nav-item>
+                            <tblr-nav-item label="Teams" href="#nav-teams"></tblr-nav-item>
+                        </tblr-nav-item>
+                        <tblr-nav-item label="Settings">
+                            <tblr-icon slot="icon" name="settings"></tblr-icon>
+                            <tblr-nav-item label="Profile" href="#nav-profile"></tblr-nav-item>
+                            <tblr-nav-item label="Billing" href="#nav-billing"></tblr-nav-item>
+                            <tblr-nav-item label="Security" href="#nav-security"></tblr-nav-item>
+                        </tblr-nav-item>
+                        <tblr-nav-item label="Disabled item" disabled>
+                            <tblr-icon slot="icon" name="lock"></tblr-icon>
+                        </tblr-nav-item>
+                    </tblr-nav>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-nav&gt;
+                        &lt;tblr-nav-item label="Overview" href="#overview" active&gt;
+                        &lt;tblr-icon slot="icon" name="home"&gt;&lt;/tblr-icon&gt;
+                        &lt;/tblr-nav-item&gt;
+                        &lt;/tblr-nav&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="code-preview">
+            <h1 class="section-title">TBLR Code Preview</h1>
+            <p>Styled pre/code blocks with optional copy, line numbers, wrapping, and language labels.</p>
+
+            <section class="flex code-demo" aria-label="Code preview examples">
+                <div class="panel panel-main">
+                    <tblr-code-preview language="js" title="button.js" copy line-numbers>
+                        const button = document.querySelector('tblr-button');
+
+                        button.addEventListener('click', () => {
+                        console.log('Clicked');
+                        });
+                    </tblr-code-preview>
+
+                    <tblr-code-preview
+                            language="html"
+                            title="card.html"
+                            theme="plain"
+                            wrap
+                            copy
+                            value="&lt;tblr-card title=&quot;Card title&quot; subtitle=&quot;Short supporting text&quot;&gt;Card content&lt;/tblr-card&gt;"
+                    ></tblr-code-preview>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-code-preview language="js" title="example.js" copy line-numbers&gt;
+                        console.log('Hello world');
+                        &lt;/tblr-code-preview&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="format-number">
+            <h1 class="section-title">TBLR Format Number</h1>
+            <p>Manual decimal separators, thousand separators, currency symbols, symbol position, and precision.</p>
+
+            <section class="flex number-demo" aria-label="Format number examples">
+                <div class="panel panel-main">
+                    <div class="number-tile">
+                        <span class="metric-label">US currency</span>
+                        <tblr-format-number value="1234567.8" precision="2" currency-symbol="$"></tblr-format-number>
+                    </div>
+
+                    <div class="number-tile">
+                        <span class="metric-label">European currency</span>
+                        <tblr-format-number
+                                value="1234567.8"
+                                thousand-separator="."
+                                decimal-separator=","
+                                precision="2"
+                                currency-symbol="EUR"
+                                symbol-position="right"
+                                symbol-space=" &nbsp; "
+                        ></tblr-format-number>
+                    </div>
+
+                    <div class="number-tile">
+                        <span class="metric-label">No decimals</span>
+                        <tblr-format-number value="9876543.21" precision="0"
+                                            thousand-separator=" "></tblr-format-number>
+                    </div>
+
+                    <div class="number-tile">
+                        <span class="metric-label">Inferred precision</span>
+                        <tblr-format-number value="-48219.375" thousand-separator=","
+                                            decimal-separator="."></tblr-format-number>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-format-number value="1234.56" precision="2" currency-symbol="$"&gt;&lt;/tblr-format-number&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="cards">
+            <h1 class="section-title">TBLR Cards</h1>
+            <p>Tabler-style cards for common content blocks.</p>
+
+            <section class="flex" aria-label="Card examples">
+                <div class="panel panel-main">
+                    <div class="cards-grid">
+                        <tblr-card>
+                            Simple card content. Cards use the default Tabler-like border, radius, background, and
+                            spacing.
+                        </tblr-card>
+
+                        <tblr-card title="Card with title">
+                            This card renders the title inside the card body, above the slotted content.
+                        </tblr-card>
+
+                        <tblr-card title="Card with header background" header-bg>
+                            The title is placed in a separated header with a subtle background.
+                        </tblr-card>
+
+                        <tblr-card title="Card without border" no-border>
+                            Use this when the surrounding layout already provides enough separation.
+                        </tblr-card>
+
+                        <tblr-card title="Card with title" subtitle="A short subtitle adds secondary context.">
+                            The subtitle sits below the title and uses the global muted color token.
+                        </tblr-card>
+                    </div>
+
+                    <p class="label">Footer and Middle Alignment</p>
+                    <div class="card-stack">
+                        <tblr-card title="Card title" header footer="Last updated 3 mins ago">
+                            This is a wider card with supporting text below as a natural lead-in to additional content.
+                            This content is a little bit longer.
+                        </tblr-card>
+
+                        <tblr-card middle>
+                            <h2 class="empty-title">No results found</h2>
+                            <p class="empty-text">Try adjusting your search or filter to find what you're looking
+                                for.</p>
+                            <tblr-button>
+                                <tblr-icon name="search"></tblr-icon>
+                                Search again
+                            </tblr-button>
+                        </tblr-card>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-card title="Card title" subtitle="Card subtitle"&gt;
+                        Card content
+                        &lt;/tblr-card&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="alerts">
+            <h1 class="section-title">TBLR Alerts and Toasts</h1>
+            <p>Inline alerts, timed countdown alerts, and toast notifications.</p>
+
+            <section class="flex" aria-label="Alert examples">
+                <div class="panel panel-main">
+                    <tblr-alert variant="primary" open>
+                        <strong>This is informative.</strong><br>
+                        You can tell by how useful the alert is. Non closable
+                    </tblr-alert>
+
+                    <tblr-alert variant="success" open closable>
+                        <strong>Your changes have been saved.</strong><br>
+                        You can safely exit the page now.
+                    </tblr-alert>
+
+                    <tblr-alert variant="warning" open closable countdown="rtl">
+                        <strong>Your session is ending.</strong><br>
+                        This alert shows a countdown bar and seconds remaining.
+                    </tblr-alert>
+
+                    <div class="toast-actions">
+                        <tblr-button id="toast-primary">Primary toast</tblr-button>
+                        <tblr-button id="toast-success" variant="success">Success toast</tblr-button>
+                        <tblr-button id="toast-warning" variant="warning">Warning toast</tblr-button>
+                        <tblr-button id="toast-danger" variant="danger">Danger toast</tblr-button>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-alert variant="success" open closable&gt;
+                        Changes saved
+                        &lt;/tblr-alert&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="copy-button">
+            <h1 class="section-title">TBLR Copy Button</h1>
+            <p>Copy direct values or values from other elements.</p>
+
+            <section class="flex" aria-label="Copy button examples">
+                <div class="panel panel-main">
+                    <div class="copy-row">
+                        <span>Direct value</span>
+                        <tblr-copy-button value="Tabler components"></tblr-copy-button>
+                    </div>
+
+                    <div class="copy-row">
+                        <span id="copy-phone">+1 (234) 456-7890</span>
+                        <tblr-copy-button from="copy-phone" copy-label="Copy phone"></tblr-copy-button>
+                    </div>
+
+                    <div class="copy-row">
+                        <tblr-input id="copy-input" value="User input" style="max-width: 300px;"></tblr-input>
+                        <tblr-copy-button from="copy-input.value" success-label="Input copied"></tblr-copy-button>
+                    </div>
+
+                    <div class="copy-row">
+                        <a id="copy-link" href="https://tabler.io">Tabler Website</a>
+                        <tblr-copy-button from="copy-link[href]" tooltip-placement="right"></tblr-copy-button>
+                    </div>
+
+                    <div class="copy-row">
+                        <span>Missing target</span>
+                        <tblr-copy-button from="missing-target" error-label="Nothing to copy"></tblr-copy-button>
+                    </div>
+
+                    <div class="copy-row">
+                        <span>Clipboard API only</span>
+                        <tblr-copy-button
+                                value="Copied with navigator.clipboard.writeText()"
+                                copy-label="Copy with Clipboard API"
+                                error-label="Clipboard API unavailable"
+                                no-fallback
+                        ></tblr-copy-button>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-copy-button value="Tabler components"&gt;&lt;/tblr-copy-button&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="spinners">
+            <h1 class="section-title">TBLR Spinners</h1>
+            <p>Border, grow, and animated dot loading indicators.</p>
+
+            <section class="flex" aria-label="Spinner examples">
+                <div class="panel panel-main">
+                    <div class="spinner-row">
+                        <tblr-spinner></tblr-spinner>
+                        <tblr-spinner color="blue"></tblr-spinner>
+                        <tblr-spinner color="azure"></tblr-spinner>
+                        <tblr-spinner color="indigo"></tblr-spinner>
+                        <tblr-spinner color="purple"></tblr-spinner>
+                        <tblr-spinner color="pink"></tblr-spinner>
+                        <tblr-spinner color="red"></tblr-spinner>
+                        <tblr-spinner color="orange"></tblr-spinner>
+                        <tblr-spinner color="yellow"></tblr-spinner>
+                        <tblr-spinner color="lime"></tblr-spinner>
+                        <tblr-spinner color="green"></tblr-spinner>
+                        <tblr-spinner color="teal"></tblr-spinner>
+                        <tblr-spinner color="cyan"></tblr-spinner>
+                    </div>
+
+                    <div class="spinner-row">
+                        <tblr-spinner size="sm"></tblr-spinner>
+                        <tblr-spinner></tblr-spinner>
+                        <tblr-spinner size="lg"></tblr-spinner>
+                    </div>
+
+                    <div class="spinner-row">
+                        <tblr-spinner type="grow"></tblr-spinner>
+                        <tblr-spinner type="grow" color="green"></tblr-spinner>
+                        <tblr-spinner type="grow" color="danger"></tblr-spinner>
+                        <tblr-spinner type="dots"></tblr-spinner>
+                        <tblr-spinner type="dots" color="success"></tblr-spinner>
+                    </div>
+
+                    <div class="spinner-row">
+                        <tblr-button disabled>
+                            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
+                            Button
+                        </tblr-button>
+                        <tblr-button variant="danger" disabled>
+                            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
+                            Button
+                        </tblr-button>
+                        <tblr-button variant="success" disabled>
+                            <tblr-spinner size="sm" label="Loading"></tblr-spinner>
+                            Button
+                        </tblr-button>
+                        <tblr-button>
+                            Loading
+                            <tblr-spinner type="dots" size="sm" label="Loading"></tblr-spinner>
+                        </tblr-button>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-spinner color="blue"&gt;&lt;/tblr-spinner&gt;
+                        &lt;tblr-spinner type="dots" color="success"&gt;&lt;/tblr-spinner&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="form-controls">
+            <h1 class="section-title">TBLR Form Controls</h1>
+            <p>Tabler-style inputs, selects, and search controls.</p>
+
+            <section class="flex" aria-label="Form control examples">
+                <div class="panel panel-main">
+                    <div class="form-grid">
+                        <tblr-input label="Text" placeholder="Input placeholder"></tblr-input>
+                        <tblr-input label="Required" placeholder="Required..." required></tblr-input>
+                        <tblr-input label="Disabled" value="Well, she turned me into a newt." disabled></tblr-input>
+                        <tblr-input label="Readonly" value="Well, how'd you become king, then?" readonly></tblr-input>
+                        <tblr-input label="Password" type="password" value="secret-password"
+                                    toggle-password></tblr-input>
+
+                        <tblr-input
+                                class="form-wide"
+                                label="Textarea"
+                                textarea
+                                rows="5"
+                                maxlength="100"
+                                value="Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed!"
+                        ></tblr-input>
+
+                        <tblr-select
+                                label="Select"
+                                value="one"
+                                options="one:One|two:Two|three:Three"
+                        ></tblr-select>
+
+                        <tblr-select
+                                label="Select multiple"
+                                multiple
+                                size="3"
+                                value="one,two"
+                                options="one:One|two:Two|three:Three"
+                        ></tblr-select>
+
+                        <tblr-input label="Input group" placeholder="Search for..." action="Go!"></tblr-input>
+                        <tblr-input label="Prepend text" prefix="https://" placeholder="subdomain"></tblr-input>
+                        <tblr-input label="Append text" suffix=".tabler.io" placeholder="yourfancydomain"></tblr-input>
+
+                        <tblr-search label="Icon search" placeholder="Search..."></tblr-search>
+                        <tblr-search label="Separated search" placeholder="Search for..." button></tblr-search>
+                        <tblr-search label="Rounded search" placeholder="Search..." rounded></tblr-search>
+                        <tblr-datepicker label="Datepicker" value="2020-06-20"></tblr-datepicker>
+                        <tblr-datepicker label="Datepicker icon end" value="2020-06-20" icon="end"></tblr-datepicker>
+                        <tblr-datepicker label="Datepicker icon start" value="2020-06-20" icon="start"
+                                         open></tblr-datepicker>
+                        <tblr-input label="Rounded input" placeholder="Text.." rounded></tblr-input>
+                        <tblr-input label="Flush input" placeholder="Text.." flush></tblr-input>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-input label="Text" placeholder="Input placeholder"&gt;&lt;/tblr-input&gt;
+                        &lt;tblr-select label="Select" options="one:One|two:Two"&gt;&lt;/tblr-select&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="choice-controls">
+            <h1 class="section-title">TBLR Choice Controls</h1>
+            <p>Radio buttons, checkboxes, switches, file inputs, and masked-looking fields.</p>
+
+            <section class="flex" aria-label="Choice control examples">
+                <div class="panel panel-main">
+                    <div class="form-grid">
+                        <div class="form-stack">
+                            <p class="label">Radios</p>
+                            <tblr-radio name="radio-example" label="Option 1" checked></tblr-radio>
+                            <tblr-radio name="radio-example" label="Option 2"></tblr-radio>
+                            <tblr-radio name="radio-example" label="Option 3" disabled></tblr-radio>
+                            <tblr-radio name="radio-example" label="Option 4" checked disabled></tblr-radio>
+                        </div>
+
+                        <div class="form-stack">
+                            <p class="label">Inline Radios</p>
+                            <div class="inline-controls">
+                                <tblr-radio name="inline-radio-example" label="Option 1" checked inline></tblr-radio>
+                                <tblr-radio name="inline-radio-example" label="Option 2" inline></tblr-radio>
+                                <tblr-radio name="inline-radio-example" label="Option 3" disabled inline></tblr-radio>
+                            </div>
+                        </div>
+
+                        <div class="form-stack">
+                            <p class="label">Checkboxes</p>
+                            <tblr-checkbox label="Checkbox input"></tblr-checkbox>
+                            <tblr-checkbox label="Disabled checkbox input" disabled></tblr-checkbox>
+                            <tblr-checkbox label="Checked checkbox input" checked></tblr-checkbox>
+                        </div>
+
+                        <div class="form-stack">
+                            <p class="label">Inline Checkboxes</p>
+                            <div class="inline-controls">
+                                <tblr-checkbox label="Option 1" inline></tblr-checkbox>
+                                <tblr-checkbox label="Option 2" disabled inline></tblr-checkbox>
+                                <tblr-checkbox label="Option 3" checked inline></tblr-checkbox>
+                            </div>
+                        </div>
+
+                        <div class="form-stack form-wide">
+                            <p class="label">Checkboxes with description</p>
+                            <tblr-checkbox
+                                    label="Default checkbox"
+                                    description="Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+                            ></tblr-checkbox>
+                            <tblr-checkbox
+                                    label="Longer checkbox item that wraps on to two separate lines"
+                                    description="Alias aut, consequuntur cumque esse eveniet incidunt laborum minus molestiae."
+                            ></tblr-checkbox>
+                            <tblr-checkbox label="Default checkbox without description"></tblr-checkbox>
+                        </div>
+
+                        <div class="form-stack">
+                            <p class="label">Toggle switches</p>
+                            <tblr-switch label="Option 1" checked></tblr-switch>
+                            <tblr-switch label="Option 2"></tblr-switch>
+                            <tblr-switch label="Option 3" disabled></tblr-switch>
+                        </div>
+
+                        <div class="form-stack">
+                            <p class="label">Single switch</p>
+                            <tblr-switch label="I agree with terms and conditions"></tblr-switch>
+                        </div>
+
+                        <div class="form-stack form-wide">
+                            <p class="label">Notification</p>
+                            <div class="notification-list">
+                                <tblr-switch class="notification-row" label="Push Notifications" checked
+                                             align-end></tblr-switch>
+                                <tblr-switch class="notification-row" label="SMS Notifications" align-end></tblr-switch>
+                                <tblr-switch class="notification-row" label="Email Notifications" checked
+                                             align-end></tblr-switch>
+                            </div>
+                        </div>
+
+                        <tblr-file-input
+                                class="form-wide"
+                                label="Custom File Input"
+                                button="Parcourir..."
+                                placeholder="Aucun fichier sélectionné."
+                        ></tblr-file-input>
+
+                        <div class="form-stack form-wide">
+                            <p class="label">Date of birth</p>
+                            <div class="dob-grid">
+                                <tblr-select value="june"
+                                             options="january:January|february:February|march:March|april:April|may:May|june:June|july:July|august:August|september:September|october:October|november:November|december:December"></tblr-select>
+                                <tblr-select value="20" options="18:18|19:19|20:20|21:21|22:22"></tblr-select>
+                                <tblr-select value="1989"
+                                             options="1987:1987|1988:1988|1989:1989|1990:1990|1991:1991"></tblr-select>
+                            </div>
+                        </div>
+
+                        <tblr-input label="Text mask" placeholder="__/__/____"></tblr-input>
+                        <tblr-input label="Telephone mask" placeholder="(__) ____-____"></tblr-input>
+                        <tblr-input class="form-wide" label="Autosize textarea" textarea autosize rows="2"
+                                    placeholder="Type something..."></tblr-input>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-checkbox label="Checkbox input"&gt;&lt;/tblr-checkbox&gt;
+                        &lt;tblr-switch label="Toggle switch" checked&gt;&lt;/tblr-switch&gt;
+                        &lt;tblr-radio name="example" label="Option 1" checked&gt;&lt;/tblr-radio&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="rich-editor">
+            <h1 class="section-title">TBLR Rich Editor</h1>
+            <p>WYSIWYG editing with colors, indent controls, undo/redo, and HTML source view.</p>
+
+            <section class="flex editor-demo" aria-label="Rich text editor example">
+                <div class="panel panel-main">
+                    <tblr-rich-editor
+                            name="message"
+                            label="Message"
+                            placeholder="Write a formatted message..."
+                            value="&lt;p&gt;Hello &lt;strong&gt;Tabler&lt;/strong&gt; components.&lt;/p&gt;&lt;blockquote&gt;Use the toolbar to change color, indent content, undo changes, or edit the HTML source.&lt;/blockquote&gt;"
+                    ></tblr-rich-editor>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-rich-editor label="Message" placeholder="Write something..."&gt;&lt;/tblr-rich-editor&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="tinymce">
+            <h1 class="section-title">TBLR TinyMCE Editor</h1>
+            <p>TinyMCE loaded behind a custom element with value, form, and event integration.</p>
+
+            <section class="flex editor-demo" aria-label="TinyMCE editor example">
+                <div class="panel panel-main">
+                    <tblr-tinymce-editor lazy
+                                         name="tinymce-message"
+                                         label="TinyMCE message"
+                                         placeholder="Write with TinyMCE..."
+                                         height="320"
+                                         value="&lt;p&gt;Hello from &lt;strong&gt;TinyMCE&lt;/strong&gt; inside a Tabler custom element.&lt;/p&gt;"
+                    ></tblr-tinymce-editor>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-tinymce-editor label="TinyMCE message"&gt;&lt;/tblr-tinymce-editor&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="colorpicker">
+            <h1 class="section-title">TBLR Colorpicker</h1>
+            <p>Color palettes and native color input styles.</p>
+
+            <section class="flex" aria-label="Colorpicker examples">
+                <div class="panel panel-main">
+                    <tblr-colorpicker
+                            label="Color Input Check"
+                            type="check"
+                            value="#ffffff"
+                    ></tblr-colorpicker>
+
+                    <tblr-colorpicker
+                            label="Color Input Radio"
+                            type="radio"
+                            value="#ffffff"
+                    ></tblr-colorpicker>
+
+                    <tblr-colorpicker
+                            label="Color picker"
+                            type="picker"
+                            value="#066fd1"
+                    ></tblr-colorpicker>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-colorpicker label="Color Input" type="check" value="#ffffff"&gt;&lt;/tblr-colorpicker&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="tabs">
+            <h1 class="section-title">TBLR Tabs</h1>
+            <p>Horizontal and vertical tab navigation.</p>
+
+            <section class="flex" aria-label="Tabs examples">
+                <div class="panel panel-main">
+                    <tblr-tabs value="overview">
+                        <tblr-tab label="Overview" value="overview">
+                            <div class="tabs-content">
+                                <h3>Overview</h3>
+                                <p>Use horizontal tabs when sections are peers in the same workflow.</p>
+                            </div>
+                        </tblr-tab>
+                        <tblr-tab label="Activity" value="activity">
+                            <div class="tabs-content">
+                                <h3>Activity</h3>
+                                <p>Tab state is reflected through the value attribute and change event.</p>
+                            </div>
+                        </tblr-tab>
+                        <tblr-tab label="Disabled" value="disabled" disabled>
+                            <div class="tabs-content">
+                                <h3>Disabled</h3>
+                                <p>This pane is unavailable.</p>
+                            </div>
+                        </tblr-tab>
+                    </tblr-tabs>
+
+                    <tblr-tabs vertical value="settings">
+                        <tblr-tab label="Settings" value="settings">
+                            <div class="tabs-content">
+                                <h3>Settings</h3>
+                                <p>Vertical tabs work well for longer labels or persistent side navigation.</p>
+                            </div>
+                        </tblr-tab>
+                        <tblr-tab label="Billing" value="billing">
+                            <div class="tabs-content">
+                                <h3>Billing</h3>
+                                <p>Panels remain in the light DOM and the inactive panes are hidden.</p>
+                            </div>
+                        </tblr-tab>
+                        <tblr-tab label="Notifications" value="notifications">
+                            <div class="tabs-content">
+                                <h3>Notifications</h3>
+                                <p>Keyboard navigation supports arrow keys, Home, and End.</p>
+                            </div>
+                        </tblr-tab>
+                    </tblr-tabs>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-tabs value="overview"&gt;
+                        &lt;tblr-tab label="Overview" value="overview"&gt;Content&lt;/tblr-tab&gt;
+                        &lt;/tblr-tabs&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="grid">
+            <h1 class="section-title">TBLR Grid</h1>
+            <p>Responsive and fixed column grid layouts.</p>
+
+            <section class="flex" aria-label="Grid examples">
+                <div class="panel panel-main">
+                    <tblr-grid columns="3" gap="md">
+                        <tblr-card>
+                            <p class="metric">128</p>
+                            <p class="metric-label">New orders</p>
+                        </tblr-card>
+                        <tblr-card>
+                            <p class="metric">42%</p>
+                            <p class="metric-label">Conversion rate</p>
+                        </tblr-card>
+                        <tblr-card>
+                            <p class="metric">$8.4k</p>
+                            <p class="metric-label">Revenue</p>
+                        </tblr-card>
+                    </tblr-grid>
+
+                    <tblr-grid min="16rem" gap="lg" dense>
+                        <tblr-grid-item span="2">
+                            <tblr-card title="Wide responsive item">
+                                This grid item spans two columns on wider screens and collapses to one column on mobile.
+                            </tblr-card>
+                        </tblr-grid-item>
+                        <tblr-card title="Standard item">
+                            Auto-fit grids fill the available width with stable minimum item sizes.
+                        </tblr-card>
+                        <tblr-card title="Standard item">
+                            Use row-gap and column-gap attributes when spacing needs to differ.
+                        </tblr-card>
+                    </tblr-grid>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-grid columns="3" gap="md"&gt;
+                        &lt;tblr-card&gt;1&lt;/tblr-card&gt;
+                        &lt;tblr-card&gt;2&lt;/tblr-card&gt;
+                        &lt;tblr-card&gt;3&lt;/tblr-card&gt;
+                        &lt;/tblr-grid&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="flexbox">
+            <h1 class="section-title">TBLR Flexbox</h1>
+            <p>Direction, wrapping, spacing, and alignment utilities for flexible layouts.</p>
+
+            <section class="flex" aria-label="Flexbox examples">
+                <div class="panel panel-main">
+                    <tblr-flex align="center" justify="between" gap="md" wrap>
+                        <tblr-flex gap="sm" align="center" wrap>
+                            <span class="flex-chip">Draft</span>
+                            <span class="flex-chip">Assigned</span>
+                            <span class="flex-chip">High priority</span>
+                        </tblr-flex>
+                        <tblr-flex gap="sm" align="center">
+                            <tblr-button variant="light">Cancel</tblr-button>
+                            <tblr-button variant="primary">Save changes</tblr-button>
+                        </tblr-flex>
+                    </tblr-flex>
+
+                    <tblr-flex wrap gap="md" align="stretch">
+                        <tblr-flex-item grow="1" basis="14rem">
+                            <tblr-card title="Backlog">12 open tasks ready for review.</tblr-card>
+                        </tblr-flex-item>
+                        <tblr-flex-item grow="2" basis="18rem">
+                            <tblr-card title="In progress">Flexible items can grow at different rates.</tblr-card>
+                        </tblr-flex-item>
+                        <tblr-flex-item grow="1" basis="14rem">
+                            <tblr-card title="Done">8 tasks completed this week.</tblr-card>
+                        </tblr-flex-item>
+                    </tblr-flex>
+
+                    <tblr-flex direction="column" gap="sm">
+                        <tblr-card title="Column layout">Use direction=&quot;column&quot; for stacked flows.</tblr-card>
+                        <tblr-card title="Custom gaps">Use gap, row-gap, and column-gap tokens or CSS lengths.
+                        </tblr-card>
+                    </tblr-flex>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-flex align="center" justify="between" gap="md"&gt;
+                        &lt;div&gt;Left&lt;/div&gt;
+                        &lt;div&gt;Right&lt;/div&gt;
+                        &lt;/tblr-flex&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="pagination">
+            <h1 class="section-title">TBLR Pagination</h1>
+            <p>Page controls for compact and larger result sets.</p>
+
+            <section class="flex" aria-label="Pagination examples">
+                <div class="panel panel-main">
+                    <tblr-pagination page="4" pages="12"></tblr-pagination>
+                    <tblr-pagination page="8" pages="24" siblings="2" boundary="1" previous="Prev"
+                                     next="Next"></tblr-pagination>
+                    <tblr-pagination compact page="2" pages="6"></tblr-pagination>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-pagination page="1" pages="10"&gt;&lt;/tblr-pagination&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="modals">
+            <h1 class="section-title">TBLR Modals</h1>
+            <p>Simple, sized, scrollable, form, and status modal examples.</p>
+
+            <section class="flex" aria-label="Modal examples">
+                <div class="panel panel-main">
+                    <div class="modal-actions">
+                        <tblr-button id="open-simple-modal">Simple modal</tblr-button>
+                        <tblr-button id="open-large-modal" variant="light">Large modal</tblr-button>
+                        <tblr-button id="open-scrollable-modal" variant="light">Scrollable modal</tblr-button>
+                        <tblr-button id="open-form-modal" variant="light">Modal with form</tblr-button>
+                        <tblr-button id="open-success-modal" variant="success">Success modal</tblr-button>
+                        <tblr-button id="open-danger-modal" variant="danger">Danger modal</tblr-button>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-modal id="example-modal" title="Modal title" action="Save" cancel="Close"&gt;
+                        Modal content
+                        &lt;/tblr-modal&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+
+            <tblr-modal id="simple-modal" title="Modal title" cancel="Close" action="Save changes">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti
+                    dolorem eveniet facere fuga iste nemo nesciunt.</p>
+            </tblr-modal>
+
+            <tblr-modal id="large-modal" size="lg" title="Large modal" cancel="Close" action="Save changes">
+                <p>Use the large modal size when the content needs more horizontal room, such as previews, details, or
+                    comparison layouts.</p>
+            </tblr-modal>
+
+            <tblr-modal id="scrollable-modal" title="Scrollable modal" scrollable cancel="Close" action="Save changes">
+                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas
+                    eget quam.</p>
+                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue
+                    laoreet rutrum faucibus dolor auctor.</p>
+                <p>Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor
+                    fringilla.</p>
+                <p>Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac,
+                    vestibulum at eros.</p>
+                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui.</p>
+                <p>Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum
+                    faucibus dolor auctor.</p>
+            </tblr-modal>
+
+            <tblr-modal id="form-modal" title="New report" size="lg" cancel="Cancel" action="Create new report">
+                <div class="form-grid">
+                    <tblr-input label="Name" placeholder="Report name"></tblr-input>
+                    <tblr-select label="Report type" value="simple"
+                                 options="simple:Simple|advanced:Advanced"></tblr-select>
+                    <tblr-input class="form-wide" label="Report url" prefix="https://tabler.io/reports/"
+                                placeholder="weekly-report"></tblr-input>
+                    <tblr-input class="form-wide" label="Additional information" textarea rows="4"></tblr-input>
+                </div>
+            </tblr-modal>
+
+            <tblr-modal id="success-modal" status="success" title="Payment succeeded" action="Go to dashboard">
+                <p>Your payment has been successfully submitted. Your invoice has been sent to your email address.</p>
+            </tblr-modal>
+
+            <tblr-modal id="danger-modal" status="danger" title="Are you sure?" cancel="Cancel"
+                        action="Delete 84 items">
+                <p>Do you really want to remove 84 files? This cannot be undone.</p>
+            </tblr-modal>
+        </section>
     </main>
+</div>
 
-    <script type="module">
-      import { defineTblr } from '../src/main.js';
+<script type="module">
+    import {defineTblr} from '../src/main.js';
 
-      await defineTblr();
+    await defineTblr();
 
-      const modalTriggers = {
+    const modalTriggers = {
         'open-simple-modal': 'simple-modal',
         'open-large-modal': 'large-modal',
         'open-scrollable-modal': 'scrollable-modal',
         'open-form-modal': 'form-modal',
         'open-success-modal': 'success-modal',
         'open-danger-modal': 'danger-modal',
-      };
+    };
 
-      for (const [triggerId, modalId] of Object.entries(modalTriggers)) {
+    for (const [triggerId, modalId] of Object.entries(modalTriggers)) {
         document.getElementById(triggerId)?.addEventListener('click', () => {
-          document.getElementById(modalId)?.show();
+            document.getElementById(modalId)?.show();
         });
-      }
+    }
 
-      document.querySelectorAll('tblr-modal').forEach(modal => {
+    document.querySelectorAll('tblr-modal').forEach(modal => {
         modal.addEventListener('action', () => modal.hide('action'));
-      });
+    });
 
-      const toastMessages = {
+    const toastMessages = {
         'toast-primary': ['primary', 'This is super informative', 'You can tell by how useful the alert is.'],
         'toast-success': ['success', 'Your changes have been saved', 'You can safely exit the page now.'],
         'toast-warning': ['warning', 'Your session has ended', 'Please login again to continue.'],
         'toast-danger': ['danger', 'Your account has been deleted', 'We are sorry to see you go.'],
-      };
+    };
 
-      for (const [buttonId, [variant, title, message]] of Object.entries(toastMessages)) {
+    for (const [buttonId, [variant, title, message]] of Object.entries(toastMessages)) {
         document.getElementById(buttonId)?.addEventListener('click', () => {
-          const alert = document.createElement('tblr-alert');
-          alert.setAttribute('variant', variant);
-          alert.setAttribute('closable', '');
-          //alert.setAttribute('duration', '8000');
-          alert.setAttribute('countdown', 'rtl');
-          alert.innerHTML = `<strong>${title}</strong><br>${message}`;
-          document.body.append(alert);
-          alert.toast();
+            const alert = document.createElement('tblr-alert');
+            alert.setAttribute('variant', variant);
+            alert.setAttribute('closable', '');
+            //alert.setAttribute('duration', '8000');
+            alert.setAttribute('countdown', 'rtl');
+            alert.innerHTML = `<strong>${title}</strong><br>${message}`;
+            document.body.append(alert);
+            alert.toast();
         });
-      }
-    </script>
-  </body>
+    }
+</script>
+</body>
 </html>
