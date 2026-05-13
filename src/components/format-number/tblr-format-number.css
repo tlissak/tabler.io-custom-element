@@ -1,0 +1,29 @@
+:host {
+  display: inline-block;
+  color: var(--tblr-format-number-color, inherit);
+  font-family: var(--tblr-format-number-font-family, inherit);
+  font-size: var(--tblr-format-number-font-size, inherit);
+  font-weight: var(--tblr-format-number-font-weight, inherit);
+  line-height: var(--tblr-format-number-line-height, inherit);
+  vertical-align: baseline;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.number {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--tblr-format-number-symbol-gap, 0);
+  font-variant-numeric: var(--tblr-format-number-variant, tabular-nums);
+  white-space: nowrap;
+}
+
+.symbol {
+  color: var(--tblr-format-number-symbol-color, currentColor);
+}
+
+.value {
+  min-width: 0;
+}

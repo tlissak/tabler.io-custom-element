@@ -38,20 +38,25 @@ const registry = new ComponentRegistry();
 
 const modules = {
   'tblr-alert': () => import('../components/alert/tblr-alert.js'),
+  'tblr-badge': () => import('../components/badge/tblr-badge.js'),
   'tblr-button': () => import('../components/button/tblr-button.js'),
   'tblr-card': () => import('../components/card/tblr-card.js'),
   'tblr-checkbox': () => import('../components/checkbox/tblr-checkbox.js'),
+  'tblr-code-preview': () => import('../components/code-preview/tblr-code-preview.js'),
   'tblr-colorpicker': () => import('../components/colorpicker/tblr-colorpicker.js'),
   'tblr-copy-button': () => import('../components/copy-button/tblr-copy-button.js'),
   'tblr-datepicker': () => import('../components/datepicker/tblr-datepicker.js'),
   'tblr-file-input': () => import('../components/file-input/tblr-file-input.js'),
   'tblr-flex': () => import('../components/flex/tblr-flex.js'),
   'tblr-flex-item': () => import('../components/flex/tblr-flex.js'),
+  'tblr-format-number': () => import('../components/format-number/tblr-format-number.js'),
   'tblr-grid': () => import('../components/grid/tblr-grid.js'),
   'tblr-grid-item': () => import('../components/grid/tblr-grid.js'),
   'tblr-icon': () => import('../components/icon/tblr-icon.js'),
   'tblr-input': () => import('../components/input/tblr-input.js'),
   'tblr-modal': () => import('../components/modal/tblr-modal.js'),
+  'tblr-nav': () => import('../components/nav/tblr-nav.js'),
+  'tblr-nav-item': () => import('../components/nav/tblr-nav.js'),
   'tblr-pagination': () => import('../components/pagination/tblr-pagination.js'),
   'tblr-radio': () => import('../components/radio/tblr-radio.js'),
   'tblr-rich-editor': () => import('../components/rich-editor/tblr-rich-editor.js'),
@@ -61,6 +66,7 @@ const modules = {
   'tblr-switch': () => import('../components/switch/tblr-switch.js'),
   'tblr-tab': () => import('../components/tabs/tblr-tabs.js'),
   'tblr-tabs': () => import('../components/tabs/tblr-tabs.js'),
+  'tblr-tinymce-editor': () => import('../components/tinymce-editor/tblr-tinymce-editor.js'),
 };
 
 for (const [tag, loader] of Object.entries(modules)) {

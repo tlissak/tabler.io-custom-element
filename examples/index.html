@@ -192,6 +192,48 @@
         gap: 16px;
         align-items: center;
       }
+
+      .badge-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .badge-anchor {
+        position: relative;
+      }
+
+      .nav-demo {
+        max-width: 320px;
+      }
+
+      .code-demo {
+        display: grid;
+        gap: 16px;
+      }
+
+      .number-demo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .number-tile {
+        display: grid;
+        gap: 4px;
+        min-width: 180px;
+        padding: 12px;
+        border: 1px solid var(--tblr-border-color);
+        border-radius: var(--tblr-radius-lg);
+        background: var(--tblr-card-bg);
+      }
+
+      .number-tile tblr-format-number {
+        --tblr-format-number-font-size: 20px;
+        --tblr-format-number-font-weight: 700;
+      }
     </style>
   </head>
   <body>
@@ -305,6 +347,179 @@
           <tblr-icon name="home" label="Home"></tblr-icon>
           <tblr-icon name="heart" filled label="Favorite"></tblr-icon>
           <tblr-icon name="bell" size="28" stroke="1.75" label="Notifications"></tblr-icon>
+        </div>
+      </section>
+
+      <h1 class="section-title">TBLR Badges</h1>
+      <p>Small labels, counters, links, and dot indicators in Tabler colors.</p>
+
+      <section class="panel" aria-label="Badge examples">
+        <div class="badge-list">
+          <p class="label">Solid colors</p>
+          <tblr-badge color="blue">Blue</tblr-badge>
+          <tblr-badge color="azure">Azure</tblr-badge>
+          <tblr-badge color="indigo">Indigo</tblr-badge>
+          <tblr-badge color="purple">Purple</tblr-badge>
+          <tblr-badge color="pink">Pink</tblr-badge>
+          <tblr-badge color="red">Red</tblr-badge>
+          <tblr-badge color="orange">Orange</tblr-badge>
+          <tblr-badge color="yellow">Yellow</tblr-badge>
+          <tblr-badge color="lime">Lime</tblr-badge>
+          <tblr-badge color="green">Green</tblr-badge>
+          <tblr-badge color="teal">Teal</tblr-badge>
+          <tblr-badge color="cyan">Cyan</tblr-badge>
+        </div>
+
+        <div class="badge-list">
+          <p class="label">Light colors</p>
+          <tblr-badge color="blue" light>Blue</tblr-badge>
+          <tblr-badge color="azure" light>Azure</tblr-badge>
+          <tblr-badge color="indigo" light>Indigo</tblr-badge>
+          <tblr-badge color="purple" light>Purple</tblr-badge>
+          <tblr-badge color="pink" light>Pink</tblr-badge>
+          <tblr-badge color="red" light>Red</tblr-badge>
+          <tblr-badge color="orange" light>Orange</tblr-badge>
+          <tblr-badge color="yellow" light>Yellow</tblr-badge>
+          <tblr-badge color="lime" light>Lime</tblr-badge>
+          <tblr-badge color="green" light>Green</tblr-badge>
+          <tblr-badge color="teal" light>Teal</tblr-badge>
+          <tblr-badge color="cyan" light>Cyan</tblr-badge>
+        </div>
+
+        <div class="badge-list">
+          <p class="label">Pill counters and sizes</p>
+          <tblr-badge color="blue" pill size="sm">1</tblr-badge>
+          <tblr-badge color="azure" pill>2</tblr-badge>
+          <tblr-badge color="indigo" pill>3</tblr-badge>
+          <tblr-badge color="purple" pill>4</tblr-badge>
+          <tblr-badge color="pink" pill>5</tblr-badge>
+          <tblr-badge color="red" pill>6</tblr-badge>
+          <tblr-badge color="orange" pill>7</tblr-badge>
+          <tblr-badge color="yellow" pill>8</tblr-badge>
+          <tblr-badge color="lime" pill>9</tblr-badge>
+          <tblr-badge color="green" pill>10</tblr-badge>
+          <tblr-badge color="teal" pill>11</tblr-badge>
+          <tblr-badge color="cyan" pill size="lg">12</tblr-badge>
+        </div>
+
+        <div class="badge-list">
+          <p class="label">Dot badges</p>
+          <tblr-badge color="green" light dot dot-color="green">Online</tblr-badge>
+          <tblr-badge color="yellow" light dot dot-color="yellow">Away</tblr-badge>
+          <tblr-badge color="red" light dot dot-color="red">Busy</tblr-badge>
+          <tblr-badge color="blue" light dot dot-color="#206bc4" animated>Syncing</tblr-badge>
+          <tblr-badge color="purple" light dot dot-color="pink" animated>Processing</tblr-badge>
+          <tblr-badge color="red" dot animated label="Unread"></tblr-badge>
+        </div>
+
+        <div class="badge-list">
+          <p class="label">Links and buttons</p>
+          <tblr-badge href="https://tabler.io" color="azure" light pill>Tabler link</tblr-badge>
+          <tblr-button variant="light">Notifications <tblr-badge color="red">2</tblr-badge></tblr-button>
+          <tblr-button class="badge-anchor" variant="light">
+            Profile
+            <tblr-badge color="red" dot notification animated label="Unread profile updates"></tblr-badge>
+          </tblr-button>
+          <tblr-badge size="sm">Small</tblr-badge>
+          <tblr-badge size="lg">Large</tblr-badge>
+        </div>
+      </section>
+
+      <h1 class="section-title">TBLR Navigation</h1>
+      <p>Horizontal navigation with right-aligned items and vertical navigation with collapsed groups.</p>
+
+      <section class="panel" aria-label="Navigation examples">
+        <tblr-nav label="Primary navigation">
+          <tblr-nav-item label="Overview" href="#overview" active>
+            <tblr-icon slot="icon" name="home"></tblr-icon>
+          </tblr-nav-item>
+          <tblr-nav-item label="Projects" href="#projects">
+            <tblr-icon slot="icon" name="briefcase"></tblr-icon>
+          </tblr-nav-item>
+          <tblr-nav-item label="Reports" href="#reports">
+            <tblr-icon slot="icon" name="chart-bar"></tblr-icon>
+          </tblr-nav-item>
+          <tblr-nav-item label="Account" href="#account" align="right">
+            <tblr-icon slot="icon" name="user"></tblr-icon>
+            <tblr-badge slot="suffix" color="red" pill>3</tblr-badge>
+          </tblr-nav-item>
+        </tblr-nav>
+
+        <tblr-nav class="nav-demo" vertical label="Sidebar navigation">
+          <tblr-nav-item label="Dashboard" href="#dashboard" active>
+            <tblr-icon slot="icon" name="dashboard"></tblr-icon>
+          </tblr-nav-item>
+          <tblr-nav-item label="Management" open>
+            <tblr-icon slot="icon" name="folders"></tblr-icon>
+            <tblr-badge slot="suffix" color="blue" light>4</tblr-badge>
+            <tblr-nav-item label="Projects" href="#nav-projects"></tblr-nav-item>
+            <tblr-nav-item label="Tasks" href="#nav-tasks"></tblr-nav-item>
+            <tblr-nav-item label="Teams" href="#nav-teams"></tblr-nav-item>
+          </tblr-nav-item>
+          <tblr-nav-item label="Settings">
+            <tblr-icon slot="icon" name="settings"></tblr-icon>
+            <tblr-nav-item label="Profile" href="#nav-profile"></tblr-nav-item>
+            <tblr-nav-item label="Billing" href="#nav-billing"></tblr-nav-item>
+            <tblr-nav-item label="Security" href="#nav-security"></tblr-nav-item>
+          </tblr-nav-item>
+          <tblr-nav-item label="Disabled item" disabled>
+            <tblr-icon slot="icon" name="lock"></tblr-icon>
+          </tblr-nav-item>
+        </tblr-nav>
+      </section>
+
+      <h1 class="section-title">TBLR Code Preview</h1>
+      <p>Styled pre/code blocks with optional copy, line numbers, wrapping, and language labels.</p>
+
+      <section class="panel code-demo" aria-label="Code preview examples">
+        <tblr-code-preview language="js" title="button.js" copy line-numbers>
+const button = document.querySelector('tblr-button');
+
+button.addEventListener('click', () => {
+  console.log('Clicked');
+});
+        </tblr-code-preview>
+
+        <tblr-code-preview
+          language="html"
+          title="card.html"
+          theme="plain"
+          wrap
+          copy
+          value="&lt;tblr-card title=&quot;Card title&quot; subtitle=&quot;Short supporting text&quot;&gt;Card content&lt;/tblr-card&gt;"
+        ></tblr-code-preview>
+      </section>
+
+      <h1 class="section-title">TBLR Format Number</h1>
+      <p>Manual decimal separators, thousand separators, currency symbols, symbol position, and precision.</p>
+
+      <section class="panel number-demo" aria-label="Format number examples">
+        <div class="number-tile">
+          <span class="metric-label">US currency</span>
+          <tblr-format-number value="1234567.8" precision="2" currency-symbol="$"></tblr-format-number>
+        </div>
+
+        <div class="number-tile">
+          <span class="metric-label">European currency</span>
+          <tblr-format-number
+            value="1234567.8"
+            thousand-separator="."
+            decimal-separator=","
+            precision="2"
+            currency-symbol="EUR"
+            symbol-position="right"
+            symbol-space=" &nbsp; "
+          ></tblr-format-number>
+        </div>
+
+        <div class="number-tile">
+          <span class="metric-label">No decimals</span>
+          <tblr-format-number value="9876543.21" precision="0" thousand-separator=" "></tblr-format-number>
+        </div>
+
+        <div class="number-tile">
+          <span class="metric-label">Inferred precision</span>
+          <tblr-format-number value="-48219.375" thousand-separator="," decimal-separator="."></tblr-format-number>
         </div>
       </section>
 
@@ -623,6 +838,19 @@
         ></tblr-rich-editor>
       </section>
 
+      <h1 class="section-title">TBLR TinyMCE Editor</h1>
+      <p>TinyMCE loaded behind a custom element with value, form, and event integration.</p>
+
+      <section class="panel editor-demo" aria-label="TinyMCE editor example">
+        <tblr-tinymce-editor lazy
+          name="tinymce-message"
+          label="TinyMCE message"
+          placeholder="Write with TinyMCE..."
+          height="320"
+          value="&lt;p&gt;Hello from &lt;strong&gt;TinyMCE&lt;/strong&gt; inside a Tabler custom element.&lt;/p&gt;"
+        ></tblr-tinymce-editor>
+      </section>
+
       <h1 class="section-title">TBLR Colorpicker</h1>
       <p>Color palettes and native color input styles.</p>
 
@@ -820,7 +1048,7 @@
     </main>
 
     <script type="module">
-      import { defineTblr } from '../src/core/bundle.js';
+      import { defineTblr } from '../src/main.js';
 
       await defineTblr();
 

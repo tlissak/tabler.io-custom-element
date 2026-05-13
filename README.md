@@ -16,6 +16,7 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Datepicker
 - [x] Icon
 - [x] WYSIWYG Rich Text Editor
+- [x] TinyMCE Rich Text Editor
 - [x] Alert Toast and Notification
 - [x] Spinner
 - [x] Pagination
@@ -24,13 +25,15 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Flexbox
 - [x] Modal
 - [x] Copy to clipboard
+- [x] Badge
+- [x] Nav
+- [x] Code Preview
+- [x] Format Number
 - [ ] Carousel
 - [ ] Collapse - Accordion
 - [ ] Breadcrumb
 - [ ] Progress
 - [ ] Dropdown List with search filters
-- [ ] Nav
-- [ ] Badge
 - [ ] Tooltip
 - [ ] Popover
 - [ ] List Group
@@ -65,6 +68,23 @@ tblr-button {
   --tblr-button-primary-bg: #206bc4;
   --tblr-button-primary-hover-bg: #1c5aa6;
 }
+```
+
+## Test server
+
+Run the local static server:
+
+```bash
+npm run serve
+```
+
+Then open `http://localhost:8080/`.
+
+Docker:
+
+```bash
+npm run docker:build
+npm run docker:run
 ```
 
 ## Icons
@@ -225,6 +245,103 @@ Use `no-fallback` when you want Clipboard API-only behavior:
 ></tblr-copy-button>
 ```
 
+## Badges
+
+Badges support the Tabler color set: `blue`, `azure`, `indigo`, `purple`, `pink`, `red`, `orange`, `yellow`, `lime`, `green`, `teal`, and `cyan`. Semantic aliases such as `primary`, `success`, `warning`, `danger`, `info`, `secondary`, `dark`, and `light` are also available.
+
+```html
+<tblr-badge color="blue">Blue</tblr-badge>
+<tblr-badge color="green" light>Green</tblr-badge>
+<tblr-badge color="red" pill>12</tblr-badge>
+<tblr-badge color="purple" size="lg">New</tblr-badge>
+```
+
+Use `dot` for a leading inner dot. The dot can use its own color and can pulse independently with `animated`.
+
+```html
+<tblr-badge color="green" light dot dot-color="green">Online</tblr-badge>
+<tblr-badge color="blue" light dot dot-color="#206bc4" animated>Syncing</tblr-badge>
+<tblr-badge dot color="red" animated label="Unread"></tblr-badge>
+```
+
+Badges can also render as links:
+
+```html
+<tblr-badge href="https://tabler.io" color="azure" light pill>Tabler</tblr-badge>
+```
+
+## Navigation
+
+`tblr-nav` supports horizontal navigation by default. Use `align="right"` or `align="end"` on an item to push it to the right side.
+
+```html
+<tblr-nav label="Primary">
+  <tblr-nav-item label="Home" href="/" active></tblr-nav-item>
+  <tblr-nav-item label="Docs" href="/docs"></tblr-nav-item>
+  <tblr-nav-item label="Pricing" href="/pricing"></tblr-nav-item>
+  <tblr-nav-item label="Account" href="/account" align="right"></tblr-nav-item>
+</tblr-nav>
+```
+
+Use `vertical` for stacked navigation. Nested `tblr-nav-item` children become collapsible groups.
+
+```html
+<tblr-nav vertical label="Sidebar">
+  <tblr-nav-item label="Dashboard" href="#dashboard" active></tblr-nav-item>
+  <tblr-nav-item label="Settings" open>
+    <tblr-nav-item label="Profile" href="#profile"></tblr-nav-item>
+    <tblr-nav-item label="Billing" href="#billing"></tblr-nav-item>
+  </tblr-nav-item>
+  <tblr-nav-item label="Disabled" disabled></tblr-nav-item>
+</tblr-nav>
+```
+
+## Code preview
+
+`tblr-code-preview` renders a styled `<pre><code>` block. Provide code with the `value` attribute or as text content.
+
+```html
+<tblr-code-preview language="js" title="example.js" copy line-numbers>
+const message = 'Hello Tabler';
+console.log(message);
+</tblr-code-preview>
+
+<tblr-code-preview
+  language="html"
+  title="card.html"
+  value="&lt;tblr-card title=&quot;Hello&quot;&gt;Content&lt;/tblr-card&gt;"
+></tblr-code-preview>
+```
+
+Use `wrap` for long lines and `theme="plain"` for a light preview.
+
+## Format number
+
+`tblr-format-number` formats a numeric value with manual decimal and thousand separators, currency symbol placement, and decimal precision.
+
+```html
+<tblr-format-number
+  value="1234567.8"
+  thousand-separator=","
+  decimal-separator="."
+  precision="2"
+  currency-symbol="$"
+  symbol-position="left"
+></tblr-format-number>
+
+<tblr-format-number
+  value="1234567.8"
+  thousand-separator="."
+  decimal-separator=","
+  precision="2"
+  currency-symbol="EUR"
+  symbol-position="right"
+  symbol-space
+></tblr-format-number>
+```
+
+If `precision` is omitted, the component infers it from the provided value.
+
 ## Spinners
 
 Spinners show loading state with Tabler-style border, grow, and animated dot variants.
@@ -319,6 +436,46 @@ Editor events bubble and cross the shadow boundary:
 document.querySelector('tblr-rich-editor').addEventListener('input', event => {
   console.log(event.target.value);
 });
+```
+
+## TinyMCE rich text editor
+
+`tblr-tinymce-editor` loads TinyMCE behind the component and initializes it on the internal textarea. By default it loads TinyMCE 8 from Tiny Cloud with `no-api-key`; set `api-key` for production Tiny Cloud usage or `src` for a self-hosted TinyMCE build.
+
+```html
+<tblr-tinymce-editor
+  name="body"
+  label="TinyMCE message"
+  api-key="your-tiny-cloud-api-key"
+  height="360"
+  value="<p>Hello from <strong>TinyMCE</strong>.</p>"
+></tblr-tinymce-editor>
+
+<tblr-tinymce-editor
+  name="self_hosted_body"
+  label="Self-hosted TinyMCE"
+  src="/vendor/tinymce/tinymce.min.js"
+  license-key="gpl"
+  plugins="lists link table code wordcount"
+  toolbar="undo redo | bold italic | bullist numlist | link table | code"
+></tblr-tinymce-editor>
+
+Use `lazy` to defer TinyMCE initialization until the editor becomes visible on the page (uses `IntersectionObserver`).
+
+```html
+<tblr-tinymce-editor
+  lazy
+  name="lazy_body"
+  label="Lazy loaded TinyMCE"
+></tblr-tinymce-editor>
+```
+
+Pass TinyMCE init options with JSON in `config` when the option is not exposed as an attribute:
+
+```html
+<tblr-tinymce-editor
+  config='{"content_style":"body { font-family: Inter, sans-serif; }"}'
+></tblr-tinymce-editor>
 ```
 
 ## Tabs
