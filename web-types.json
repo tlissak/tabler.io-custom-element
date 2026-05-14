@@ -10,7 +10,10 @@
           "description": "Tabler Alert custom element",
           "attributes": [
             {
-              "name": "closable"
+              "name": "closable",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "countdown"
@@ -19,7 +22,10 @@
               "name": "duration"
             },
             {
-              "name": "open"
+              "name": "open",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "toast"
@@ -53,7 +59,10 @@
               "name": "debounce"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "empty-text"
@@ -92,10 +101,16 @@
               "name": "query-param"
             },
             {
-              "name": "readonly"
+              "name": "readonly",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "required"
+              "name": "required",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "src"
@@ -126,7 +141,10 @@
           "description": "Tabler Badge custom element",
           "attributes": [
             {
-              "name": "animated"
+              "name": "animated",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "blink"
@@ -135,7 +153,10 @@
               "name": "color"
             },
             {
-              "name": "dot"
+              "name": "dot",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "dot-color"
@@ -147,10 +168,16 @@
               "name": "label"
             },
             {
-              "name": "light"
+              "name": "light",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "pill"
+              "name": "pill",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "rel"
@@ -171,28 +198,41 @@
           "description": "Tabler Button custom element",
           "attributes": [
             {
-              "name": "action"
+              "name": "action",
+              "type": "any"
             },
             {
               "name": "appearance"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "icon-only"
+              "name": "icon-only",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
             },
             {
-              "name": "outline"
+              "name": "outline",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "size"
             },
             {
-              "name": "square"
+              "name": "square",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "state"
@@ -213,16 +253,28 @@
               "name": "footer"
             },
             {
-              "name": "header"
+              "name": "header",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "header-bg"
+              "name": "header-bg",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "middle"
+              "name": "middle",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "no-border"
+              "name": "no-border",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "subtitle"
@@ -237,16 +289,25 @@
           "description": "Tabler Checkbox custom element",
           "attributes": [
             {
-              "name": "checked"
+              "name": "checked",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "description"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "inline"
+              "name": "inline",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
@@ -275,7 +336,10 @@
               "name": "copied-label"
             },
             {
-              "name": "copy"
+              "name": "copy",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "copy-label"
@@ -284,7 +348,10 @@
               "name": "language"
             },
             {
-              "name": "line-numbers"
+              "name": "line-numbers",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "theme"
@@ -296,7 +363,10 @@
               "name": "value"
             },
             {
-              "name": "wrap"
+              "name": "wrap",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
@@ -321,7 +391,10 @@
               "name": "colors"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
@@ -363,7 +436,10 @@
               "name": "copy-label"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "error-label"
@@ -375,7 +451,10 @@
               "name": "from"
             },
             {
-              "name": "no-fallback"
+              "name": "no-fallback",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "success-label"
@@ -518,7 +597,10 @@
           "description": "Tabler Datepicker custom element",
           "attributes": [
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "help"
@@ -539,7 +621,10 @@
               "name": "name"
             },
             {
-              "name": "open"
+              "name": "open",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "placeholder"
@@ -568,7 +653,10 @@
           "description": "Tabler Dropdown custom element",
           "attributes": [
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "distance"
@@ -583,13 +671,19 @@
               "name": "placement"
             },
             {
-              "name": "same-width"
+              "name": "same-width",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "skidding"
             },
             {
-              "name": "stay-open-on-select"
+              "name": "stay-open-on-select",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
@@ -627,13 +721,19 @@
               "name": "button"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
             },
             {
-              "name": "multiple"
+              "name": "multiple",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "name"
@@ -669,7 +769,10 @@
               "name": "gap"
             },
             {
-              "name": "inline"
+              "name": "inline",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "justify"
@@ -678,7 +781,10 @@
               "name": "row-gap"
             },
             {
-              "name": "wrap"
+              "name": "wrap",
+              "value": {
+                "type": "boolean"
+              }
             }
           ]
         },
@@ -760,7 +866,10 @@
               "name": "columns"
             },
             {
-              "name": "dense"
+              "name": "dense",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "gap"
@@ -802,7 +911,10 @@
               "name": "base-url"
             },
             {
-              "name": "filled"
+              "name": "filled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
@@ -879,16 +991,28 @@
               "name": "action"
             },
             {
-              "name": "autosize"
+              "name": "autosize",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "clearable"
+              "name": "clearable",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "flush"
+              "name": "flush",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "help"
@@ -912,13 +1036,22 @@
               "name": "prefix"
             },
             {
-              "name": "readonly"
+              "name": "readonly",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "required"
+              "name": "required",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "rounded"
+              "name": "rounded",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "rows"
@@ -927,10 +1060,16 @@
               "name": "suffix"
             },
             {
-              "name": "textarea"
+              "name": "textarea",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "toggle-password"
+              "name": "toggle-password",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "type"
@@ -982,10 +1121,16 @@
               "name": "no-close"
             },
             {
-              "name": "open"
+              "name": "open",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "scrollable"
+              "name": "scrollable",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "size"
@@ -1028,7 +1173,10 @@
               "name": "orientation"
             },
             {
-              "name": "vertical"
+              "name": "vertical",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
@@ -1046,13 +1194,19 @@
           "description": "Tabler Nav Item custom element",
           "attributes": [
             {
-              "name": "active"
+              "name": "active",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "align"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "href"
@@ -1061,7 +1215,10 @@
               "name": "label"
             },
             {
-              "name": "open"
+              "name": "open",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "rel"
@@ -1103,10 +1260,16 @@
               "name": "boundary"
             },
             {
-              "name": "compact"
+              "name": "compact",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "next"
@@ -1151,13 +1314,19 @@
           "description": "Tabler Progress custom element",
           "attributes": [
             {
-              "name": "animated"
+              "name": "animated",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "color"
             },
             {
-              "name": "indeterminate"
+              "name": "indeterminate",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
@@ -1166,13 +1335,19 @@
               "name": "max"
             },
             {
-              "name": "show-value"
+              "name": "show-value",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "size"
             },
             {
-              "name": "striped"
+              "name": "striped",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "value"
@@ -1241,16 +1416,25 @@
           "description": "Tabler Radio custom element",
           "attributes": [
             {
-              "name": "checked"
+              "name": "checked",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "description"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "inline"
+              "name": "inline",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
@@ -1288,7 +1472,10 @@
               "name": "numeric"
             },
             {
-              "name": "sync"
+              "name": "sync",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
@@ -1322,7 +1509,10 @@
           "description": "Tabler Rich Editor custom element",
           "attributes": [
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "help"
@@ -1337,10 +1527,16 @@
               "name": "placeholder"
             },
             {
-              "name": "readonly"
+              "name": "readonly",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "required"
+              "name": "required",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "rows"
@@ -1373,10 +1569,16 @@
           "description": "Tabler Search custom element",
           "attributes": [
             {
-              "name": "button"
+              "name": "button",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "help"
@@ -1394,10 +1596,16 @@
               "name": "placeholder"
             },
             {
-              "name": "readonly"
+              "name": "readonly",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "rounded"
+              "name": "rounded",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "value"
@@ -1420,7 +1628,10 @@
               "name": "advanced"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "empty-text"
@@ -1432,7 +1643,10 @@
               "name": "label"
             },
             {
-              "name": "multiple"
+              "name": "multiple",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "name"
@@ -1444,13 +1658,19 @@
               "name": "placeholder"
             },
             {
-              "name": "required"
+              "name": "required",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "search"
             },
             {
-              "name": "searchable"
+              "name": "searchable",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "size"
@@ -1491,16 +1711,28 @@
           "description": "Tabler Switch custom element",
           "attributes": [
             {
-              "name": "align-end"
+              "name": "align-end",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "checked"
+              "name": "checked",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "inline"
+              "name": "inline",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
@@ -1526,7 +1758,10 @@
           "description": "Tabler Tab custom element",
           "attributes": [
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "label"
@@ -1547,7 +1782,10 @@
               "name": "value"
             },
             {
-              "name": "vertical"
+              "name": "vertical",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
@@ -1593,7 +1831,10 @@
               "name": "config"
             },
             {
-              "name": "disabled"
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "height"
@@ -1605,7 +1846,10 @@
               "name": "label"
             },
             {
-              "name": "lazy"
+              "name": "lazy",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "license-key"
@@ -1623,10 +1867,16 @@
               "name": "plugins"
             },
             {
-              "name": "readonly"
+              "name": "readonly",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
-              "name": "required"
+              "name": "required",
+              "value": {
+                "type": "boolean"
+              }
             },
             {
               "name": "rows"
