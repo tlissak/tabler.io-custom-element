@@ -1012,6 +1012,14 @@
                                 options="alabama:Alabama|alaska:Alaska|arizona:Arizona|arkansas:Arkansas|california:California|colorado:Colorado|south-carolina:South Carolina|wyoming:Wyoming"
                         ></tblr-select>
 
+                        <tblr-autocomplete
+                                label="Autocomplete"
+                                name="state"
+                                src="/examples/states.json"
+                                placeholder="Search states..."
+                                help="Results are loaded from an AJAX JSON source"
+                        ></tblr-autocomplete>
+
                         <tblr-input label="Input group" placeholder="Search for..." action="Go!"></tblr-input>
                         <tblr-input label="Prepend text" prefix="https://" placeholder="subdomain"></tblr-input>
                         <tblr-input label="Append text" suffix=".tabler.io" placeholder="yourfancydomain"></tblr-input>
@@ -1033,6 +1041,7 @@
                         &lt;tblr-input label="Text" placeholder="Input placeholder"&gt;&lt;/tblr-input&gt;
                         &lt;tblr-select label="Select" options="one:One|two:Two"&gt;&lt;/tblr-select&gt;
                         &lt;tblr-select label="Advanced select" searchable placeholder="Search..." options="one:One|two:Two"&gt;&lt;/tblr-select&gt;
+                        &lt;tblr-autocomplete src="/examples/states.json" placeholder="Search states..."&gt;&lt;/tblr-autocomplete&gt;
                     </tblr-code-preview>
                 </div>
             </section>

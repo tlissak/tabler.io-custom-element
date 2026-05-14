@@ -2,6 +2,7 @@ import { registry } from './registry.js';
 
 const modules = {
   'tblr-alert': () => import('../components/alert/tblr-alert.js'),
+  'tblr-autocomplete': () => import('../components/autocomplete/tblr-autocomplete.js'),
   'tblr-badge': () => import('../components/badge/tblr-badge.js'),
   'tblr-button': () => import('../components/button/tblr-button.js'),
   'tblr-card': () => import('../components/card/tblr-card.js'),

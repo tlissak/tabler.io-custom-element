@@ -12,6 +12,7 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] File Input
 - [x] Input
 - [x] Select
+- [x] Autocomplete
 - [x] Search
 - [x] Datepicker
 - [x] Icon
@@ -402,6 +403,13 @@ Inputs, selects, search controls, and datepickers autoload with the rest of the 
   options="alabama:Alabama|alaska:Alaska|arizona:Arizona|arkansas:Arkansas|california:California|colorado:Colorado|south-carolina:South Carolina|wyoming:Wyoming"
 ></tblr-select>
 
+<tblr-autocomplete
+  label="Autocomplete"
+  name="state"
+  src="/api/states"
+  placeholder="Search states..."
+></tblr-autocomplete>
+
 <tblr-search label="Icon search" placeholder="Search..."></tblr-search>
 <tblr-search label="Separated search" placeholder="Search for..." button></tblr-search>
 <tblr-search label="Rounded search" placeholder="Search..." rounded></tblr-search>
@@ -430,6 +438,22 @@ Inputs, selects, search controls, and datepickers autoload with the rest of the 
 ></tblr-file-input>
 
 <tblr-input label="Autosize textarea" textarea autosize rows="2" placeholder="Type something..."></tblr-input>
+```
+
+`tblr-autocomplete` appends the typed query to `src` with the `q` parameter by default. JSON responses can be an array, or an object with `results`, `items`, or `data`. Each item can be a string or an object with `label` and `value`.
+
+```html
+<tblr-autocomplete
+  label="Customer"
+  name="customer_id"
+  src="/api/customers/search"
+  query-param="term"
+  label-field="name"
+  value-field="id"
+  min-length="2"
+  debounce="300"
+  empty-text="No customers found"
+></tblr-autocomplete>
 ```
 
 ## WYSIWYG rich text editor
