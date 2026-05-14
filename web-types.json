@@ -199,6 +199,7 @@
           "attributes": [
             {
               "name": "action",
+              "description": "Renders the button as a compact icon-only action button with Tabler action styling. This is visual only and does not define click behavior.",
               "type": "any"
             },
             {
