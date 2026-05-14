@@ -1,12 +1,25 @@
-import { createReadStream, promises as fs } from 'node:fs';
+import { createReadStream, watch, promises as fs } from 'node:fs';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname);
-const port = Number.parseInt(process.env.PORT ?? '8080', 10);
+const port = Number.parseInt(process.env.PORT ?? '8090', 10);
 const host = process.env.HOST ?? '0.0.0.0';
+const liveReload = process.env.LIVE_RELOAD !== '0';
+const liveReloadPath = '/__live-reload';
+const liveReloadScript = `
+<script>
+(() => {
+  const source = new EventSource('${liveReloadPath}');
+  source.addEventListener('reload', () => window.location.reload());
+})();
+</script>`;
+const ignoredWatchDirs = new Set(['.git', '.idea', '.junie', 'node_modules']);
+const watchedDirs = new Map();
+const liveReloadClients = new Set();
+let reloadTimer = null;
 
 const mimeTypes = new Map([
   ['.css', 'text/css; charset=utf-8'],
@@ -43,6 +56,88 @@ function send(res, statusCode, body, headers = {}) {
     ...headers,
   });
   res.end(body);
+}
+
+function injectLiveReload(html) {
+  if (!liveReload) return html;
+  if (html.includes(liveReloadPath)) return html;
+  if (html.includes('</body>')) return html.replace('</body>', `${liveReloadScript}\n</body>`);
+
+  return `${html}${liveReloadScript}`;
+}
+
+function sendLiveReloadEvent() {
+  for (const client of liveReloadClients) {
+    client.write('event: reload\ndata: now\n\n');
+  }
+}
+
+function scheduleLiveReload() {
+  clearTimeout(reloadTimer);
+  reloadTimer = setTimeout(sendLiveReloadEvent, 120);
+}
+
+function serveLiveReload(req, res) {
+  if (!liveReload || req.method !== 'GET') {
+    send(res, 404, 'Not found', { 'Content-Type': 'text/plain; charset=utf-8' });
+    return;
+  }
+
+  res.writeHead(200, {
+    'Cache-Control': 'no-store',
+    'Connection': 'keep-alive',
+    'Content-Type': 'text/event-stream; charset=utf-8',
+  });
+  res.write(': connected\n\n');
+  liveReloadClients.add(res);
+  req.on('close', () => liveReloadClients.delete(res));
+}
+
+function shouldWatchDirectory(directoryPath) {
+  const name = path.basename(directoryPath);
+
+  return !ignoredWatchDirs.has(name);
+}
+
+async function watchDirectory(directoryPath) {
+  if (!liveReload || watchedDirs.has(directoryPath) || !shouldWatchDirectory(directoryPath)) return;
+
+  try {
+    const watcher = watch(directoryPath, async (_eventType, filename) => {
+      if (filename) {
+        const changedPath = path.join(directoryPath, filename.toString());
+
+        try {
+          const stats = await fs.stat(changedPath);
+          if (stats.isDirectory()) {
+            await watchDirectory(changedPath);
+          }
+        } catch {
+          // Deleted or transient files are still a valid reason to refresh the browser.
+        }
+      }
+
+      scheduleLiveReload();
+    });
+
+    watcher.on('error', () => {
+      watchedDirs.delete(directoryPath);
+    });
+
+    watchedDirs.set(directoryPath, watcher);
+  } catch {
+    return;
+  }
+
+  try {
+    const entries = await fs.readdir(directoryPath, { withFileTypes: true });
+
+    await Promise.all(entries
+      .filter(entry => entry.isDirectory())
+      .map(entry => watchDirectory(path.join(directoryPath, entry.name))));
+  } catch {
+    // Ignore directories that disappear while watchers are being registered.
+  }
 }
 
 async function serveEmployees(requestUrl, res) {
@@ -93,6 +188,11 @@ async function serveFile(req, res) {
 
   const requestUrl = new URL(req.url, `http://${host}:${port}`);
 
+  if (requestUrl.pathname === liveReloadPath) {
+    serveLiveReload(req, res);
+    return;
+  }
+
   if (requestUrl.pathname === '/api/employees') {
     await serveEmployees(requestUrl, res);
     return;
@@ -112,6 +212,17 @@ async function serveFile(req, res) {
       : resolvedPath;
     const extension = path.extname(filePath).toLowerCase();
     const contentType = mimeTypes.get(extension) ?? 'application/octet-stream';
+    const isHtml = extension === '.html';
+
+    if (isHtml && req.method === 'GET') {
+      const body = injectLiveReload(await fs.readFile(filePath, 'utf8'));
+
+      send(res, 200, body, {
+        'Content-Length': Buffer.byteLength(body),
+        'Content-Type': contentType,
+      });
+      return;
+    }
 
     res.writeHead(200, {
       'Cache-Control': 'no-store',
@@ -139,4 +250,8 @@ async function serveFile(req, res) {
 createServer(serveFile).listen(port, host, () => {
   console.log(`Serving ${root}`);
   console.log(`Open http://localhost:${port}/`);
+  if (liveReload) {
+    watchDirectory(root);
+    console.log('Live reload enabled. Set LIVE_RELOAD=0 to disable it.');
+  }
 });
