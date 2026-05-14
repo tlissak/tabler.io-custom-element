@@ -380,11 +380,26 @@ Inputs, selects, search controls, and datepickers autoload with the rest of the 
 ></tblr-select>
 
 <tblr-select
+  label="Advanced select"
+  searchable
+  value="california"
+  placeholder="Search states..."
+  options="alabama:Alabama|alaska:Alaska|arizona:Arizona|arkansas:Arkansas|california:California|colorado:Colorado|south-carolina:South Carolina|wyoming:Wyoming"
+></tblr-select>
+
+<tblr-select
   label="Select multiple"
   multiple
   size="3"
   value="one,two"
   options="one:One|two:Two|three:Three"
+></tblr-select>
+
+<tblr-select
+  label="Select multiple states"
+  multiple
+  value="arizona,south-carolina,wyoming"
+  options="alabama:Alabama|alaska:Alaska|arizona:Arizona|arkansas:Arkansas|california:California|colorado:Colorado|south-carolina:South Carolina|wyoming:Wyoming"
 ></tblr-select>
 
 <tblr-search label="Icon search" placeholder="Search..."></tblr-search>

@@ -990,11 +990,26 @@
                         ></tblr-select>
 
                         <tblr-select
+                                label="Advanced select"
+                                searchable
+                                value="california"
+                                placeholder="Search states..."
+                                options="alabama:Alabama|alaska:Alaska|arizona:Arizona|arkansas:Arkansas|california:California|colorado:Colorado|south-carolina:South Carolina|wyoming:Wyoming"
+                        ></tblr-select>
+
+                        <tblr-select
                                 label="Select multiple"
                                 multiple
                                 size="3"
                                 value="one,two"
                                 options="one:One|two:Two|three:Three"
+                        ></tblr-select>
+
+                        <tblr-select
+                                label="Select multiple states"
+                                multiple
+                                value="arizona,south-carolina,wyoming"
+                                options="alabama:Alabama|alaska:Alaska|arizona:Arizona|arkansas:Arkansas|california:California|colorado:Colorado|south-carolina:South Carolina|wyoming:Wyoming"
                         ></tblr-select>
 
                         <tblr-input label="Input group" placeholder="Search for..." action="Go!"></tblr-input>
@@ -1017,6 +1032,7 @@
                     <tblr-code-preview language="html" copy>
                         &lt;tblr-input label="Text" placeholder="Input placeholder"&gt;&lt;/tblr-input&gt;
                         &lt;tblr-select label="Select" options="one:One|two:Two"&gt;&lt;/tblr-select&gt;
+                        &lt;tblr-select label="Advanced select" searchable placeholder="Search..." options="one:One|two:Two"&gt;&lt;/tblr-select&gt;
                     </tblr-code-preview>
                 </div>
             </section>
