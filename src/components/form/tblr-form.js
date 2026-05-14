@@ -2,7 +2,7 @@ import { Component } from '../../core/component.js';
 
 const stylesheetUrl = new URL('./tblr-form.css', import.meta.url);
 const submitInputTypes = new Set(['submit', 'image']);
-const ignoredNativeTypes = new Set(['button', 'reset', 'submit', 'image']);
+const skippedInputTypes = new Set(['button', 'reset', 'submit', 'image']);
 
 function escapeHtml(value) {
   return String(value)
@@ -12,33 +12,36 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;');
 }
 
-function booleanAttribute(host, name) {
-  return host.hasAttribute(name);
-}
-
-function cssString(value) {
-  if (typeof CSS !== 'undefined' && CSS.escape) {
-    return CSS.escape(value);
-  }
-
-  return String(value).replaceAll('\\', '\\\\').replaceAll('"', '\\"');
-}
-
 function isPlainObject(value) {
   return Object.prototype.toString.call(value) === '[object Object]';
 }
 
-function appendAjaxParam(url, name, value) {
-  const nextUrl = new URL(url, window.location.href);
+function flattenObject(value, path = '', result = {}) {
+  if (value === undefined || value === null) return result;
 
-  if (!name) return nextUrl;
+  if (Array.isArray(value)) {
+    if (value.some(item => isPlainObject(item) || Array.isArray(item))) {
+      value.forEach((item, index) => flattenObject(item, `${path}[${index}]`, result));
+    } else {
+      result[path] = value;
+    }
 
-  nextUrl.searchParams.set(name, value ?? '1');
+    return result;
+  }
 
-  return nextUrl;
+  if (isPlainObject(value)) {
+    Object.entries(value).forEach(([key, childValue]) => {
+      flattenObject(childValue, path ? `${path}[${key}]` : key, result);
+    });
+
+    return result;
+  }
+
+  result[path] = value;
+  return result;
 }
 
-function parseJsonAttribute(value, fallback = {}) {
+function parseJson(value, fallback = {}) {
   if (!value) return fallback;
 
   try {
@@ -50,55 +53,29 @@ function parseJsonAttribute(value, fallback = {}) {
   }
 }
 
-function flattenObject(value, path = '', output = {}) {
-  if (value === undefined || value === null) return output;
+function nameSelector(name) {
+  const escaped = typeof CSS !== 'undefined' && CSS.escape
+    ? CSS.escape(name)
+    : String(name).replaceAll('\\', '\\\\').replaceAll('"', '\\"');
 
-  if (Array.isArray(value)) {
-    if (!value.some(item => isPlainObject(item) || Array.isArray(item))) {
-      output[path] = value;
-      return output;
-    }
-
-    value.forEach((item, index) => {
-      flattenObject(item, `${path}[${index}]`, output);
-    });
-
-    return output;
-  }
-
-  if (isPlainObject(value)) {
-    Object.entries(value).forEach(([key, childValue]) => {
-      flattenObject(childValue, path ? `${path}[${key}]` : key, output);
-    });
-
-    return output;
-  }
-
-  output[path] = value;
-  return output;
+  return `[name="${escaped}"]`;
 }
 
-function normalizeValues(value) {
+function valuesOf(value) {
   return Array.isArray(value) ? value : [value];
 }
 
-function valueMatches(left, right) {
+function sameValue(left, right) {
   return String(left ?? '') === String(right ?? '');
 }
 
-function hasValue(value) {
-  if (Array.isArray(value)) return value.length > 0;
-
-  return value !== undefined && value !== null && String(value) !== '';
-}
-
-function getElementValue(element) {
+function readValue(element) {
   if ('value' in element) return element.value;
 
   return element.getAttribute('value') ?? '';
 }
 
-function setElementValue(element, value) {
+function writeValue(element, value) {
   if ('value' in element) {
     element.value = value ?? '';
     return;
@@ -107,109 +84,95 @@ function setElementValue(element, value) {
   element.setAttribute('value', value ?? '');
 }
 
-function isNativeFormControl(element) {
+function isNativeControl(element) {
   return element instanceof HTMLInputElement
     || element instanceof HTMLSelectElement
     || element instanceof HTMLTextAreaElement
     || element instanceof HTMLButtonElement;
 }
 
-function isSubmitControl(element) {
+function isSubmitter(element) {
   if (element instanceof HTMLButtonElement) {
-    return (element.getAttribute('type') ?? 'submit').toLowerCase() === 'submit';
+    return (element.type || 'submit') === 'submit';
   }
 
   if (element instanceof HTMLInputElement) {
     return submitInputTypes.has(element.type);
   }
 
-  if (element instanceof HTMLElement && element.tagName.toLowerCase() === 'tblr-button') {
-    return (element.getAttribute('type') ?? 'button').toLowerCase() === 'submit';
-  }
-
-  return false;
+  return element instanceof HTMLElement
+    && element.tagName.toLowerCase() === 'tblr-button'
+    && (element.getAttribute('type') ?? 'button').toLowerCase() === 'submit';
 }
 
-function isTextEntryControl(element) {
-  if (element instanceof HTMLTextAreaElement) return false;
-  if (element instanceof HTMLButtonElement) return false;
-
-  if (element instanceof HTMLInputElement) {
-    return !['button', 'checkbox', 'file', 'hidden', 'image', 'radio', 'reset', 'submit'].includes(element.type);
-  }
-
+function isTablerControl(element) {
   return element instanceof HTMLElement
     && element.tagName.toLowerCase().startsWith('tblr-')
-    && !['tblr-button', 'tblr-checkbox', 'tblr-radio', 'tblr-switch', 'tblr-file-input'].includes(element.tagName.toLowerCase());
+    && element.hasAttribute('name');
 }
 
-function readCustomControlValues(element) {
-  const tag = element.tagName.toLowerCase();
-  const attrValue = element.getAttribute('value');
-
-  if (tag === 'tblr-checkbox' || tag === 'tblr-switch') {
-    if (!element.checked) return [];
-
-    return [attrValue ?? (tag === 'tblr-switch' ? 'on' : element.getAttribute('label') ?? element.textContent.trim() ?? 'on')];
-  }
-
-  if (tag === 'tblr-radio') {
-    if (!element.checked) return [];
-
-    return [attrValue ?? element.getAttribute('label') ?? element.textContent.trim() ?? 'on'];
-  }
-
-  if (tag === 'tblr-file-input') {
-    return [...(element.files ?? [])];
-  }
-
-  const value = getElementValue(element);
-
-  if (Array.isArray(value)) return value;
-  if (value === undefined || value === null) return [];
-
-  return [value];
-}
-
-function appendNativeControl(formData, control) {
-  const name = control.name;
-
-  if (!name || control.disabled) return;
+function appendNativeValue(formData, control) {
+  if (!control.name || control.disabled) return;
 
   if (control instanceof HTMLInputElement) {
-    if (ignoredNativeTypes.has(control.type)) return;
+    if (skippedInputTypes.has(control.type)) return;
     if ((control.type === 'checkbox' || control.type === 'radio') && !control.checked) return;
 
     if (control.type === 'file') {
-      [...control.files].forEach(file => formData.append(name, file));
+      [...control.files].forEach(file => formData.append(control.name, file));
       return;
     }
 
-    formData.append(name, control.value);
+    formData.append(control.name, control.value);
     return;
   }
 
   if (control instanceof HTMLSelectElement && control.multiple) {
-    [...control.selectedOptions].forEach(option => formData.append(name, option.value));
+    [...control.selectedOptions].forEach(option => formData.append(control.name, option.value));
     return;
   }
 
-  if (control instanceof HTMLTextAreaElement || control instanceof HTMLSelectElement) {
-    formData.append(name, control.value);
+  if (control instanceof HTMLSelectElement || control instanceof HTMLTextAreaElement) {
+    formData.append(control.name, control.value);
   }
 }
 
-function populateNativeControl(control, value) {
-  const values = normalizeValues(value);
+function appendTablerValue(formData, control) {
+  if (control.hasAttribute('disabled')) return;
+
+  const name = control.getAttribute('name');
+  const tag = control.tagName.toLowerCase();
+  const value = control.getAttribute('value');
+
+  if (!name) return;
+
+  if (tag === 'tblr-checkbox' || tag === 'tblr-switch' || tag === 'tblr-radio') {
+    if (control.checked) {
+      formData.append(name, value ?? (tag === 'tblr-switch' ? 'on' : control.getAttribute('label') ?? control.textContent.trim()));
+    }
+
+    return;
+  }
+
+  if (tag === 'tblr-file-input') {
+    [...(control.files ?? [])].forEach(file => formData.append(name, file));
+    return;
+  }
+
+  valuesOf(readValue(control)).forEach(item => formData.append(name, item));
+}
+
+function populateNative(control, value) {
+  const values = valuesOf(value);
 
   if (control instanceof HTMLInputElement) {
     if (control.type === 'checkbox') {
-      control.checked = values.includes(true) || values.some(item => valueMatches(item, control.value));
+      control.checked = values.includes(true) || values.some(item => sameValue(item, control.value));
       return;
     }
 
     if (control.type === 'radio') {
-      control.checked = values.some(item => valueMatches(item, control.value));
+      control.checked = values.some(item => sameValue(item, control.value));
       return;
     }
 
@@ -218,7 +181,7 @@ function populateNativeControl(control, value) {
 
   if (control instanceof HTMLSelectElement && control.multiple) {
     [...control.options].forEach(option => {
-      option.selected = values.some(item => valueMatches(item, option.value));
+      option.selected = values.some(item => sameValue(item, option.value));
     });
     return;
   }
@@ -226,108 +189,64 @@ function populateNativeControl(control, value) {
   control.value = value ?? '';
 }
 
-function populateCustomControl(control, value) {
+function populateTabler(control, value) {
   const tag = control.tagName.toLowerCase();
-  const values = normalizeValues(value);
+  const values = valuesOf(value);
 
-  if (tag === 'tblr-checkbox' || tag === 'tblr-switch') {
-    const checkedValue = control.getAttribute('value') ?? (tag === 'tblr-switch' ? 'on' : control.getAttribute('label') ?? control.textContent.trim());
-    control.checked = values.includes(true) || values.some(item => valueMatches(item, checkedValue));
-    return;
-  }
+  if (tag === 'tblr-checkbox' || tag === 'tblr-switch' || tag === 'tblr-radio') {
+    const controlValue = control.getAttribute('value')
+      ?? (tag === 'tblr-switch' ? 'on' : control.getAttribute('label') ?? control.textContent.trim());
 
-  if (tag === 'tblr-radio') {
-    const radioValue = control.getAttribute('value') ?? control.getAttribute('label') ?? control.textContent.trim();
-    control.checked = values.some(item => valueMatches(item, radioValue));
+    control.checked = values.includes(true) || values.some(item => sameValue(item, controlValue));
     return;
   }
 
   if (tag === 'tblr-file-input') return;
 
-  if (tag === 'tblr-select' && booleanAttribute(control, 'multiple')) {
-    setElementValue(control, values);
-    return;
-  }
-
-  setElementValue(control, Array.isArray(value) ? values[0] ?? '' : value ?? '');
+  writeValue(control, Array.isArray(value) && tag !== 'tblr-select' ? value[0] ?? '' : value ?? '');
 }
 
 class TblrForm extends HTMLElement {
-  static observedAttributes = [
-    'action',
-    'method',
-    'enctype',
-    'response-type',
-    'ajax-param',
-    'ajax-param-value',
-    'headers',
-    'data',
-    'disabled',
-    'loading',
-  ];
+  static observedAttributes = ['action', 'method', 'headers', 'data', 'loading'];
 
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
-    this.submitControlStates = new WeakMap();
-    this.activeRequest = null;
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleKeydown = this.handleKeydown.bind(this);
+    this.abortController = null;
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   connectedCallback() {
     this.render();
-    this.addEventListener('submit', this.handleSubmit);
-    this.addEventListener('click', this.handleClick);
-    this.addEventListener('keydown', this.handleKeydown);
+    this.addEventListener('submit', this.onSubmit);
+    this.addEventListener('click', this.onClick);
 
     if (this.hasAttribute('data')) {
-      this.populate(parseJsonAttribute(this.getAttribute('data'), {}));
+      this.populate(parseJson(this.getAttribute('data')));
     }
   }
 
   disconnectedCallback() {
-    this.removeEventListener('submit', this.handleSubmit);
-    this.removeEventListener('click', this.handleClick);
-    this.removeEventListener('keydown', this.handleKeydown);
-    this.activeRequest?.abort();
+    this.removeEventListener('submit', this.onSubmit);
+    this.removeEventListener('click', this.onClick);
+    this.abortController?.abort();
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (!this.isConnected || oldValue === newValue) return;
 
-    if (name === 'loading') {
-      this.syncLoadingState();
+    if (name === 'data') {
+      this.populate(parseJson(newValue));
       return;
     }
 
-    if (name === 'data') {
-      this.populate(parseJsonAttribute(newValue, {}));
+    if (name === 'loading') {
+      this.syncLoading();
       return;
     }
 
     this.render();
-  }
-
-  get form() {
-    return this.root.querySelector('form');
-  }
-
-  get loading() {
-    return booleanAttribute(this, 'loading');
-  }
-
-  set loading(value) {
-    this.toggleAttribute('loading', Boolean(value));
-  }
-
-  get method() {
-    return (this.getAttribute('method') || this.querySelector('form')?.getAttribute('method') || 'post').toLowerCase();
-  }
-
-  set method(value) {
-    this.setAttribute('method', value ?? 'post');
   }
 
   get action() {
@@ -338,46 +257,54 @@ class TblrForm extends HTMLElement {
     this.setAttribute('action', value ?? '');
   }
 
-  render() {
-    const method = this.method;
-    const action = this.action;
-    const enctype = this.getAttribute('enctype') || this.querySelector('form')?.getAttribute('enctype') || 'multipart/form-data';
+  get method() {
+    return (this.getAttribute('method') || this.querySelector('form')?.getAttribute('method') || 'post').toUpperCase();
+  }
 
+  set method(value) {
+    this.setAttribute('method', value ?? 'post');
+  }
+
+  get loading() {
+    return this.hasAttribute('loading');
+  }
+
+  set loading(value) {
+    this.toggleAttribute('loading', Boolean(value));
+  }
+
+  get form() {
+    return this.root.querySelector('form');
+  }
+
+  render() {
     this.root.innerHTML = `
       <link rel="stylesheet" href="${stylesheetUrl}">
-      <form part="form" class="form" method="${escapeHtml(method)}" action="${escapeHtml(action)}" enctype="${escapeHtml(enctype)}">
+      <form part="form" class="form" action="${escapeHtml(this.action)}" method="${escapeHtml(this.method.toLowerCase())}">
         <slot></slot>
       </form>
     `;
 
-    this.form?.addEventListener('submit', this.handleSubmit);
-    this.syncLoadingState();
+    this.form.addEventListener('submit', this.onSubmit);
+    this.syncLoading();
   }
 
   formData(submitter) {
     const formData = new FormData();
 
-    this.querySelectorAll('input, select, textarea, button').forEach(control => {
-      appendNativeControl(formData, control);
+    this.querySelectorAll('input, select, textarea').forEach(control => {
+      appendNativeValue(formData, control);
     });
 
     this.querySelectorAll('[name]').forEach(control => {
-      if (isNativeFormControl(control)) return;
-      if (!(control instanceof HTMLElement) || !control.tagName.toLowerCase().startsWith('tblr-')) return;
-      if (booleanAttribute(control, 'disabled')) return;
-
-      const name = control.getAttribute('name');
-      if (!name) return;
-
-      readCustomControlValues(control).forEach(value => {
-        formData.append(name, value);
-      });
+      if (!isNativeControl(control) && isTablerControl(control)) {
+        appendTablerValue(formData, control);
+      }
     });
 
-    const submitterName = submitter?.name || submitter?.getAttribute?.('name');
-
-    if (submitterName) {
-      formData.append(submitterName, submitter.value ?? submitter.getAttribute?.('value') ?? '');
+    const name = submitter?.name || submitter?.getAttribute?.('name');
+    if (name) {
+      formData.append(name, submitter.value ?? submitter.getAttribute?.('value') ?? '');
     }
 
     return formData;
@@ -387,128 +314,42 @@ class TblrForm extends HTMLElement {
     const values = flattenObject(data);
 
     Object.entries(values).forEach(([name, value]) => {
-      this.findControlsByName(name).forEach(control => {
-        if (isNativeFormControl(control)) {
-          populateNativeControl(control, value);
-          return;
+      this.querySelectorAll(`${nameSelector(name)}, ${nameSelector(`${name}[]`)}`).forEach(control => {
+        if (isNativeControl(control)) {
+          populateNative(control, value);
+        } else {
+          populateTabler(control, value);
         }
-
-        populateCustomControl(control, value);
       });
     });
 
     this.dispatchEvent(new CustomEvent('tblr-populate', {
       bubbles: true,
       composed: true,
-      detail: {
-        data,
-        values,
-      },
+      detail: { data, values },
     }));
   }
 
-  findControlsByName(name) {
-    const selectors = [`[name="${cssString(name)}"]`];
-
-    if (!name.endsWith('[]')) {
-      selectors.push(`[name="${cssString(`${name}[]`)}"]`);
-    }
-
-    return [...this.querySelectorAll(selectors.join(','))];
-  }
-
-  checkValidity() {
-    return this.getSubmittableControls().every(control => this.controlIsValid(control));
-  }
-
-  reportValidity() {
-    const invalidControl = this.getSubmittableControls().find(control => !this.controlIsValid(control));
-
-    if (!invalidControl) return true;
-
-    if (typeof invalidControl.reportValidity === 'function') {
-      return invalidControl.reportValidity();
-    }
-
-    invalidControl.focus?.();
-    return false;
-  }
-
   requestSubmit(submitter) {
-    if (this.loading || booleanAttribute(this, 'disabled')) return Promise.resolve(null);
-
-    if (!this.checkValidity()) {
-      this.reportValidity();
-      return Promise.resolve(null);
-    }
-
     return this.submit(submitter);
   }
 
-  submit(submitter) {
-    if (this.loading || booleanAttribute(this, 'disabled')) return Promise.resolve(null);
+  async submit(submitter) {
+    if (this.loading || this.hasAttribute('disabled')) return null;
 
-    return this.send(submitter);
-  }
-
-  reset() {
-    this.querySelectorAll('input, select, textarea').forEach(control => {
-      if (control instanceof HTMLInputElement && (control.type === 'checkbox' || control.type === 'radio')) {
-        control.checked = control.defaultChecked;
-        return;
-      }
-
-      if (control instanceof HTMLInputElement) {
-        control.value = control.type === 'file' ? '' : control.defaultValue ?? '';
-        return;
-      }
-
-      if (control instanceof HTMLSelectElement) {
-        [...control.options].forEach(option => {
-          option.selected = option.defaultSelected;
-        });
-        return;
-      }
-
-      control.value = control.defaultValue ?? '';
-    });
-
-    this.querySelectorAll('[name]').forEach(control => {
-      if (isNativeFormControl(control) || !(control instanceof HTMLElement) || !control.tagName.toLowerCase().startsWith('tblr-')) return;
-
-      const tag = control.tagName.toLowerCase();
-
-      if (tag === 'tblr-checkbox' || tag === 'tblr-radio' || tag === 'tblr-switch') {
-        control.checked = booleanAttribute(control, 'checked');
-        return;
-      }
-
-      if (tag === 'tblr-file-input') return;
-
-      setElementValue(control, control.getAttribute('value') ?? '');
-    });
-  }
-
-  async send(submitter) {
     const formData = this.formData(submitter);
     const request = this.createRequest(formData);
     const submitEvent = new CustomEvent('tblr-submit', {
       bubbles: true,
       cancelable: true,
       composed: true,
-      detail: {
-        formData,
-        request,
-        submitter,
-      },
+      detail: { formData, request, submitter },
     });
 
-    if (!this.dispatchEvent(submitEvent)) {
-      return null;
-    }
+    if (!this.dispatchEvent(submitEvent)) return null;
 
-    this.activeRequest?.abort();
-    this.activeRequest = new AbortController();
+    this.abortController?.abort();
+    this.abortController = new AbortController();
     this.loading = true;
 
     try {
@@ -517,26 +358,18 @@ class TblrForm extends HTMLElement {
         credentials: request.credentials,
         headers: request.headers,
         method: request.method,
-        signal: this.activeRequest.signal,
+        signal: this.abortController.signal,
       });
       const data = await this.readResponse(response);
 
       if (!response.ok) {
-        const error = new Error(`Request failed with ${response.status}`);
-        error.response = response;
-        error.data = data;
-        throw error;
+        throw Object.assign(new Error(`Request failed with ${response.status}`), { response, data });
       }
 
       this.dispatchEvent(new CustomEvent('tblr-success', {
         bubbles: true,
         composed: true,
-        detail: {
-          data,
-          formData,
-          response,
-          submitter,
-        },
+        detail: { data, formData, response, submitter },
       }));
 
       return data;
@@ -545,180 +378,105 @@ class TblrForm extends HTMLElement {
         this.dispatchEvent(new CustomEvent('tblr-error', {
           bubbles: true,
           composed: true,
-          detail: {
-            error,
-            formData,
-            response: error.response,
-            submitter,
-          },
+          detail: { error, formData, response: error.response, submitter },
         }));
       }
 
       throw error;
     } finally {
       this.loading = false;
-      this.activeRequest = null;
+      this.abortController = null;
       this.dispatchEvent(new CustomEvent('tblr-complete', {
         bubbles: true,
         composed: true,
-        detail: {
-          formData,
-          submitter,
-        },
+        detail: { formData, submitter },
       }));
     }
   }
 
   createRequest(formData) {
-    const method = this.method.toUpperCase();
+    const method = this.method;
+    const url = new URL(this.action, window.location.href);
     const headers = {
-      Accept: this.getAcceptHeader(),
-      ...parseJsonAttribute(this.getAttribute('headers'), {}),
+      Accept: this.acceptHeader,
+      ...parseJson(this.getAttribute('headers')),
     };
-    const credentials = this.getAttribute('credentials') ?? 'same-origin';
-    let url = this.action;
     let body = formData;
 
-    if (!booleanAttribute(this, 'no-ajax-param')) {
-      url = appendAjaxParam(url, this.getAttribute('ajax-param') ?? 'ajax', this.getAttribute('ajax-param-value') ?? '1').href;
+    if (!this.hasAttribute('no-ajax-param')) {
+      url.searchParams.set(this.getAttribute('ajax-param') ?? 'ajax', this.getAttribute('ajax-param-value') ?? '1');
     }
 
     if (method === 'GET') {
-      const requestUrl = new URL(url, window.location.href);
-      formData.forEach((value, key) => {
-        requestUrl.searchParams.append(key, value);
-      });
-      url = requestUrl.href;
+      formData.forEach((value, key) => url.searchParams.append(key, value));
       body = undefined;
     }
 
     return {
       body,
-      credentials,
+      credentials: this.getAttribute('credentials') ?? 'same-origin',
       headers,
       method,
-      url,
+      url: url.href,
     };
+  }
+
+  get acceptHeader() {
+    if (this.getAttribute('response-type') === 'text') return 'text/plain, */*';
+    if (this.getAttribute('response-type') === 'blob') return '*/*';
+
+    return 'application/json, text/plain;q=0.9, */*;q=0.8';
   }
 
   async readResponse(response) {
     const responseType = this.getAttribute('response-type') ?? 'json';
 
     if (response.status === 204) return null;
-
-    if (responseType === 'auto') {
-      const contentType = response.headers.get('content-type') ?? '';
-
-      if (contentType.includes('application/json')) return response.json();
-      return response.text();
-    }
-
     if (responseType === 'text') return response.text();
     if (responseType === 'blob') return response.blob();
     if (responseType === 'form-data') return response.formData();
+    if (responseType === 'auto') {
+      return (response.headers.get('content-type') ?? '').includes('application/json')
+        ? response.json()
+        : response.text();
+    }
 
     return response.json();
   }
 
-  getAcceptHeader() {
-    const responseType = this.getAttribute('response-type') ?? 'json';
-
-    if (responseType === 'text') return 'text/plain, */*';
-    if (responseType === 'blob') return '*/*';
-
-    return 'application/json, text/plain;q=0.9, */*;q=0.8';
-  }
-
-  handleSubmit(event) {
+  onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
-
-    this.requestSubmit(event.submitter).catch(error => {
-      if (error.name !== 'AbortError') {
-        console.error(error);
-      }
+    this.submit(event.submitter).catch(error => {
+      if (error.name !== 'AbortError') console.error(error);
     });
   }
 
-  handleClick(event) {
-    if (event.defaultPrevented || this.loading || booleanAttribute(this, 'disabled')) return;
+  onClick(event) {
+    const path = event.composedPath();
+    const submitter = path.find(node => (
+      node instanceof HTMLElement
+      && node.tagName.toLowerCase() === 'tblr-button'
+      && isSubmitter(node)
+    )) ?? path.find(node => node instanceof Element && isSubmitter(node));
 
-    const submitter = event.composedPath().find(node => node instanceof Element && isSubmitControl(node));
     if (!submitter) return;
 
     event.preventDefault();
-    this.requestSubmit(submitter).catch(error => {
-      if (error.name !== 'AbortError') {
-        console.error(error);
-      }
+    this.submit(submitter).catch(error => {
+      if (error.name !== 'AbortError') console.error(error);
     });
   }
 
-  handleKeydown(event) {
-    if (event.defaultPrevented || event.key !== 'Enter' || this.loading || booleanAttribute(this, 'disabled')) return;
+  syncLoading() {
+    const loading = this.loading || this.hasAttribute('disabled');
 
-    const target = event.composedPath().find(node => node instanceof Element && isTextEntryControl(node));
-    if (!target) return;
+    this.querySelectorAll('button, input, tblr-button').forEach(control => {
+      if (!isSubmitter(control)) return;
 
-    event.preventDefault();
-    this.requestSubmit().catch(error => {
-      if (error.name !== 'AbortError') {
-        console.error(error);
-      }
-    });
-  }
-
-  getSubmittableControls() {
-    return [...this.querySelectorAll('input, select, textarea, [name]')]
-      .filter(control => control instanceof HTMLElement)
-      .filter(control => !booleanAttribute(control, 'disabled'))
-      .filter(control => Boolean(control.getAttribute('name') || control.name));
-  }
-
-  controlIsValid(control) {
-    if (typeof control.checkValidity === 'function' && !control.checkValidity()) return false;
-
-    if (!booleanAttribute(control, 'required')) return true;
-
-    if (control instanceof HTMLInputElement && (control.type === 'checkbox' || control.type === 'radio')) {
-      return control.checked;
-    }
-
-    if (control.tagName?.toLowerCase() === 'tblr-checkbox' || control.tagName?.toLowerCase() === 'tblr-switch') {
-      return control.checked;
-    }
-
-    return hasValue(getElementValue(control));
-  }
-
-  getSubmitControls() {
-    return [...this.querySelectorAll('button, input, tblr-button')].filter(isSubmitControl);
-  }
-
-  syncLoadingState() {
-    const loading = this.loading || booleanAttribute(this, 'disabled');
-
-    this.getSubmitControls().forEach(control => {
-      if (!this.submitControlStates.has(control)) {
-        this.submitControlStates.set(control, {
-          disabled: booleanAttribute(control, 'disabled'),
-        });
-      }
-
-      const originalState = this.submitControlStates.get(control);
-      const shouldDisable = loading || originalState.disabled;
-
-      control.toggleAttribute('disabled', shouldDisable);
-
-      if ('disabled' in control) {
-        control.disabled = shouldDisable;
-      }
-
+      control.toggleAttribute('disabled', loading);
+      if ('disabled' in control) control.disabled = loading;
       control.classList.toggle('loading', loading);
-
-      if (!loading && !originalState.disabled) {
-        control.removeAttribute('disabled');
-      }
     });
   }
 }
