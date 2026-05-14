@@ -1,0 +1,1661 @@
+{
+  "$schema": "https://json.schemastore.org/web-types",
+  "name": "tabler-io-custom-element",
+  "version": "1.0.0",
+  "contributions": {
+    "html": {
+      "elements": [
+        {
+          "name": "tblr-alert",
+          "description": "Tabler Alert custom element",
+          "attributes": [
+            {
+              "name": "closable"
+            },
+            {
+              "name": "countdown"
+            },
+            {
+              "name": "duration"
+            },
+            {
+              "name": "open"
+            },
+            {
+              "name": "toast"
+            },
+            {
+              "name": "variant"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "duration",
+                "type": "any"
+              },
+              {
+                "name": "open",
+                "type": "any"
+              },
+              {
+                "name": "variant",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-autocomplete",
+          "description": "Tabler Autocomplete custom element",
+          "attributes": [
+            {
+              "name": "debounce"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "empty-text"
+            },
+            {
+              "name": "error-text"
+            },
+            {
+              "name": "free-text"
+            },
+            {
+              "name": "help"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "label-field"
+            },
+            {
+              "name": "label-value"
+            },
+            {
+              "name": "loading-text"
+            },
+            {
+              "name": "min-length"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "query-param"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "src"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "value-field"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "input",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-badge",
+          "description": "Tabler Badge custom element",
+          "attributes": [
+            {
+              "name": "animated"
+            },
+            {
+              "name": "blink"
+            },
+            {
+              "name": "color"
+            },
+            {
+              "name": "dot"
+            },
+            {
+              "name": "dot-color"
+            },
+            {
+              "name": "href"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "light"
+            },
+            {
+              "name": "pill"
+            },
+            {
+              "name": "rel"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "target"
+            },
+            {
+              "name": "variant"
+            }
+          ]
+        },
+        {
+          "name": "tblr-button",
+          "description": "Tabler Button custom element",
+          "attributes": [
+            {
+              "name": "action"
+            },
+            {
+              "name": "appearance"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "icon-only"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "square"
+            },
+            {
+              "name": "state"
+            },
+            {
+              "name": "type"
+            },
+            {
+              "name": "variant"
+            }
+          ]
+        },
+        {
+          "name": "tblr-card",
+          "description": "Tabler Card custom element",
+          "attributes": [
+            {
+              "name": "footer"
+            },
+            {
+              "name": "header"
+            },
+            {
+              "name": "header-bg"
+            },
+            {
+              "name": "middle"
+            },
+            {
+              "name": "no-border"
+            },
+            {
+              "name": "subtitle"
+            },
+            {
+              "name": "title"
+            }
+          ]
+        },
+        {
+          "name": "tblr-checkbox",
+          "description": "Tabler Checkbox custom element",
+          "attributes": [
+            {
+              "name": "checked"
+            },
+            {
+              "name": "description"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "inline"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "checked",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-code-preview",
+          "description": "Tabler Code Preview custom element",
+          "attributes": [
+            {
+              "name": "copied-label"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "copy-label"
+            },
+            {
+              "name": "language"
+            },
+            {
+              "name": "line-numbers"
+            },
+            {
+              "name": "theme"
+            },
+            {
+              "name": "title"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "wrap"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "copyLabel",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-colorpicker",
+          "description": "Tabler Colorpicker custom element",
+          "attributes": [
+            {
+              "name": "colors"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "type"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "selectedValues",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "type",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-copy-button",
+          "description": "Tabler Copy Button custom element",
+          "attributes": [
+            {
+              "name": "copy-label"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "error-label"
+            },
+            {
+              "name": "feedback-duration"
+            },
+            {
+              "name": "from"
+            },
+            {
+              "name": "no-fallback"
+            },
+            {
+              "name": "success-label"
+            },
+            {
+              "name": "tooltip-placement"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "copyIcon",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "currentLabel",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "disabled",
+                "type": "any"
+              },
+              {
+                "name": "errorIcon",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "successIcon",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-data-table",
+          "description": "Tabler Data Table custom element",
+          "attributes": [
+            {
+              "name": "columns"
+            },
+            {
+              "name": "description"
+            },
+            {
+              "name": "direction"
+            },
+            {
+              "name": "empty-text"
+            },
+            {
+              "name": "loading-text"
+            },
+            {
+              "name": "page"
+            },
+            {
+              "name": "page-sizes"
+            },
+            {
+              "name": "per-page"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "search-placeholder"
+            },
+            {
+              "name": "sort"
+            },
+            {
+              "name": "src"
+            },
+            {
+              "name": "title"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "columns",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "direction",
+                "type": "any"
+              },
+              {
+                "name": "page",
+                "type": "any"
+              },
+              {
+                "name": "pageSizes",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "perPage",
+                "type": "any"
+              },
+              {
+                "name": "search",
+                "type": "any"
+              },
+              {
+                "name": "sort",
+                "type": "any"
+              },
+              {
+                "name": "src",
+                "type": "any"
+              },
+              {
+                "name": "summaryText",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "totalPages",
+                "type": "any",
+                "read-only": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-datepicker",
+          "description": "Tabler Datepicker custom element",
+          "attributes": [
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "help"
+            },
+            {
+              "name": "icon"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "open"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-dropdown",
+          "description": "Tabler Dropdown custom element",
+          "attributes": [
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "distance"
+            },
+            {
+              "name": "hoist"
+            },
+            {
+              "name": "open"
+            },
+            {
+              "name": "placement"
+            },
+            {
+              "name": "same-width"
+            },
+            {
+              "name": "skidding"
+            },
+            {
+              "name": "stay-open-on-select"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "open",
+                "type": "any"
+              },
+              {
+                "name": "panel",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "triggerElement",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "triggerSlot",
+                "type": "any",
+                "read-only": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-file-input",
+          "description": "Tabler File Input custom element",
+          "attributes": [
+            {
+              "name": "accept"
+            },
+            {
+              "name": "button"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "multiple"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "files",
+                "type": "any",
+                "read-only": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-flex",
+          "description": "Tabler Flex custom element",
+          "attributes": [
+            {
+              "name": "align"
+            },
+            {
+              "name": "column-gap"
+            },
+            {
+              "name": "direction"
+            },
+            {
+              "name": "gap"
+            },
+            {
+              "name": "inline"
+            },
+            {
+              "name": "justify"
+            },
+            {
+              "name": "row-gap"
+            },
+            {
+              "name": "wrap"
+            }
+          ]
+        },
+        {
+          "name": "tblr-flex-item",
+          "description": "Tabler Flex Item custom element",
+          "attributes": [
+            {
+              "name": "align"
+            },
+            {
+              "name": "basis"
+            },
+            {
+              "name": "grow"
+            },
+            {
+              "name": "order"
+            },
+            {
+              "name": "shrink"
+            }
+          ]
+        },
+        {
+          "name": "tblr-format-number",
+          "description": "Tabler Format Number custom element",
+          "attributes": [
+            {
+              "name": "currency-symbol"
+            },
+            {
+              "name": "decimal-separator"
+            },
+            {
+              "name": "fallback"
+            },
+            {
+              "name": "precision"
+            },
+            {
+              "name": "symbol-position"
+            },
+            {
+              "name": "symbol-space"
+            },
+            {
+              "name": "thousand-separator"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "formattedValue",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-grid",
+          "description": "Tabler Grid custom element",
+          "attributes": [
+            {
+              "name": "align"
+            },
+            {
+              "name": "column-gap"
+            },
+            {
+              "name": "columns"
+            },
+            {
+              "name": "dense"
+            },
+            {
+              "name": "gap"
+            },
+            {
+              "name": "justify"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "row-gap"
+            }
+          ]
+        },
+        {
+          "name": "tblr-grid-item",
+          "description": "Tabler Grid Item custom element",
+          "attributes": [
+            {
+              "name": "align"
+            },
+            {
+              "name": "justify"
+            },
+            {
+              "name": "row-span"
+            },
+            {
+              "name": "span"
+            }
+          ]
+        },
+        {
+          "name": "tblr-icon",
+          "description": "Tabler Icon custom element",
+          "attributes": [
+            {
+              "name": "base-url"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "stroke"
+            },
+            {
+              "name": "variant"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "baseUrl",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "iconUrl",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "variant",
+                "type": "any",
+                "read-only": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-include",
+          "description": "Tabler Include custom element",
+          "attributes": [
+            {
+              "name": "allow-scripts"
+            },
+            {
+              "name": "mode"
+            },
+            {
+              "name": "src"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "allowScripts",
+                "type": "any"
+              },
+              {
+                "name": "mode",
+                "type": "any"
+              },
+              {
+                "name": "src",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-input",
+          "description": "Tabler Input custom element",
+          "attributes": [
+            {
+              "name": "action"
+            },
+            {
+              "name": "autosize"
+            },
+            {
+              "name": "clearable"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "flush"
+            },
+            {
+              "name": "help"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "mask"
+            },
+            {
+              "name": "maxlength"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "prefix"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "rounded"
+            },
+            {
+              "name": "rows"
+            },
+            {
+              "name": "suffix"
+            },
+            {
+              "name": "textarea"
+            },
+            {
+              "name": "toggle-password"
+            },
+            {
+              "name": "type"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "control",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-modal",
+          "description": "Tabler Modal custom element",
+          "attributes": [
+            {
+              "name": "action"
+            },
+            {
+              "name": "action-variant"
+            },
+            {
+              "name": "cancel"
+            },
+            {
+              "name": "centered"
+            },
+            {
+              "name": "close-label"
+            },
+            {
+              "name": "footer"
+            },
+            {
+              "name": "header-bg"
+            },
+            {
+              "name": "no-close"
+            },
+            {
+              "name": "open"
+            },
+            {
+              "name": "scrollable"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "static"
+            },
+            {
+              "name": "status"
+            },
+            {
+              "name": "subtitle"
+            },
+            {
+              "name": "title"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "focusableElements",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "open",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-nav",
+          "description": "Tabler Nav custom element",
+          "attributes": [
+            {
+              "name": "label"
+            },
+            {
+              "name": "orientation"
+            },
+            {
+              "name": "vertical"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "orientation",
+                "type": "any",
+                "read-only": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-nav-item",
+          "description": "Tabler Nav Item custom element",
+          "attributes": [
+            {
+              "name": "active"
+            },
+            {
+              "name": "align"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "href"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "open"
+            },
+            {
+              "name": "rel"
+            },
+            {
+              "name": "target"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "childItems",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "hasChildren",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "orientation",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "parentNav",
+                "type": "any",
+                "read-only": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-pagination",
+          "description": "Tabler Pagination custom element",
+          "attributes": [
+            {
+              "name": "boundary"
+            },
+            {
+              "name": "compact"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "next"
+            },
+            {
+              "name": "page"
+            },
+            {
+              "name": "pages"
+            },
+            {
+              "name": "previous"
+            },
+            {
+              "name": "siblings"
+            },
+            {
+              "name": "size"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "currentPage",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "page",
+                "type": "any"
+              },
+              {
+                "name": "totalPages",
+                "type": "any",
+                "read-only": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-progress",
+          "description": "Tabler Progress custom element",
+          "attributes": [
+            {
+              "name": "animated"
+            },
+            {
+              "name": "color"
+            },
+            {
+              "name": "indeterminate"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "show-value"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "striped"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "max",
+                "type": "any"
+              },
+              {
+                "name": "percent",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-qr-code",
+          "description": "Tabler Qr Code custom element",
+          "attributes": [
+            {
+              "name": "background"
+            },
+            {
+              "name": "error-correction"
+            },
+            {
+              "name": "fill"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "radius"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "canvas",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-radio",
+          "description": "Tabler Radio custom element",
+          "attributes": [
+            {
+              "name": "checked"
+            },
+            {
+              "name": "description"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "inline"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "checked",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-relative-time",
+          "description": "Tabler Relative Time custom element",
+          "attributes": [
+            {
+              "name": "date"
+            },
+            {
+              "name": "format"
+            },
+            {
+              "name": "lang"
+            },
+            {
+              "name": "numeric"
+            },
+            {
+              "name": "sync"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "date",
+                "type": "any"
+              },
+              {
+                "name": "format",
+                "type": "any"
+              },
+              {
+                "name": "numeric",
+                "type": "any"
+              },
+              {
+                "name": "relativeTime",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "sync",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-rich-editor",
+          "description": "Tabler Rich Editor custom element",
+          "attributes": [
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "help"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "rows"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "editor",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "sourceEditor",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-search",
+          "description": "Tabler Search custom element",
+          "attributes": [
+            {
+              "name": "button"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "help"
+            },
+            {
+              "name": "icon-start"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "rounded"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-select",
+          "description": "Tabler Select custom element",
+          "attributes": [
+            {
+              "name": "advanced"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "empty-text"
+            },
+            {
+              "name": "help"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "multiple"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "options"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "searchable"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-spinner",
+          "description": "Tabler Spinner custom element",
+          "attributes": [
+            {
+              "name": "color"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "type"
+            }
+          ]
+        },
+        {
+          "name": "tblr-switch",
+          "description": "Tabler Switch custom element",
+          "attributes": [
+            {
+              "name": "align-end"
+            },
+            {
+              "name": "checked"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "inline"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "checked",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-tab",
+          "description": "Tabler Tab custom element",
+          "attributes": [
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "value"
+            }
+          ]
+        },
+        {
+          "name": "tblr-tabs",
+          "description": "Tabler Tabs custom element",
+          "attributes": [
+            {
+              "name": "orientation"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "vertical"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "buttons",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "enabledButtons",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "orientation",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "tabs",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-tinymce-editor",
+          "description": "Tabler Tinymce Editor custom element",
+          "attributes": [
+            {
+              "name": "api-key"
+            },
+            {
+              "name": "cloud-channel"
+            },
+            {
+              "name": "config"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "height"
+            },
+            {
+              "name": "help"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "lazy"
+            },
+            {
+              "name": "license-key"
+            },
+            {
+              "name": "menubar"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "plugins"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "rows"
+            },
+            {
+              "name": "src"
+            },
+            {
+              "name": "toolbar"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "textarea",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "value",
+                "type": "any"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

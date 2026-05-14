@@ -1,5 +1,6 @@
 {
   "name": "@tabler-components/ui",
   "version": "1.0.0",
-  "type": "module"
+  "type": "module",
+  "web-types": "./web-types.json"
 }
