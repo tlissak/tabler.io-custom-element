@@ -32,6 +32,59 @@ function attributeValue(host, name) {
   return host.getAttribute(name) ?? '';
 }
 
+function isMaskToken(char) {
+  return char === '_' || char === '9' || char === '#' || char === 'A' || char === '*';
+}
+
+function matchesMaskToken(char, token) {
+  if (token === '_' || token === '9' || token === '#') return /\d/.test(char);
+  if (token === 'A') return /[a-z]/i.test(char);
+  if (token === '*') return /[a-z0-9]/i.test(char);
+
+  return false;
+}
+
+function stripMaskValue(value, mask) {
+  const tokens = [...new Set([...mask].filter(isMaskToken))];
+
+  return [...String(value ?? '')].filter(char => (
+    tokens.some(token => matchesMaskToken(char, token))
+  )).join('');
+}
+
+function applyMask(value, mask) {
+  const rawValue = stripMaskValue(value, mask);
+  let rawIndex = 0;
+  let output = '';
+
+  if (!rawValue) return '';
+
+  for (const maskChar of mask) {
+    if (!isMaskToken(maskChar)) {
+      output += maskChar;
+      continue;
+    }
+
+    let nextChar = '';
+
+    while (rawIndex < rawValue.length) {
+      const candidate = rawValue[rawIndex];
+      rawIndex += 1;
+
+      if (matchesMaskToken(candidate, maskChar)) {
+        nextChar = candidate;
+        break;
+      }
+    }
+
+    if (!nextChar) break;
+
+    output += nextChar;
+  }
+
+  return output;
+}
+
 class TblrInput extends HTMLElement {
   static observedAttributes = [
     'name',
@@ -47,6 +100,7 @@ class TblrInput extends HTMLElement {
     'autosize',
     'rows',
     'maxlength',
+    'mask',
     'prefix',
     'suffix',
     'action',
@@ -84,8 +138,11 @@ class TblrInput extends HTMLElement {
   }
 
   set value(value) {
-    this.setAttribute('value', value ?? '');
-    if (this.control) this.control.value = value ?? '';
+    const mask = this.getAttribute('mask');
+    const nextValue = mask ? applyMask(value ?? '', mask) : value ?? '';
+
+    this.setAttribute('value', nextValue);
+    if (this.control) this.control.value = nextValue;
   }
 
   get control() {
@@ -154,6 +211,8 @@ class TblrInput extends HTMLElement {
 
     if (isTextarea) {
       control.value = this.getAttribute('value') ?? '';
+    } else if (this.getAttribute('mask')) {
+      control.value = applyMask(control.value, this.getAttribute('mask'));
     }
 
     control.addEventListener('input', this.handleInput);
@@ -172,6 +231,7 @@ class TblrInput extends HTMLElement {
   renderInput(type) {
     const safeType = textLikeTypes.has(type) ? type : 'text';
     const renderedType = safeType === 'password' && this.passwordVisible ? 'text' : safeType;
+    const maxlength = this.getAttribute('mask')?.length ?? this.getAttribute('maxlength');
 
     return `
       <input
@@ -184,7 +244,7 @@ class TblrInput extends HTMLElement {
         ${booleanAttribute(this, 'disabled') ? 'disabled' : ''}
         ${booleanAttribute(this, 'readonly') ? 'readonly' : ''}
         ${booleanAttribute(this, 'required') ? 'required' : ''}
-        ${this.getAttribute('maxlength') ? `maxlength="${escapeHtml(this.getAttribute('maxlength'))}"` : ''}
+        ${maxlength ? `maxlength="${escapeHtml(maxlength)}"` : ''}
       >
     `;
   }
@@ -261,6 +321,18 @@ class TblrInput extends HTMLElement {
   }
 
   handleInput(event) {
+    const mask = this.getAttribute('mask');
+
+    if (mask && event.target.tagName.toLowerCase() !== 'textarea') {
+      const selectionStart = event.target.selectionStart ?? event.target.value.length;
+      const rawBeforeCaret = stripMaskValue(event.target.value.slice(0, selectionStart), mask);
+      const maskedValue = applyMask(event.target.value, mask);
+      const nextCaret = applyMask(rawBeforeCaret, mask).length;
+
+      event.target.value = maskedValue;
+      event.target.setSelectionRange?.(nextCaret, nextCaret);
+    }
+
     this.reflectingValue = true;
     this.setAttribute('value', event.target.value);
     this.reflectingValue = false;

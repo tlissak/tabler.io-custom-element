@@ -442,6 +442,8 @@ Inputs, selects, search controls, and datepickers autoload with the rest of the 
 <tblr-input label="Input group" placeholder="Search for..." action="Go!"></tblr-input>
 <tblr-input label="Prepend text" prefix="https://" placeholder="subdomain"></tblr-input>
 <tblr-input label="Append text" suffix=".tabler.io" placeholder="yourfancydomain"></tblr-input>
+<tblr-input label="Date mask" mask="__/__/____" placeholder="__/__/____"></tblr-input>
+<tblr-input label="Telephone mask" type="tel" mask="(__) ____-____" placeholder="(__) ____-____"></tblr-input>
 
 <tblr-select
   label="Select"
@@ -508,6 +510,8 @@ Inputs, selects, search controls, and datepickers autoload with the rest of the 
 
 <tblr-input label="Autosize textarea" textarea autosize rows="2" placeholder="Type something..."></tblr-input>
 ```
+
+Input masks use `_`, `9`, or `#` for digits, `A` for letters, and `*` for letters or digits. Other characters are inserted as literals while typing.
 
 `tblr-autocomplete` appends the typed query to `src` with the `q` parameter by default. JSON responses can be an array, or an object with `results`, `items`, or `data`. Each item can be a string or an object with `label` and `value`.
 
