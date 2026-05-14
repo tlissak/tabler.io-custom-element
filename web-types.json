@@ -754,6 +754,78 @@
           }
         },
         {
+          "name": "tblr-form",
+          "description": "Tabler AJAX Form custom element",
+          "attributes": [
+            {
+              "name": "action"
+            },
+            {
+              "name": "ajax-param"
+            },
+            {
+              "name": "ajax-param-value"
+            },
+            {
+              "name": "credentials"
+            },
+            {
+              "name": "data"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "enctype"
+            },
+            {
+              "name": "headers"
+            },
+            {
+              "name": "loading",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "method"
+            },
+            {
+              "name": "no-ajax-param",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "response-type"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "action",
+                "type": "any"
+              },
+              {
+                "name": "form",
+                "type": "any",
+                "read-only": true
+              },
+              {
+                "name": "loading",
+                "type": "any"
+              },
+              {
+                "name": "method",
+                "type": "any"
+              }
+            ]
+          }
+        },
+        {
           "name": "tblr-flex",
           "description": "Tabler Flex custom element",
           "attributes": [

@@ -16,6 +16,7 @@ const modules = {
   'tblr-file-input': () => import('../components/file-input/tblr-file-input.js'),
   'tblr-flex': () => import('../components/flex/tblr-flex.js'),
   'tblr-flex-item': () => import('../components/flex/tblr-flex.js'),
+  'tblr-form': () => import('../components/form/tblr-form.js'),
   'tblr-format-number': () => import('../components/format-number/tblr-format-number.js'),
   'tblr-grid': () => import('../components/grid/tblr-grid.js'),
   'tblr-grid-item': () => import('../components/grid/tblr-grid.js'),

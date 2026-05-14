@@ -10,6 +10,7 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Radio
 - [x] Switch
 - [x] File Input
+- [x] Form
 - [x] Input
 - [x] Select
 - [x] Autocomplete
@@ -521,7 +522,76 @@ Use `max` when the value is not based on 100.
 
 ## Form controls
 
-Inputs, selects, search controls, and datepickers autoload with the rest of the components.
+Forms, inputs, selects, search controls, and datepickers autoload with the rest of the components.
+`tblr-form` prevents normal submission, sends `fetch()` to the form action, appends `ajax=1` by default, and exposes `populate(data)` for nested objects using bracket names such as `user[name]`.
+
+```html
+<tblr-form id="profile-form" action="/api/profile" method="post">
+  <tblr-input name="user[name]" label="Name"></tblr-input>
+  <tblr-input name="user[email]" label="Email" type="email"></tblr-input>
+  <tblr-select
+    name="role"
+    label="Role"
+    value="editor"
+    options="admin:Admin|editor:Editor|viewer:Viewer"
+  ></tblr-select>
+  <tblr-checkbox name="active" value="1" label="Active"></tblr-checkbox>
+  <tblr-button type="submit">Save</tblr-button>
+</tblr-form>
+
+<script type="module">
+  const form = document.querySelector('#profile-form');
+
+  form.populate({
+    user: {
+      name: 'Jane Doe',
+      email: 'jane@example.com',
+    },
+    role: 'admin',
+    active: true,
+  });
+
+  form.addEventListener('tblr-success', event => {
+    console.log('Saved:', event.detail.data);
+  });
+
+  form.addEventListener('tblr-error', event => {
+    console.error('Save failed:', event.detail.error);
+  });
+</script>
+```
+
+Listen to `tblr-form` lifecycle events directly on the form element:
+
+```js
+const form = document.querySelector('#profile-form');
+
+form.addEventListener('tblr-submit', event => {
+  // Fires before fetch(). Call event.preventDefault() to cancel.
+  console.log('Submitting to:', event.detail.request.url);
+  console.log('FormData:', event.detail.formData);
+  console.log('Submitter:', event.detail.submitter);
+});
+
+form.addEventListener('tblr-success', event => {
+  // Fires after a successful HTTP response.
+  console.log('Response data:', event.detail.data);
+  console.log('Response:', event.detail.response);
+  console.log('FormData:', event.detail.formData);
+});
+
+form.addEventListener('tblr-error', event => {
+  // Fires when fetch fails or the response is not ok.
+  console.error('Request error:', event.detail.error);
+  console.log('Response:', event.detail.response);
+  console.log('FormData:', event.detail.formData);
+});
+
+form.addEventListener('tblr-complete', event => {
+  // Fires after success or error, when loading state has been cleared.
+  console.log('Request complete:', event.detail.formData);
+});
+```
 
 ```html
 <tblr-input label="Text" placeholder="Input placeholder"></tblr-input>

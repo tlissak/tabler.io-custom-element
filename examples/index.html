@@ -150,6 +150,19 @@
             gap: 12px;
         }
 
+        .form-result {
+            width: 100%;
+            min-height: 120px;
+            margin: 0;
+            padding: 12px;
+            border: 1px solid var(--tblr-border-color);
+            border-radius: var(--tblr-radius);
+            background: var(--tblr-bg-surface);
+            color: var(--tblr-body-color);
+            font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            white-space: pre-wrap;
+        }
+
         .inline-controls {
             display: flex;
             flex-wrap: wrap;
@@ -1215,7 +1228,64 @@
 
         <section id="form-controls">
             <h1 class="section-title">TBLR Form Controls</h1>
-            <p>Tabler-style inputs, selects, and search controls.</p>
+            <p>Tabler-style inputs, selects, and search controls with AJAX form example.</p>
+
+            <section class="flex" aria-label="AJAX form example">
+                <div class="panel panel-main">
+                    <tblr-form id="ajax-profile-form" action="/api/employees" method="get">
+                        <input type="hidden" name="perPage" value="5">
+                        <div class="form-grid">
+                            <tblr-input name="search" label="Employee search" placeholder="Search employees"></tblr-input>
+                            <tblr-select
+                                    name="sort"
+                                    label="Sort by"
+                                    options="name:Name|city:City|status:Status|startDate:Start date"
+                            ></tblr-select>
+                            <tblr-select
+                                    name="direction"
+                                    label="Direction"
+                                    options="asc:Ascending|desc:Descending"
+                            ></tblr-select>
+                            <tblr-checkbox name="includeInactive" value="1" label="Include inactive records"></tblr-checkbox>
+                            <div class="form-wide group">
+                                <tblr-button type="submit">
+                                    <tblr-icon name="send"></tblr-icon>
+                                    Fetch results
+                                </tblr-button>
+                                <tblr-button id="populate-ajax-form" type="button" variant="light">
+                                    <tblr-icon name="database-import"></tblr-icon>
+                                    Populate from object
+                                </tblr-button>
+                            </div>
+                            <pre id="ajax-form-result" class="form-result form-wide">Submit the form to see the AJAX response.</pre>
+                        </div>
+                    </tblr-form>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-form id="profile-form" action="/api/profile" method="post"&gt;
+                        &lt;tblr-input name="user[name]" label="Name"&gt;&lt;/tblr-input&gt;
+                        &lt;tblr-select name="role" label="Role" options="admin:Admin|editor:Editor"&gt;&lt;/tblr-select&gt;
+                        &lt;tblr-checkbox name="active" value="1" label="Active"&gt;&lt;/tblr-checkbox&gt;
+                        &lt;tblr-button type="submit"&gt;Save&lt;/tblr-button&gt;
+                        &lt;/tblr-form&gt;
+
+                        &lt;script&gt;
+                          const form = document.querySelector('#profile-form');
+                          form.populate({
+                            user: { name: 'Jane Doe' },
+                            role: 'editor',
+                            active: true,
+                          });
+
+                          form.addEventListener('tblr-success', event =&gt; {
+                            console.log(event.detail.data);
+                          });
+                        &lt;/script&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
 
             <section class="flex" aria-label="Form control examples">
                 <div class="panel panel-main">
@@ -1757,6 +1827,46 @@
     if (syncedRelativeTime) {
         syncedRelativeTime.date = new Date(Date.now() - 60 * 1000);
     }
+
+    const ajaxFormSample = {
+        search: 'Austin',
+        sort: 'name',
+        direction: 'asc',
+        includeInactive: true,
+    };
+    const ajaxForm = document.getElementById('ajax-profile-form');
+    const ajaxFormResult = document.getElementById('ajax-form-result');
+
+    function populateAjaxForm() {
+        ajaxForm?.populate(ajaxFormSample);
+        if (ajaxFormResult) {
+            ajaxFormResult.textContent = JSON.stringify(ajaxFormSample, null, 2);
+        }
+    }
+
+    populateAjaxForm();
+    document.getElementById('populate-ajax-form')?.addEventListener('click', populateAjaxForm);
+
+    ajaxForm?.addEventListener('tblr-submit', () => {
+        if (ajaxFormResult) {
+            ajaxFormResult.textContent = 'Loading...';
+        }
+    });
+
+    ajaxForm?.addEventListener('tblr-success', event => {
+        if (!ajaxFormResult) return;
+
+        ajaxFormResult.textContent = JSON.stringify({
+            total: event.detail.data.total,
+            rows: event.detail.data.data,
+        }, null, 2);
+    });
+
+    ajaxForm?.addEventListener('tblr-error', event => {
+        if (ajaxFormResult) {
+            ajaxFormResult.textContent = event.detail.error.message;
+        }
+    });
 
     const modalTriggers = {
         'open-simple-modal': 'simple-modal',
