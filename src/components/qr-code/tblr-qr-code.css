@@ -1,0 +1,20 @@
+:host {
+  display: inline-block;
+  color: var(--tblr-qr-code-fill, #000000);
+  background: var(--tblr-qr-code-background, transparent);
+  font-family: var(--tblr-qr-code-font-family, var(--tblr-font-sans, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif));
+  line-height: 0;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.base {
+  display: block;
+  width: var(--tblr-qr-code-size, auto);
+  height: var(--tblr-qr-code-size, auto);
+  max-width: 100%;
+  border-radius: var(--tblr-qr-code-border-radius, 0);
+  background: inherit;
+}

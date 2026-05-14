@@ -305,6 +305,7 @@
                 <tblr-nav-item label="Dropdown" href="#dropdown"></tblr-nav-item>
                 <tblr-nav-item label="Code Preview" href="#code-preview"></tblr-nav-item>
                 <tblr-nav-item label="Format Number" href="#format-number"></tblr-nav-item>
+                <tblr-nav-item label="QR Code" href="#qr-code"></tblr-nav-item>
                 <tblr-nav-item label="Cards" href="#cards"></tblr-nav-item>
                 <tblr-nav-item label="Alerts & Toasts" href="#alerts"></tblr-nav-item>
                 <tblr-nav-item label="Copy Button" href="#copy-button"></tblr-nav-item>
@@ -814,6 +815,49 @@
             </section>
         </section>
 
+        <section id="qr-code">
+            <h1 class="section-title">TBLR QR Code</h1>
+            <p>Canvas QR codes with size, color, radius, and error correction controls.</p>
+
+            <section class="flex" aria-label="QR code examples">
+                <div class="panel panel-main">
+                    <div class="group">
+                        <p class="label">Standard</p>
+                        <tblr-qr-code
+                                value="https://tabler.io/"
+                                label="Scan this code to visit Tabler"
+                        ></tblr-qr-code>
+
+                        <tblr-qr-code
+                                value="https://tabler.io/docs"
+                                label="Scan this code to visit Tabler docs"
+                                size="96"
+                        ></tblr-qr-code>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Styled modules</p>
+                        <tblr-qr-code
+                                value="https://tabler.io/"
+                                label="Scan this styled code to visit Tabler"
+                                size="160"
+                                fill="#206bc4"
+                                background="#ffffff"
+                                radius="0.35"
+                                error-correction="Q"
+                        ></tblr-qr-code>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-qr-code value="https://tabler.io/" label="Scan this code"&gt;&lt;/tblr-qr-code&gt;
+                        &lt;tblr-qr-code value="https://tabler.io/" size="192" fill="#206bc4" radius="0.35"&gt;&lt;/tblr-qr-code&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
         <section id="cards">
             <h1 class="section-title">TBLR Cards</h1>
             <p>Tabler-style cards for common content blocks.</p>
@@ -1037,6 +1081,7 @@
                         <tblr-input label="Required" placeholder="Required..." required></tblr-input>
                         <tblr-input label="Disabled" value="Well, she turned me into a newt." disabled></tblr-input>
                         <tblr-input label="Readonly" value="Well, how'd you become king, then?" readonly></tblr-input>
+                        <tblr-input label="Clearable" value="Clear me" clearable></tblr-input>
                         <tblr-input label="Password" type="password" value="secret-password"
                                     toggle-password></tblr-input>
 
@@ -1105,6 +1150,7 @@
                     <p class="label">Sample Code</p>
                     <tblr-code-preview language="html" copy>
                         &lt;tblr-input label="Text" placeholder="Input placeholder"&gt;&lt;/tblr-input&gt;
+                        &lt;tblr-input label="Clearable" value="Clear me" clearable&gt;&lt;/tblr-input&gt;
                         &lt;tblr-select label="Select" options="one:One|two:Two"&gt;&lt;/tblr-select&gt;
                         &lt;tblr-select label="Advanced select" searchable placeholder="Search..." options="one:One|two:Two"&gt;&lt;/tblr-select&gt;
                         &lt;tblr-autocomplete src="/examples/states.json" placeholder="Search states..."&gt;&lt;/tblr-autocomplete&gt;

@@ -30,6 +30,7 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Nav
 - [x] Code Preview
 - [x] Format Number
+- [x] QR Code
 - [x] Dropdown
 - [ ] Carousel
 - [ ] Collapse - Accordion
@@ -372,6 +373,28 @@ Use `wrap` for long lines and `theme="plain"` for a light preview.
 
 If `precision` is omitted, the component infers it from the provided value.
 
+## QR Code
+
+`tblr-qr-code` generates a QR code canvas from a string value. Its API follows the Shoelace/Web Awesome component shape with `value`, `label`, `size`, `fill`, `background`, `radius`, and `error-correction`.
+
+```html
+<tblr-qr-code
+  value="https://tabler.io/"
+  label="Scan this code to visit Tabler"
+></tblr-qr-code>
+
+<tblr-qr-code
+  value="https://tabler.io/"
+  size="192"
+  fill="#206bc4"
+  background="#ffffff"
+  radius="0.35"
+  error-correction="Q"
+></tblr-qr-code>
+```
+
+Supported error correction levels are `L`, `M`, `Q`, and `H`. The default is `H`.
+
 ## Spinners
 
 Spinners show loading state with Tabler-style border, grow, and animated dot variants.
@@ -397,6 +420,7 @@ Inputs, selects, search controls, and datepickers autoload with the rest of the 
 ```html
 <tblr-input label="Text" placeholder="Input placeholder"></tblr-input>
 <tblr-input label="Required" placeholder="Required..." required></tblr-input>
+<tblr-input label="Clearable" value="Clear me" clearable></tblr-input>
 <tblr-input label="Password" type="password" value="secret-password" toggle-password></tblr-input>
 <tblr-input label="Textarea" textarea rows="5" maxlength="100"></tblr-input>
 <tblr-input label="Input group" placeholder="Search for..." action="Go!"></tblr-input>
