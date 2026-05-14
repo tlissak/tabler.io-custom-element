@@ -51,6 +51,7 @@ class TblrInput extends HTMLElement {
     'suffix',
     'action',
     'toggle-password',
+    'clearable',
     'rounded',
     'flush',
   ];
@@ -64,6 +65,7 @@ class TblrInput extends HTMLElement {
     this.handleChange = this.handleChange.bind(this);
     this.handleAction = this.handleAction.bind(this);
     this.handlePasswordToggle = this.handlePasswordToggle.bind(this);
+    this.handleClear = this.handleClear.bind(this);
   }
 
   connectedCallback() {
@@ -107,6 +109,10 @@ class TblrInput extends HTMLElement {
     const suffix = this.getAttribute('suffix');
     const action = this.getAttribute('action');
     const hasPasswordToggle = type === 'password' && booleanAttribute(this, 'toggle-password') && !isTextarea;
+    const hasClearButton = !isTextarea
+      && booleanAttribute(this, 'clearable')
+      && !disabled
+      && !readonly;
     const controlMarkup = isTextarea ? this.renderTextarea() : this.renderInput(type);
 
     this.root.innerHTML = `
@@ -124,6 +130,7 @@ class TblrInput extends HTMLElement {
           ${prefix ? '<span part="prefix" class="addon prefix"></span>' : '<slot name="prefix"></slot>'}
           ${controlMarkup}
           ${suffix ? '<span part="suffix" class="addon suffix"></span>' : '<slot name="suffix"></slot>'}
+          ${hasClearButton ? this.renderClearButton() : ''}
           ${hasPasswordToggle ? this.renderPasswordToggle() : ''}
           ${action ? '<button part="action" class="action suffix" type="button"></button>' : '<slot name="action"></slot>'}
         </span>
@@ -136,6 +143,7 @@ class TblrInput extends HTMLElement {
     const prefixEl = this.root.querySelector('.prefix.addon');
     const suffixEl = this.root.querySelector('.suffix.addon');
     const actionEl = this.root.querySelector('.action');
+    const clearEl = this.root.querySelector('.clear-button');
     const passwordToggleEl = this.root.querySelector('.password-toggle');
     const helpEl = this.root.querySelector('.help');
 
@@ -151,6 +159,7 @@ class TblrInput extends HTMLElement {
     control.addEventListener('input', this.handleInput);
     control.addEventListener('change', this.handleChange);
     actionEl?.addEventListener('click', this.handleAction);
+    clearEl?.addEventListener('click', this.handleClear);
     passwordToggleEl?.addEventListener('click', this.handlePasswordToggle);
 
     if (isTextarea && booleanAttribute(this, 'autosize')) {
@@ -198,6 +207,23 @@ class TblrInput extends HTMLElement {
     `;
   }
 
+  renderClearButton() {
+    return `
+      <button
+        part="clear-button"
+        class="clear-button suffix"
+        type="button"
+        aria-label="Clear input"
+        ${attributeValue(this, 'value') === '' ? 'hidden' : ''}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    `;
+  }
+
   renderEyeIcon() {
     return `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -240,6 +266,7 @@ class TblrInput extends HTMLElement {
     this.reflectingValue = false;
     this.resizeTextarea();
     this.updateCounter();
+    this.updateClearButton();
     this.dispatchEvent(new InputEvent('input', {
       bubbles: true,
       composed: true,
@@ -257,6 +284,35 @@ class TblrInput extends HTMLElement {
 
   handleAction() {
     this.dispatchEvent(new Event('action', {
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  handleClear() {
+    const control = this.control;
+
+    if (!control || booleanAttribute(this, 'disabled') || booleanAttribute(this, 'readonly')) return;
+
+    this.reflectingValue = true;
+    this.setAttribute('value', '');
+    this.reflectingValue = false;
+    control.value = '';
+    this.resizeTextarea();
+    this.updateCounter();
+    this.render();
+    this.focus();
+    this.dispatchEvent(new InputEvent('input', {
+      bubbles: true,
+      composed: true,
+      data: null,
+      inputType: 'deleteContentBackward',
+    }));
+    this.dispatchEvent(new Event('change', {
+      bubbles: true,
+      composed: true,
+    }));
+    this.dispatchEvent(new Event('clear', {
       bubbles: true,
       composed: true,
     }));
@@ -286,6 +342,14 @@ class TblrInput extends HTMLElement {
     if (!counter || !maxlength) return;
 
     counter.textContent = `${this.value.length}/${maxlength}`;
+  }
+
+  updateClearButton() {
+    const clearButton = this.root.querySelector('.clear-button');
+
+    if (!clearButton) return;
+
+    clearButton.hidden = this.value === '';
   }
 
   resizeTextarea() {

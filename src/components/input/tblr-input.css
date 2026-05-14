@@ -105,6 +105,7 @@ textarea.control {
 
 .addon,
 .action,
+.clear-button,
 .password-toggle {
   display: inline-flex;
   flex: 0 0 auto;
@@ -134,16 +135,26 @@ textarea.control {
   cursor: pointer;
 }
 
+.clear-button {
+  cursor: pointer;
+}
+
+.clear-button[hidden] {
+  display: none;
+}
+
 .password-toggle {
   cursor: pointer;
 }
 
+.clear-button svg,
 .password-toggle svg {
   width: 1.25rem;
   height: 1.25rem;
 }
 
 .action:hover,
+.clear-button:hover,
 .password-toggle:hover {
   background: var(--tblr-input-action-hover-bg, var(--tblr-secondary-hover, #eef1f5));
   color: var(--tblr-input-action-hover-color, var(--tblr-body-color, #182433));
