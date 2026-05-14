@@ -11,6 +11,7 @@ const modules = {
   'tblr-colorpicker': () => import('../components/colorpicker/tblr-colorpicker.js'),
   'tblr-copy-button': () => import('../components/copy-button/tblr-copy-button.js'),
   'tblr-datepicker': () => import('../components/datepicker/tblr-datepicker.js'),
+  'tblr-dropdown': () => import('../components/dropdown/tblr-dropdown.js'),
   'tblr-file-input': () => import('../components/file-input/tblr-file-input.js'),
   'tblr-flex': () => import('../components/flex/tblr-flex.js'),
   'tblr-flex-item': () => import('../components/flex/tblr-flex.js'),

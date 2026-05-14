@@ -30,11 +30,11 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Nav
 - [x] Code Preview
 - [x] Format Number
+- [x] Dropdown
 - [ ] Carousel
 - [ ] Collapse - Accordion
 - [ ] Breadcrumb
 - [ ] Progress
-- [ ] Dropdown List with search filters
 - [ ] Tooltip
 - [ ] Popover
 - [ ] List Group
@@ -295,6 +295,35 @@ Use `vertical` for stacked navigation. Nested `tblr-nav-item` children become co
   </tblr-nav-item>
   <tblr-nav-item label="Disabled" disabled></tblr-nav-item>
 </tblr-nav>
+```
+
+## Dropdown
+
+`tblr-dropdown` is inspired by Shoelace’s dropdown pattern: use `slot="trigger"` for the control and place links, buttons, or menu content in the default slot.
+
+```html
+<tblr-dropdown placement="bottom-start" distance="6">
+  <tblr-button slot="trigger" variant="light">
+    Edit
+    <tblr-icon name="chevron-down"></tblr-icon>
+  </tblr-button>
+
+  <button type="button">Cut</button>
+  <button type="button">Copy</button>
+  <button type="button">Paste</button>
+  <hr>
+  <a href="#find">Find</a>
+</tblr-dropdown>
+```
+
+Use `placement`, `distance`, and `skidding` to position the panel. Add `stay-open-on-select` when menu item clicks should keep the panel open, `same-width` when the panel should match the trigger width, and `hoist` when the panel needs fixed positioning inside clipped containers.
+
+```html
+<tblr-dropdown placement="top-end" skidding="8" same-width hoist>
+  <tblr-button slot="trigger" variant="light">Actions</tblr-button>
+  <button type="button">Archive</button>
+  <button type="button">Duplicate</button>
+</tblr-dropdown>
 ```
 
 ## Code preview

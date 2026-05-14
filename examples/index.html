@@ -302,6 +302,7 @@
                 <tblr-nav-item label="Buttons & Icons" href="#buttons"></tblr-nav-item>
                 <tblr-nav-item label="Badges" href="#badges"></tblr-nav-item>
                 <tblr-nav-item label="Navigation" href="#navigation"></tblr-nav-item>
+                <tblr-nav-item label="Dropdown" href="#dropdown"></tblr-nav-item>
                 <tblr-nav-item label="Code Preview" href="#code-preview"></tblr-nav-item>
                 <tblr-nav-item label="Format Number" href="#format-number"></tblr-nav-item>
                 <tblr-nav-item label="Cards" href="#cards"></tblr-nav-item>
@@ -664,6 +665,71 @@
                         &lt;tblr-icon slot="icon" name="home"&gt;&lt;/tblr-icon&gt;
                         &lt;/tblr-nav-item&gt;
                         &lt;/tblr-nav&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="dropdown">
+            <h1 class="section-title">TBLR Dropdown</h1>
+            <p>Trigger and panel dropdowns with placement, offsets, and click-away behavior.</p>
+
+            <section class="flex" aria-label="Dropdown examples">
+                <div class="panel panel-main">
+                    <div class="group">
+                        <p class="label">Basic menu</p>
+                        <tblr-dropdown>
+                            <tblr-button slot="trigger" variant="light">
+                                Edit
+                                <tblr-icon name="chevron-down"></tblr-icon>
+                            </tblr-button>
+                            <button type="button">Cut</button>
+                            <button type="button">Copy</button>
+                            <button type="button">Paste</button>
+                            <hr>
+                            <button type="button">Find</button>
+                            <button type="button">Replace</button>
+                        </tblr-dropdown>
+
+                        <tblr-dropdown placement="top-end" distance="8" skidding="6">
+                            <tblr-button slot="trigger" variant="primary">
+                                Placement
+                                <tblr-icon name="chevron-up"></tblr-icon>
+                            </tblr-button>
+                            <small>Top end</small>
+                            <button type="button">Archive</button>
+                            <button type="button">Duplicate</button>
+                            <button type="button">Share</button>
+                        </tblr-dropdown>
+                    </div>
+
+                    <div class="group">
+                        <p class="label">Panel sizing and persistent content</p>
+                        <tblr-dropdown same-width stay-open-on-select>
+                            <tblr-button slot="trigger" variant="light">
+                                Filters
+                                <tblr-icon name="adjustments"></tblr-icon>
+                            </tblr-button>
+                            <button type="button">Open tasks</button>
+                            <button type="button">Assigned to me</button>
+                            <button type="button">Due this week</button>
+                        </tblr-dropdown>
+
+                        <tblr-dropdown disabled>
+                            <tblr-button slot="trigger" variant="light">Disabled</tblr-button>
+                            <button type="button">Hidden action</button>
+                        </tblr-dropdown>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-dropdown placement="bottom-start" distance="6"&gt;
+                        &lt;tblr-button slot="trigger" variant="light"&gt;Edit&lt;/tblr-button&gt;
+                        &lt;button type="button"&gt;Cut&lt;/button&gt;
+                        &lt;button type="button"&gt;Copy&lt;/button&gt;
+                        &lt;button type="button"&gt;Paste&lt;/button&gt;
+                        &lt;/tblr-dropdown&gt;
                     </tblr-code-preview>
                 </div>
             </section>
