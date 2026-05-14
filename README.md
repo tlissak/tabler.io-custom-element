@@ -32,6 +32,7 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Format Number
 - [x] Relative Time
 - [x] Include
+- [x] Data Table
 - [x] QR Code
 - [x] Dropdown
 - [x] Progress
@@ -419,6 +420,48 @@ include.addEventListener('sl-error', event => {
 ```
 
 Supported attributes are `src`, `mode="cors|no-cors|same-origin"`, and `allow-scripts`. Only use `allow-scripts` with trusted content.
+
+## Data Table
+
+`tblr-data-table` renders a remote server-backed table with search, sortable columns, page size controls, and pagination. The request URL receives `page`, `perPage`, `search`, `sort`, and `direction` query parameters.
+
+```html
+<tblr-data-table
+  title="Employee"
+  description="Table description."
+  src="/api/employees"
+  per-page="10"
+  sort="name"
+  columns='[
+    {"key":"name","label":"Name","type":"person","primary":"name","secondary":"email"},
+    {"key":"city","label":"City"},
+    {"key":"status","label":"Status","type":"status"},
+    {"key":"startDate","label":"Start date"},
+    {"key":"tags","label":"Tags","type":"tags","sortable":false},
+    {"key":"category","label":"Category"},
+    {"key":"id","label":"","type":"actions","sortable":false,"align":"right"}
+  ]'
+></tblr-data-table>
+```
+
+Expected response shape:
+
+```json
+{
+  "data": [],
+  "total": 28,
+  "page": 1,
+  "perPage": 10
+}
+```
+
+Load the plugin directly when you want table components ready before they appear in the DOM:
+
+```js
+import { loadTblrPlugin } from './src/main.js';
+
+await loadTblrPlugin('tables');
+```
 
 ## QR Code
 

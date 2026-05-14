@@ -10,6 +10,7 @@ const modules = {
   'tblr-code-preview': () => import('../components/code-preview/tblr-code-preview.js'),
   'tblr-colorpicker': () => import('../components/colorpicker/tblr-colorpicker.js'),
   'tblr-copy-button': () => import('../components/copy-button/tblr-copy-button.js'),
+  'tblr-data-table': () => import('../components/data-table/tblr-data-table.js'),
   'tblr-datepicker': () => import('../components/datepicker/tblr-datepicker.js'),
   'tblr-dropdown': () => import('../components/dropdown/tblr-dropdown.js'),
   'tblr-file-input': () => import('../components/file-input/tblr-file-input.js'),

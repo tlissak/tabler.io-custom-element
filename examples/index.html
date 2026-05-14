@@ -352,6 +352,7 @@
                 <tblr-nav-item label="Format Number" href="#format-number"></tblr-nav-item>
                 <tblr-nav-item label="Relative Time" href="#relative-time"></tblr-nav-item>
                 <tblr-nav-item label="Include" href="#include"></tblr-nav-item>
+                <tblr-nav-item label="Data Table" href="#data-table"></tblr-nav-item>
                 <tblr-nav-item label="QR Code" href="#qr-code"></tblr-nav-item>
                 <tblr-nav-item label="Cards" href="#cards"></tblr-nav-item>
                 <tblr-nav-item label="Alerts & Toasts" href="#alerts"></tblr-nav-item>
@@ -923,6 +924,30 @@
                     </tblr-code-preview>
                 </div>
             </section>
+        </section>
+
+        <section id="data-table">
+            <h1 class="section-title">TBLR Data Table</h1>
+            <p>Remote server-backed table with sorting, filtering, page size controls, and pagination.</p>
+
+            <tblr-data-table
+                    title="Employee"
+                    description="Table description."
+                    src="/api/employees"
+                    page="1"
+                    per-page="10"
+                    sort="name"
+                    direction="asc"
+                    columns='[
+                      {"key":"name","label":"Name","type":"person","primary":"name","secondary":"email","sortable":true},
+                      {"key":"city","label":"City","sortable":true},
+                      {"key":"status","label":"Status","type":"status","sortable":true},
+                      {"key":"startDate","label":"Start date","sortable":true},
+                      {"key":"tags","label":"Tags","type":"tags","sortable":false},
+                      {"key":"category","label":"Category","sortable":true},
+                      {"key":"id","label":"","type":"actions","sortable":false,"align":"right"}
+                    ]'
+            ></tblr-data-table>
         </section>
 
         <section id="qr-code">
