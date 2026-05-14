@@ -30,6 +30,8 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Nav
 - [x] Code Preview
 - [x] Format Number
+- [x] Relative Time
+- [x] Include
 - [x] QR Code
 - [x] Dropdown
 - [x] Progress
@@ -372,6 +374,51 @@ Use `wrap` for long lines and `theme="plain"` for a light preview.
 ```
 
 If `precision` is omitted, the component infers it from the provided value.
+
+## Relative Time
+
+`tblr-relative-time` outputs localized time phrases relative to the current date and time. Its API follows the Shoelace component shape with `date`, `format`, `numeric`, `sync`, and `lang`.
+
+```html
+<tblr-relative-time date="2020-07-15T09:17:00-04:00"></tblr-relative-time>
+<tblr-relative-time date="2020-07-15T09:17:00-04:00" format="short"></tblr-relative-time>
+<tblr-relative-time date="2020-07-15T09:17:00-04:00" numeric="always"></tblr-relative-time>
+<tblr-relative-time date="2020-07-15T09:17:00-04:00" lang="de"></tblr-relative-time>
+```
+
+Use `sync` to keep the displayed phrase up to date as time passes. When passing a string, prefer ISO 8601 date strings so browsers parse the date consistently.
+
+```html
+<tblr-relative-time id="updated-at" sync></tblr-relative-time>
+
+<script>
+  document.querySelector('#updated-at').date = new Date(Date.now() - 60 * 1000);
+</script>
+```
+
+## Include
+
+`tblr-include` loads an external HTML file with `fetch()` and inserts the content into the element's light DOM. Requests are cached by `src` and `mode`, so multiple includes of the same file share one request.
+
+```html
+<tblr-include src="./partials/account-summary.html"></tblr-include>
+```
+
+Listen for Shoelace-compatible lifecycle events:
+
+```js
+const include = document.querySelector('tblr-include');
+
+include.addEventListener('sl-load', () => {
+  console.log('Loaded');
+});
+
+include.addEventListener('sl-error', event => {
+  console.log('Error', event.detail.status);
+});
+```
+
+Supported attributes are `src`, `mode="cors|no-cors|same-origin"`, and `allow-scripts`. Only use `allow-scripts` with trusted content.
 
 ## QR Code
 

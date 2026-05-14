@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  color: var(--tblr-include-color, inherit);
+  font-family: var(--tblr-include-font-family, inherit);
+  font-size: var(--tblr-include-font-size, inherit);
+  line-height: var(--tblr-include-line-height, inherit);
+}
+
+:host([hidden]) {
+  display: none;
+}

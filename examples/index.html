@@ -287,6 +287,45 @@
             --tblr-format-number-font-weight: 700;
         }
 
+        .time-tile {
+            display: grid;
+            gap: 4px;
+            min-width: 180px;
+            padding: 12px;
+            border: 1px solid var(--tblr-border-color);
+            border-radius: var(--tblr-radius-lg);
+            background: var(--tblr-card-bg);
+        }
+
+        .time-tile tblr-relative-time {
+            --tblr-relative-time-font-size: 20px;
+            --tblr-relative-time-font-weight: 700;
+        }
+
+        .include-demo {
+            display: grid;
+            gap: 12px;
+        }
+
+        .included-demo {
+            display: grid;
+            gap: 8px;
+            padding: 16px;
+            border: 1px solid var(--tblr-border-color);
+            border-radius: var(--tblr-radius-lg);
+            background: var(--tblr-bg-surface);
+        }
+
+        .included-demo h2 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--tblr-body-color);
+        }
+
+        .included-demo p {
+            margin: 0;
+        }
+
         main.section {
             display: grid;
             grid-template-columns: 1fr 300px;
@@ -311,6 +350,8 @@
                 <tblr-nav-item label="Dropdown" href="#dropdown"></tblr-nav-item>
                 <tblr-nav-item label="Code Preview" href="#code-preview"></tblr-nav-item>
                 <tblr-nav-item label="Format Number" href="#format-number"></tblr-nav-item>
+                <tblr-nav-item label="Relative Time" href="#relative-time"></tblr-nav-item>
+                <tblr-nav-item label="Include" href="#include"></tblr-nav-item>
                 <tblr-nav-item label="QR Code" href="#qr-code"></tblr-nav-item>
                 <tblr-nav-item label="Cards" href="#cards"></tblr-nav-item>
                 <tblr-nav-item label="Alerts & Toasts" href="#alerts"></tblr-nav-item>
@@ -817,6 +858,68 @@
                     <p class="label">Sample Code</p>
                     <tblr-code-preview language="html" copy>
                         &lt;tblr-format-number value="1234.56" precision="2" currency-symbol="$"&gt;&lt;/tblr-format-number&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="relative-time">
+            <h1 class="section-title">TBLR Relative Time</h1>
+            <p>Localized relative time phrases with optional live updates, formatting styles, and numeric labels.</p>
+
+            <section class="flex number-demo" aria-label="Relative time examples">
+                <div class="panel panel-main">
+                    <div class="time-tile">
+                        <span class="metric-label">Past date lang EN</span>
+                        <tblr-relative-time date="2025-07-15T09:17:00-04:00" lang="en"></tblr-relative-time>
+                    </div>
+
+                    <div class="time-tile">
+                        <span class="metric-label">Short format lang ES</span>
+                        <tblr-relative-time date="2026-07-15T09:17:00-04:00" lang="es" format="short"></tblr-relative-time>
+                    </div>
+
+                    <div class="time-tile">
+                        <span class="metric-label">Numeric labels lang FR</span>
+                        <tblr-relative-time date="2024-07-15T09:17:00-04:00" lang="fr" numeric="always"></tblr-relative-time>
+                    </div>
+
+                    <div class="time-tile">
+                        <span class="metric-label">Synced</span>
+                        <tblr-relative-time id="relative-time-sync" sync></tblr-relative-time>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-relative-time date="2020-07-15T09:17:00-04:00" sync&gt;&lt;/tblr-relative-time&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="include">
+            <h1 class="section-title">TBLR Include</h1>
+            <p>Load an external HTML fragment into the page with cached fetch requests and Shoelace-style load events.</p>
+
+            <section class="flex include-demo" aria-label="Include examples">
+                <div class="panel panel-main">
+                    <div class="form-stack">
+                        <p class="label">Local fragment</p>
+                        <tblr-include id="include-demo" src="/examples/include-fragment.html"></tblr-include>
+                        <span id="include-status" class="metric-label">Loading include...</span>
+                    </div>
+
+                    <div class="form-stack">
+                        <p class="label">Missing fragment</p>
+                        <tblr-include id="include-error-demo" src="/examples/missing-fragment.html"></tblr-include>
+                        <span id="include-error-status" class="metric-label">Waiting for error...</span>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-include src="/examples/include-fragment.html"&gt;&lt;/tblr-include&gt;
                     </tblr-code-preview>
                 </div>
             </section>
@@ -1628,7 +1731,22 @@
 <script type="module">
     import {defineTblr} from '../src/main.js';
 
+    document.getElementById('include-demo')?.addEventListener('sl-load', () => {
+        const status = document.getElementById('include-status');
+        if (status) status.textContent = 'Include loaded';
+    });
+
+    document.getElementById('include-error-demo')?.addEventListener('sl-error', event => {
+        const status = document.getElementById('include-error-status');
+        if (status) status.textContent = `Include failed with status ${event.detail.status}`;
+    });
+
     await defineTblr();
+
+    const syncedRelativeTime = document.getElementById('relative-time-sync');
+    if (syncedRelativeTime) {
+        syncedRelativeTime.date = new Date(Date.now() - 60 * 1000);
+    }
 
     const modalTriggers = {
         'open-simple-modal': 'simple-modal',

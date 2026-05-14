@@ -1,0 +1,18 @@
+:host {
+  display: inline-block;
+  color: var(--tblr-relative-time-color, inherit);
+  font-family: var(--tblr-relative-time-font-family, inherit);
+  font-size: var(--tblr-relative-time-font-size, inherit);
+  font-weight: var(--tblr-relative-time-font-weight, inherit);
+  line-height: var(--tblr-relative-time-line-height, inherit);
+  vertical-align: baseline;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+.relative-time {
+  font-variant-numeric: var(--tblr-relative-time-variant, tabular-nums);
+  white-space: nowrap;
+}
