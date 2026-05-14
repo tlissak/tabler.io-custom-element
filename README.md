@@ -32,10 +32,10 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] Format Number
 - [x] QR Code
 - [x] Dropdown
+- [x] Progress
 - [ ] Carousel
 - [ ] Collapse - Accordion
 - [ ] Breadcrumb
-- [ ] Progress
 - [ ] Tooltip
 - [ ] Popover
 - [ ] List Group
@@ -411,6 +411,22 @@ Spinners show loading state with Tabler-style border, grow, and animated dot var
   <tblr-spinner size="sm" label="Saving"></tblr-spinner>
   Saving
 </tblr-button>
+```
+
+## Progress
+
+Progress bars support labels, visible percentages, color variants, sizes, stripes, animation, and indeterminate loading.
+
+```html
+<tblr-progress value="45" label="Upload" show-value></tblr-progress>
+<tblr-progress value="72" color="success" size="lg" striped animated></tblr-progress>
+<tblr-progress indeterminate color="primary" label="Loading"></tblr-progress>
+```
+
+Use `max` when the value is not based on 100.
+
+```html
+<tblr-progress value="24" max="60" label="Minutes used" show-value></tblr-progress>
 ```
 
 ## Form controls

@@ -24,6 +24,7 @@ const modules = {
   'tblr-nav': () => import('../components/nav/tblr-nav.js'),
   'tblr-nav-item': () => import('../components/nav/tblr-nav.js'),
   'tblr-pagination': () => import('../components/pagination/tblr-pagination.js'),
+  'tblr-progress': () => import('../components/progress/tblr-progress.js'),
   'tblr-qr-code': () => import('../components/qr-code/tblr-qr-code.js'),
   'tblr-radio': () => import('../components/radio/tblr-radio.js'),
   'tblr-rich-editor': () => import('../components/rich-editor/tblr-rich-editor.js'),

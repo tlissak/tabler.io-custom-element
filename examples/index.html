@@ -241,6 +241,12 @@
             align-items: center;
         }
 
+        .progress-demo {
+            display: grid;
+            gap: 16px;
+            width: min(100%, 560px);
+        }
+
         .badge-list {
             display: flex;
             flex-wrap: wrap;
@@ -310,6 +316,7 @@
                 <tblr-nav-item label="Alerts & Toasts" href="#alerts"></tblr-nav-item>
                 <tblr-nav-item label="Copy Button" href="#copy-button"></tblr-nav-item>
                 <tblr-nav-item label="Spinners" href="#spinners"></tblr-nav-item>
+                <tblr-nav-item label="Progress" href="#progress"></tblr-nav-item>
                 <tblr-nav-item label="Form Controls" href="#form-controls"></tblr-nav-item>
                 <tblr-nav-item label="Choice Controls" href="#choice-controls"></tblr-nav-item>
                 <tblr-nav-item label="Rich Editor" href="#rich-editor"></tblr-nav-item>
@@ -1065,6 +1072,29 @@
                     <tblr-code-preview language="html" copy>
                         &lt;tblr-spinner color="blue"&gt;&lt;/tblr-spinner&gt;
                         &lt;tblr-spinner type="dots" color="success"&gt;&lt;/tblr-spinner&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="progress">
+            <h1 class="section-title">TBLR Progress</h1>
+            <p>Progress bars with labels, value display, variants, stripes, and indeterminate state.</p>
+
+            <section class="flex" aria-label="Progress examples">
+                <div class="panel panel-main">
+                    <div class="progress-demo">
+                        <tblr-progress value="45" label="Upload" show-value></tblr-progress>
+                        <tblr-progress value="72" color="success" size="lg" striped animated></tblr-progress>
+                        <tblr-progress value="24" max="60" label="Minutes used" show-value color="warning"></tblr-progress>
+                        <tblr-progress indeterminate label="Loading reports" color="primary"></tblr-progress>
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-progress value="45" label="Upload" show-value&gt;&lt;/tblr-progress&gt;
+                        &lt;tblr-progress indeterminate color="primary"&gt;&lt;/tblr-progress&gt;
                     </tblr-code-preview>
                 </div>
             </section>
