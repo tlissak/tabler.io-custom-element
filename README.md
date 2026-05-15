@@ -1,5 +1,17 @@
-# tabler.io custom element
+# Tabler.io Custom Element
 Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.io with  Autloader JS CSS - No dependencies 
+
+## CDN usage
+
+Live examples: https://tlissak.github.io/tabler.io-custom-element/examples/index.html
+
+```html
+<script type="module">
+  import { defineTblr } from 'https://cdn.jsdelivr.net/gh/tlissak/tabler.io-custom-element@v1.0.0/src/main.js';
+
+  defineTblr();
+</script>
+```
 
 
 # Elements :
@@ -37,16 +49,6 @@ Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.
 - [x] QR Code
 - [x] Dropdown
 - [x] Progress
-- [ ] Carousel
-- [ ] Collapse - Accordion
-- [ ] Breadcrumb
-- [ ] Tooltip
-- [ ] Popover
-- [ ] List Group
-- [ ] Image
-- [ ] Figure
-- [ ] Table
-
 
 ## Global theme variables
 
