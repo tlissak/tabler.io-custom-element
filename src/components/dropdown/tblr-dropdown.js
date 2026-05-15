@@ -85,12 +85,24 @@ class TblrDropdown extends HTMLElement {
     return this.root.querySelector('.panel');
   }
 
+  get baseElement() {
+    return this.root.querySelector('.dropdown');
+  }
+
   get triggerSlot() {
     return this.root.querySelector('slot[name="trigger"]');
   }
 
   get triggerElement() {
     return this.triggerSlot?.assignedElements({ flatten: true })[0] ?? null;
+  }
+
+  get triggerAnchorElement() {
+    const trigger = this.triggerElement;
+
+    if (!trigger) return null;
+
+    return trigger.shadowRoot?.querySelector('[part="button"], button, [role="button"]') ?? trigger;
   }
 
   show() {
@@ -225,20 +237,23 @@ class TblrDropdown extends HTMLElement {
   updatePosition() {
     const panel = this.panel;
     const trigger = this.triggerElement;
+    const triggerAnchor = this.triggerAnchorElement;
 
-    if (!panel || !trigger || !this.open) return;
+    if (!panel || !trigger || !triggerAnchor || !this.open) return;
 
     const placement = safePlacement(this.getAttribute('placement') ?? 'bottom-start');
     const [side, align = 'center'] = placement.split('-');
     const distance = numberAttribute(this, 'distance', 4);
     const skidding = numberAttribute(this, 'skidding', 0);
     const hoist = booleanAttribute(this, 'hoist');
-    const triggerRect = trigger.getBoundingClientRect();
 
     panel.style.position = hoist ? 'fixed' : 'absolute';
-    panel.style.minWidth = booleanAttribute(this, 'same-width') ? `${triggerRect.width}px` : '';
     panel.style.inset = 'auto';
     panel.style.transform = '';
+
+    const triggerRect = triggerAnchor.getBoundingClientRect();
+
+    panel.style.minWidth = booleanAttribute(this, 'same-width') ? `${triggerRect.width}px` : '';
 
     if (hoist) {
       this.positionFixedPanel(panel, triggerRect, side, align, distance, skidding);
@@ -249,20 +264,20 @@ class TblrDropdown extends HTMLElement {
   }
 
   positionAbsolutePanel(panel, triggerRect, side, align, distance, skidding) {
-    const hostRect = this.getBoundingClientRect();
-    const top = triggerRect.top - hostRect.top;
-    const left = triggerRect.left - hostRect.left;
+    const baseRect = this.baseElement?.getBoundingClientRect() ?? this.getBoundingClientRect();
+    const top = triggerRect.top - baseRect.top;
+    const left = triggerRect.left - baseRect.left;
     const triggerWidth = triggerRect.width;
     const triggerHeight = triggerRect.height;
 
     if (side === 'top') {
-      panel.style.bottom = `${this.offsetHeight - top + distance}px`;
+      panel.style.bottom = `${baseRect.height - top + distance}px`;
       this.setInlinePosition(panel, left, triggerWidth, align, skidding);
       return;
     }
 
     if (side === 'left') {
-      panel.style.right = `${this.offsetWidth - left + distance}px`;
+      panel.style.right = `${baseRect.width - left + distance}px`;
       this.setBlockPosition(panel, top, triggerHeight, align, skidding);
       return;
     }
