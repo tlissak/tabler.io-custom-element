@@ -782,9 +782,6 @@
               "name": "enctype"
             },
             {
-              "name": "headers"
-            },
-            {
               "name": "loading",
               "value": {
                 "type": "boolean"

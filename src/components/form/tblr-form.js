@@ -1,6 +1,5 @@
 import { Component } from '../../core/component.js';
 
-const stylesheetUrl = new URL('./tblr-form.css', import.meta.url);
 const submitInputTypes = new Set(['submit', 'image']);
 const skippedInputTypes = new Set(['button', 'reset', 'submit', 'image']);
 
@@ -207,12 +206,12 @@ function populateTabler(control, value) {
 }
 
 class TblrForm extends HTMLElement {
-  static observedAttributes = ['action', 'method', 'headers', 'data', 'loading'];
+  static observedAttributes = ['action', 'method', 'data', 'loading'];
 
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
-    this.abortController = null;
+    this.loadingButtons = new Map();
     this.onSubmit = this.onSubmit.bind(this);
     this.onClick = this.onClick.bind(this);
   }
@@ -230,7 +229,6 @@ class TblrForm extends HTMLElement {
   disconnectedCallback() {
     this.removeEventListener('submit', this.onSubmit);
     this.removeEventListener('click', this.onClick);
-    this.abortController?.abort();
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -279,8 +277,7 @@ class TblrForm extends HTMLElement {
 
   render() {
     this.root.innerHTML = `
-      <link rel="stylesheet" href="${stylesheetUrl}">
-      <form part="form" class="form" action="${escapeHtml(this.action)}" method="${escapeHtml(this.method.toLowerCase())}">
+      <form part="form" action="${escapeHtml(this.action)}" method="${escapeHtml(this.method.toLowerCase())}">
         <slot></slot>
       </form>
     `;
@@ -348,17 +345,12 @@ class TblrForm extends HTMLElement {
 
     if (!this.dispatchEvent(submitEvent)) return null;
 
-    this.abortController?.abort();
-    this.abortController = new AbortController();
     this.loading = true;
 
     try {
       const response = await fetch(request.url, {
         body: request.body,
-        credentials: request.credentials,
-        headers: request.headers,
         method: request.method,
-        signal: this.abortController.signal,
       });
       const data = await this.readResponse(response);
 
@@ -374,18 +366,15 @@ class TblrForm extends HTMLElement {
 
       return data;
     } catch (error) {
-      if (error.name !== 'AbortError') {
-        this.dispatchEvent(new CustomEvent('tblr-error', {
-          bubbles: true,
-          composed: true,
-          detail: { error, formData, response: error.response, submitter },
-        }));
-      }
+      this.dispatchEvent(new CustomEvent('tblr-error', {
+        bubbles: true,
+        composed: true,
+        detail: { error, formData, response: error.response, submitter },
+      }));
 
       throw error;
     } finally {
       this.loading = false;
-      this.abortController = null;
       this.dispatchEvent(new CustomEvent('tblr-complete', {
         bubbles: true,
         composed: true,
@@ -397,10 +386,6 @@ class TblrForm extends HTMLElement {
   createRequest(formData) {
     const method = this.method;
     const url = new URL(this.action, window.location.href);
-    const headers = {
-      Accept: this.acceptHeader,
-      ...parseJson(this.getAttribute('headers')),
-    };
     let body = formData;
 
     if (!this.hasAttribute('no-ajax-param')) {
@@ -414,18 +399,9 @@ class TblrForm extends HTMLElement {
 
     return {
       body,
-      credentials: this.getAttribute('credentials') ?? 'same-origin',
-      headers,
       method,
       url: url.href,
     };
-  }
-
-  get acceptHeader() {
-    if (this.getAttribute('response-type') === 'text') return 'text/plain, */*';
-    if (this.getAttribute('response-type') === 'blob') return '*/*';
-
-    return 'application/json, text/plain;q=0.9, */*;q=0.8';
   }
 
   async readResponse(response) {
@@ -447,9 +423,7 @@ class TblrForm extends HTMLElement {
   onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.submit(event.submitter).catch(error => {
-      if (error.name !== 'AbortError') console.error(error);
-    });
+    this.submit(event.submitter).catch(error => console.error(error));
   }
 
   onClick(event) {
@@ -463,28 +437,51 @@ class TblrForm extends HTMLElement {
     if (!submitter) return;
 
     event.preventDefault();
-    this.submit(submitter).catch(error => {
-      if (error.name !== 'AbortError') console.error(error);
-    });
+    this.submit(submitter).catch(error => console.error(error));
   }
 
   syncLoading() {
     const loading = this.loading || this.hasAttribute('disabled');
 
-    this.querySelectorAll('button, input, tblr-button').forEach(control => {
-      if (!isSubmitter(control)) return;
+    this.submitButtons.forEach(control => {
+      if (loading) {
+        if (!this.loadingButtons.has(control)) {
+          this.loadingButtons.set(control, {
+            disabled: control.hasAttribute('disabled'),
+            loading: control.hasAttribute('loading'),
+          });
+        }
 
-      control.toggleAttribute('disabled', loading);
-      if ('disabled' in control) control.disabled = loading;
-      control.classList.toggle('loading', loading);
+        control.setAttribute('disabled', '');
+        control.setAttribute('loading', '');
+        if ('disabled' in control) control.disabled = true;
+
+        return;
+      }
+
+      const state = this.loadingButtons.get(control);
+      if (!state) return;
+
+      control.toggleAttribute('disabled', state.disabled);
+      control.toggleAttribute('loading', state.loading);
+      if ('disabled' in control) control.disabled = state.disabled;
     });
+
+    if (!loading) {
+      this.loadingButtons.clear();
+    }
+  }
+
+  get submitButtons() {
+    return [
+      ...new Set(this.querySelectorAll('button[type="submit"], input[type="submit"], input[type="image"], tblr-button[type="submit"]')),
+    ];
   }
 }
 
 Component({
   tag: 'tblr-form',
   version: '1.0.0',
-  styles: stylesheetUrl.href,
 })(TblrForm);
 
 export { TblrForm, flattenObject };
