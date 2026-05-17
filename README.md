@@ -427,6 +427,7 @@ Supported attributes are `src`, `mode="cors|no-cors|same-origin"`, and `allow-sc
 ## Data Table
 
 `tblr-data-table` renders a remote server-backed table with search, sortable columns, page size controls, and pagination. The request URL receives `page`, `perPage`, `search`, `sort`, and `direction` query parameters.
+Badge columns can read colors from `colorKey`; values may be hex/rgb/var CSS colors or the same named color set supported by `tblr-badge`, such as `blue`, `azure`, `green`, `warning`, and `danger`.
 
 ```html
 <tblr-data-table
@@ -490,7 +491,7 @@ Supported error correction levels are `L`, `M`, `Q`, and `H`. The default is `H`
 
 ## Spinners
 
-Spinners show loading state with Tabler-style border, grow, and animated dot variants.
+Spinners show loading state with Tabler-style border, grow, and animated dot variants. The `color` attribute supports the same named color set as `tblr-badge`, plus `current` and `muted`.
 
 ```html
 <tblr-spinner></tblr-spinner>
@@ -508,7 +509,7 @@ Spinners show loading state with Tabler-style border, grow, and animated dot var
 
 ## Progress
 
-Progress bars support labels, visible percentages, color variants, sizes, stripes, animation, and indeterminate loading.
+Progress bars support labels, visible percentages, color variants, sizes, stripes, animation, and indeterminate loading. The `color` attribute supports the same named color set as `tblr-badge`.
 
 ```html
 <tblr-progress value="45" label="Upload" show-value></tblr-progress>

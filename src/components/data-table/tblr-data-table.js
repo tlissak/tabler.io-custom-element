@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { resolveBadgeSolidColors } from '../badge/badge-colors.js';
 
 const stylesheetUrl = new URL('./tblr-data-table.css', import.meta.url);
 const directions = new Set(['asc', 'desc']);
@@ -488,9 +489,10 @@ class TblrDataTable extends HTMLElement {
     if (column.type === 'badge') {
       const value = getValue(row, column.key);
       const color = getValue(row, column.colorKey) || column.color || '#667382';
+      const badgeColors = resolveBadgeSolidColors(color, '#667382');
 
       return `
-        <span class="badge" style="--badge-color: ${escapeHtml(color)}">
+        <span class="badge" style="--badge-bg: ${escapeHtml(badgeColors.background)}; --badge-fg: ${escapeHtml(badgeColors.foreground)}">
           ${escapeHtml(value)}
         </span>
       `;

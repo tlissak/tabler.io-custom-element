@@ -291,8 +291,8 @@ tbody tr:last-child td {
   min-height: 1.25rem;
   padding: 0 0.4rem;
   border-radius: 999px;
-  background: var(--badge-color, var(--tblr-muted-color, #667382));
-  color: #fff;
+  background: var(--badge-bg, var(--badge-color, var(--tblr-muted-color, #667382)));
+  color: var(--badge-fg, #fff);
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1;

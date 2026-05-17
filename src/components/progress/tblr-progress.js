@@ -1,27 +1,7 @@
 import { Component } from '../../core/component.js';
+import { badgeCssColor } from '../badge/badge-colors.js';
 
 const stylesheetUrl = new URL('./tblr-progress.css', import.meta.url);
-const colors = new Set([
-  'primary',
-  'secondary',
-  'blue',
-  'azure',
-  'indigo',
-  'purple',
-  'pink',
-  'red',
-  'orange',
-  'yellow',
-  'lime',
-  'green',
-  'teal',
-  'cyan',
-  'danger',
-  'warning',
-  'success',
-  'info',
-  'dark',
-]);
 const sizes = new Set(['xs', 'sm', 'md', 'lg']);
 
 function escapeHtml(value) {
@@ -34,6 +14,10 @@ function escapeHtml(value) {
 
 function safeToken(value, fallback, allowedValues) {
   return allowedValues.has(value) ? value : fallback;
+}
+
+function resolveProgressColor(value) {
+  return badgeCssColor(String(value ?? 'primary').trim().toLowerCase(), '#206bc4');
 }
 
 function booleanAttribute(host, name) {
@@ -102,7 +86,7 @@ class TblrProgress extends HTMLElement {
 
   render() {
     const indeterminate = booleanAttribute(this, 'indeterminate');
-    const color = safeToken(this.getAttribute('color') ?? 'primary', 'primary', colors);
+    const color = resolveProgressColor(this.getAttribute('color'));
     const size = safeToken(this.getAttribute('size') ?? 'md', 'md', sizes);
     const label = this.getAttribute('label') ?? (indeterminate ? 'Loading' : `${Math.round(this.percent)}%`);
     const showValue = booleanAttribute(this, 'show-value') && !indeterminate;
@@ -111,7 +95,6 @@ class TblrProgress extends HTMLElement {
     const classes = [
       'progress',
       `progress-${size}`,
-      `progress-${color}`,
       indeterminate ? 'progress-indeterminate' : '',
       striped ? 'progress-striped' : '',
       animated ? 'progress-animated' : '',
@@ -130,6 +113,7 @@ class TblrProgress extends HTMLElement {
         <div
           part="track"
           class="${classes}"
+          style="--tblr-progress-bar-bg: ${escapeHtml(color)}"
           role="progressbar"
           aria-label="${escapeHtml(label)}"
           ${indeterminate ? '' : `aria-valuemin="0" aria-valuemax="${escapeHtml(this.max)}" aria-valuenow="${escapeHtml(clamp(this.value, 0, this.max))}"`}

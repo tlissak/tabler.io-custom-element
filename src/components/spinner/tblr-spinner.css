@@ -18,7 +18,7 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  color: currentColor;
+  color: var(--tblr-spinner-color, currentColor);
 }
 
 .spinner-border {
@@ -76,68 +76,6 @@
   --tblr-spinner-border-width: 0.3em;
   --tblr-spinner-dot-size: 0.5rem;
   --tblr-spinner-dot-gap: 0.3125rem;
-}
-
-.text-current {
-  color: currentColor;
-}
-
-.text-primary,
-.text-blue {
-  color: var(--tblr-primary, #206bc4);
-}
-
-.text-secondary,
-.text-muted {
-  color: var(--tblr-muted-color, #667382);
-}
-
-.text-azure {
-  color: #4299e1;
-}
-
-.text-indigo {
-  color: #4263eb;
-}
-
-.text-purple {
-  color: #ae3ec9;
-}
-
-.text-pink {
-  color: #d6336c;
-}
-
-.text-red,
-.text-danger {
-  color: var(--tblr-danger, #d63939);
-}
-
-.text-orange {
-  color: #f76707;
-}
-
-.text-yellow,
-.text-warning {
-  color: #f59f00;
-}
-
-.text-lime {
-  color: #74b816;
-}
-
-.text-green,
-.text-success {
-  color: #2fb344;
-}
-
-.text-teal {
-  color: #0ca678;
-}
-
-.text-cyan,
-.text-info {
-  color: #17a2b8;
 }
 
 .visually-hidden {

@@ -1,30 +1,9 @@
 import { Component } from '../../core/component.js';
+import { badgeCssColor } from '../badge/badge-colors.js';
 
 const stylesheetUrl = new URL('./tblr-spinner.css', import.meta.url);
 const types = new Set(['border', 'grow', 'dots']);
 const sizes = new Set(['sm', 'md', 'lg']);
-const colors = new Set([
-  'current',
-  'primary',
-  'secondary',
-  'blue',
-  'azure',
-  'indigo',
-  'purple',
-  'pink',
-  'red',
-  'orange',
-  'yellow',
-  'lime',
-  'green',
-  'teal',
-  'cyan',
-  'danger',
-  'warning',
-  'success',
-  'info',
-  'muted',
-]);
 
 function escapeHtml(value) {
   return String(value)
@@ -36,6 +15,15 @@ function escapeHtml(value) {
 
 function safeToken(value, fallback, allowedValues) {
   return allowedValues.has(value) ? value : fallback;
+}
+
+function resolveSpinnerColor(value) {
+  const color = String(value ?? 'current').trim().toLowerCase();
+
+  if (color === 'current') return 'currentColor';
+  if (color === 'muted') return 'var(--tblr-muted-color, #667382)';
+
+  return badgeCssColor(color, 'currentColor');
 }
 
 class TblrSpinner extends HTMLElement {
@@ -59,7 +47,7 @@ class TblrSpinner extends HTMLElement {
   render() {
     const type = safeToken(this.getAttribute('type') ?? 'border', 'border', types);
     const size = safeToken(this.getAttribute('size') ?? 'md', 'md', sizes);
-    const color = safeToken(this.getAttribute('color') ?? 'current', 'current', colors);
+    const color = resolveSpinnerColor(this.getAttribute('color'));
     const label = this.getAttribute('label') ?? 'Loading';
 
     this.root.innerHTML = `
@@ -67,7 +55,8 @@ class TblrSpinner extends HTMLElement {
 
       <span
         part="spinner"
-        class="spinner spinner-${type} spinner-${size} text-${color}"
+        class="spinner spinner-${type} spinner-${size}"
+        style="--tblr-spinner-color: ${escapeHtml(color)}"
         role="status"
         aria-label="${escapeHtml(label)}"
       >
