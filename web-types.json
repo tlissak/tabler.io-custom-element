@@ -1719,6 +1719,12 @@
               "name": "advanced"
             },
             {
+              "name": "clearable",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
               "name": "disabled",
               "value": {
                 "type": "boolean"
@@ -1768,6 +1774,9 @@
             },
             {
               "name": "value"
+            },
+            {
+              "name": "max-options-visible"
             }
           ],
           "js": {

@@ -54,11 +54,13 @@ class TblrSelect extends HTMLElement {
     'disabled',
     'required',
     'multiple',
+    'clearable',
     'size',
     'search',
     'searchable',
     'advanced',
     'empty-text',
+    'max-options-visible',
   ];
 
   constructor() {
@@ -272,9 +274,14 @@ class TblrSelect extends HTMLElement {
     const selectedValues = new Set(splitValue(this.getAttribute('value')));
     const selectedOptions = options.filter(option => selectedValues.has(option.value));
     const availableOptions = this.getFilteredOptions(options, selectedValues);
+    const parsedMaxVisible = Number.parseInt(this.getAttribute('max-options-visible') ?? '3', 10);
+    const maxVisible = Number.isNaN(parsedMaxVisible) ? 3 : Math.max(parsedMaxVisible, 0);
+    const visibleOptions = maxVisible === 0 ? [] : selectedOptions.slice(0, maxVisible);
+    const hiddenCount = Math.max(selectedOptions.length - visibleOptions.length, 0);
+    const hasClearButton = this.hasAttribute('clearable') && selectedOptions.length > 0 && !disabled;
 
     return `
-      <span part="select-wrap" class="select-wrap multi-wrap${disabled ? ' disabled' : ''}${this.open ? ' open' : ''}">
+      <span part="select-wrap" class="select-wrap multi-wrap${disabled ? ' disabled' : ''}${this.open ? ' open' : ''}${hasClearButton ? ' clearable' : ''}">
         <select
           part="select"
           class="select native-multi"
@@ -288,11 +295,22 @@ class TblrSelect extends HTMLElement {
           ${options.map(option => `<option value="${escapeHtml(option.value)}">${escapeHtml(option.label)}</option>`).join('')}
         </select>
         <span class="multi-control" role="combobox" aria-expanded="${this.open ? 'true' : 'false'}" aria-haspopup="listbox">
-          ${selectedOptions.map(option => `
-            <button type="button" class="multi-tag" data-remove-value="${escapeHtml(option.value)}" ${disabled ? 'disabled' : ''}>
-              ${escapeHtml(option.label)}
+          ${visibleOptions.map(option => `
+            <button
+              type="button"
+              class="multi-tag"
+              data-remove-value="${escapeHtml(option.value)}"
+              aria-label="Remove ${escapeHtml(option.label)}"
+              ${disabled ? 'disabled' : ''}
+            >
+              <span class="multi-tag-label">${escapeHtml(option.label)}</span>
+              <svg class="multi-tag-remove" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg>
             </button>
           `).join('')}
+          ${hiddenCount ? `<span class="multi-tag multi-tag-overflow" aria-label="${hiddenCount} more selected">+${hiddenCount}</span>` : ''}
           <input
             class="multi-search"
             type="text"
@@ -302,6 +320,14 @@ class TblrSelect extends HTMLElement {
             autocomplete="off"
           >
         </span>
+        ${hasClearButton ? `
+          <button type="button" class="multi-clear-button" aria-label="Clear selected values">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        ` : ''}
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="m6 9 6 6 6-6"></path>
         </svg>
@@ -324,6 +350,7 @@ class TblrSelect extends HTMLElement {
   bindEnhancedMultiple() {
     const wrap = this.root.querySelector('.multi-wrap');
     const input = this.root.querySelector('.multi-search');
+    const clearButton = this.root.querySelector('.multi-clear-button');
 
     if (!wrap || !input) return;
 
@@ -331,6 +358,7 @@ class TblrSelect extends HTMLElement {
       if (this.hasAttribute('disabled')) return;
       if (event.target.closest('.multi-menu')) return;
       if (event.target.closest('.multi-tag')) return;
+      if (event.target.closest('.multi-clear-button')) return;
       event.preventDefault();
       this.open = true;
       this.render();
@@ -380,8 +408,13 @@ class TblrSelect extends HTMLElement {
     this.root.querySelectorAll('.multi-tag').forEach(tag => {
       tag.addEventListener('click', () => {
         const value = tag.getAttribute('data-remove-value');
+        if (!value) return;
         this.setMultipleValue(splitValue(this.getAttribute('value')).filter(item => item !== value));
       });
+    });
+
+    clearButton?.addEventListener('click', () => {
+      this.clearValue();
     });
   }
 
@@ -513,9 +546,10 @@ class TblrSelect extends HTMLElement {
     }));
   }
 
-  setMultipleValue(values) {
+  setMultipleValue(values, options = {}) {
     if (this.hasAttribute('disabled')) return;
 
+    const { open = true } = options;
     const uniqueValues = [...new Set(values.filter(Boolean))];
 
     this.searchQuery = '';
@@ -524,9 +558,24 @@ class TblrSelect extends HTMLElement {
     this.reflectingValue = true;
     this.setAttribute('value', uniqueValues.join(','));
     this.reflectingValue = false;
-    this.open = true;
+    this.open = open;
     this.render();
     this.dispatchEvent(new Event('change', {
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  clearValue() {
+    if (this.hasAttribute('disabled')) return;
+
+    if (this.hasAttribute('multiple')) {
+      this.setMultipleValue([], { open: false });
+    } else {
+      this.setSingleValue('');
+    }
+
+    this.dispatchEvent(new Event('clear', {
       bubbles: true,
       composed: true,
     }));
