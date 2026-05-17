@@ -63,7 +63,7 @@ class TblrCheckbox extends HTMLElement {
           ${disabled ? 'disabled' : ''}
         >
         <span part="control" class="control">
-          <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg class="check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m5 12 5 5L20 7"></path>
           </svg>
         </span>

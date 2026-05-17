@@ -262,7 +262,7 @@ class TblrAutocomplete extends HTMLElement {
 
   renderSearchIcon() {
     return `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="m21 21-4.35-4.35"></path>
         <circle cx="11" cy="11" r="7"></circle>
       </svg>

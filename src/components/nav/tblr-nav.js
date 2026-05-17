@@ -184,7 +184,7 @@ class TblrNavItem extends HTMLElement {
           <span part="icon" class="icon"><slot name="icon"></slot></span>
           <span part="label" class="label">${escapeHtml(label)}</span>
           <span part="suffix" class="suffix"><slot name="suffix"></slot></span>
-          ${collapsible ? '<span part="chevron" class="chevron" aria-hidden="true"><svg style="height: 1.7em;width: 1.7em;" fill="currentColor"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg></span>' : ''}
+          ${collapsible ? '<span part="chevron" class="chevron" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" style="height: 1.7em;width: 1.7em;" fill="currentColor"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg></span>' : ''}
         </${tag}>
 
         ${collapsible ? '<div part="children" class="children"><slot name="children"></slot></div>' : ''}
