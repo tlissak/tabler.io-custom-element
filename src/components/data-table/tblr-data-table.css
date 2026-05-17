@@ -148,6 +148,11 @@ button:focus-visible {
   opacity: var(--tblr-disabled-opacity, 0.65);
 }
 
+.button-link {
+  min-height: 1.875rem;
+  padding: 0 0.625rem;
+}
+
 .table-wrap {
   position: relative;
   overflow: auto;
@@ -156,6 +161,7 @@ button:focus-visible {
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
   vertical-align: top;
 }
 
@@ -213,6 +219,13 @@ tbody tr:last-child td {
   gap: 0.75rem;
   align-items: center;
   min-width: 12rem;
+}
+
+.stacked {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .avatar {
@@ -402,4 +415,49 @@ tbody tr:last-child td {
   .pagination {
     flex-wrap: wrap;
   }
+}
+
+:host([compact]) th,
+:host([compact]) td {
+  padding: 0.75rem 0.5rem;
+}
+
+:host([appearance="legacy-list"]) .card {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+:host([appearance="legacy-list"]) table {
+  min-width: var(--tblr-data-table-min-width, 1000px);
+  table-layout: fixed;
+}
+
+:host([appearance="legacy-list"]) th {
+  background: var(--tblr-data-table-head-bg, #f1f3f5);
+  border-bottom-width: 2px;
+  color: #495057;
+  font-weight: 600;
+}
+
+:host([appearance="legacy-list"]) td {
+  border-bottom-color: #eee;
+}
+
+:host([appearance="legacy-list"]) tbody tr:hover {
+  background: #f8f9fa;
+}
+
+:host([appearance="legacy-list"]) .th-button {
+  width: 100%;
+}
+
+:host([appearance="legacy-list"]) .sort-icon {
+  color: #adb5bd;
+}
+
+:host([appearance="legacy-list"]) .primary-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

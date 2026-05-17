@@ -112,6 +112,7 @@ class TblrDataTable extends HTMLElement {
     this.total = 0;
     this.loading = false;
     this.error = '';
+    this.manualData = false;
     this.requestId = 0;
     this.searchTimer = 0;
     this.handleClick = this.handleClick.bind(this);
@@ -259,7 +260,7 @@ class TblrDataTable extends HTMLElement {
     const requestId = ++this.requestId;
 
     if (!src) {
-      if (!this.hasAttribute('data')) {
+      if (!this.hasAttribute('data') && !this.manualData) {
         this.rows = [];
         this.total = 0;
       }
@@ -317,6 +318,7 @@ class TblrDataTable extends HTMLElement {
   setData(payload) {
     const data = normalizeRows(payload);
 
+    this.manualData = true;
     this.rows = data.rows;
     this.total = data.total;
     this.loading = false;
@@ -402,6 +404,11 @@ class TblrDataTable extends HTMLElement {
 
     return `
       <table part="table">
+        ${columns.some(column => column.width) ? `
+          <colgroup>
+            ${columns.map(column => `<col${column.width ? ` style="width: ${escapeHtml(column.width)}"` : ''}>`).join('')}
+          </colgroup>
+        ` : ''}
         <thead>
           <tr>
             ${columns.map(column => this.renderHeadCell(column)).join('')}
@@ -419,15 +426,16 @@ class TblrDataTable extends HTMLElement {
   }
 
   renderHeadCell(column) {
-    const active = column.key && this.sort === column.key;
-    const icon = active ? (this.direction === 'asc' ? '^' : 'v') : '-';
+    const sortKey = column.sortKey ?? column.key;
+    const active = sortKey && this.sort === sortKey;
+    const icon = active ? (this.direction === 'asc' ? '↑' : '↓') : '↓';
     const label = escapeHtml(column.label);
     const align = column.align === 'right' ? 'right' : 'left';
 
     return `
       <th style="text-align: ${align}">
-        ${column.sortable && column.key ? `
-          <button class="th-button" type="button" data-sort="${escapeHtml(column.key)}">
+        ${column.sortable && sortKey ? `
+          <button class="th-button" type="button" data-sort="${escapeHtml(sortKey)}">
             <span>${label}</span>
             <span class="sort-icon" aria-hidden="true">${icon}</span>
           </button>
@@ -488,6 +496,18 @@ class TblrDataTable extends HTMLElement {
       `;
     }
 
+    if (column.type === 'stacked') {
+      const primary = getValue(row, column.primary ?? column.key);
+      const secondary = getValue(row, column.secondary);
+
+      return `
+        <span class="stacked">
+          <span class="primary-text">${escapeHtml(primary)}</span>
+          ${secondary ? `<span class="secondary-text">${escapeHtml(secondary)}</span>` : ''}
+        </span>
+      `;
+    }
+
     if (column.type === 'link') {
       const value = getValue(row, column.key);
       const href = getValue(row, column.hrefKey ?? 'href') || column.href || '#';
@@ -509,6 +529,15 @@ class TblrDataTable extends HTMLElement {
           <tblr-icon name="${escapeHtml(icon)}"></tblr-icon>
         </a>
       `;
+    }
+
+    if (column.type === 'button-link') {
+      const value = getValue(row, column.key);
+      const href = getValue(row, column.hrefKey ?? 'href') || column.href || '#';
+      const target = column.target ? ` target="${escapeHtml(column.target)}"` : '';
+      const rel = column.target === '_blank' ? ' rel="noopener noreferrer"' : '';
+
+      return `<a class="button button-link" href="${escapeHtml(href)}"${target}${rel}>${escapeHtml(value)}</a>`;
     }
 
     if (column.type === 'actions') {
@@ -585,6 +614,11 @@ class TblrDataTable extends HTMLElement {
       this.sort = sort;
       this.direction = direction;
       this.page = 1;
+      this.dispatchEvent(new CustomEvent('sort', {
+        bubbles: true,
+        composed: true,
+        detail: { sort, direction },
+      }));
       return;
     }
 
@@ -647,6 +681,20 @@ class TblrDataTable extends HTMLElement {
 
   refresh() {
     return this.load();
+  }
+
+  showLoading() {
+    this.loading = true;
+    this.error = '';
+    this.render();
+  }
+
+  showError(message) {
+    this.rows = [];
+    this.total = 0;
+    this.loading = false;
+    this.error = message;
+    this.render();
   }
 
   downloadCsv() {
