@@ -137,10 +137,43 @@ svg {
 }
 
 .calendar-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: 0;
   color: var(--tblr-datepicker-calendar-title-color, var(--tblr-body-color, #182433));
   font-size: 1rem;
   font-weight: 600;
   text-align: center;
+}
+
+.month-toggle,
+.year-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  min-height: 2rem;
+  padding: 0 0.375rem;
+  border: 0;
+  border-radius: var(--tblr-datepicker-day-radius, var(--tblr-radius, 4px));
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.month-toggle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.month-toggle:hover,
+.year-toggle:hover {
+  background: var(--tblr-datepicker-nav-hover-bg, var(--tblr-secondary, #f6f8fb));
 }
 
 .nav-button {
@@ -162,9 +195,21 @@ svg {
 }
 
 .weekdays,
-.days {
+.days,
+.months,
+.years {
   display: grid;
+}
+
+.weekdays,
+.days {
   grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.months,
+.years {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.375rem;
 }
 
 .weekdays {
@@ -191,26 +236,51 @@ svg {
   font: inherit;
 }
 
-.day:hover {
+.month,
+.year {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 0;
+  border-radius: var(--tblr-datepicker-day-radius, var(--tblr-radius, 4px));
+  background: transparent;
+  color: var(--tblr-datepicker-day-color, var(--tblr-body-color, #182433));
+  cursor: pointer;
+  font: inherit;
+}
+
+.day:hover,
+.month:hover,
+.year:hover {
   background: var(--tblr-datepicker-day-hover-bg, var(--tblr-secondary, #f6f8fb));
 }
 
-.day.selected {
+.day.selected,
+.month.selected,
+.year.selected {
   background: var(--tblr-datepicker-selected-bg, var(--tblr-primary, #206bc4));
   color: var(--tblr-datepicker-selected-color, var(--tblr-primary-foreground, #ffffff));
 }
 
-.day.today:not(.selected) {
+.day.today:not(.selected),
+.month.current:not(.selected),
+.year.current:not(.selected) {
   color: var(--tblr-datepicker-today-color, var(--tblr-primary, #206bc4));
   font-weight: 600;
 }
 
-.day:disabled {
+.day:disabled,
+.month:disabled,
+.year:disabled {
   color: var(--tblr-datepicker-disabled-day-color, #c5ccd3);
   cursor: not-allowed;
 }
 
-.day:disabled:hover {
+.day:disabled:hover,
+.month:disabled:hover,
+.year:disabled:hover {
   background: transparent;
 }
 

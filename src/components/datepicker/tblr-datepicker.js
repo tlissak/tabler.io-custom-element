@@ -1,9 +1,17 @@
 import { Component } from '../../core/component.js';
 
 const stylesheetUrl = new URL('./tblr-datepicker.css', import.meta.url);
-const monthFormatter = new Intl.DateTimeFormat('en', { month: 'long', year: 'numeric' });
-const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const isoDatePattern = /^(\d{4})-(\d{2})-(\d{2})$/;
+const yearsPerPage = 12;
+const weekdayDates = [
+  new Date(2024, 0, 1),
+  new Date(2024, 0, 2),
+  new Date(2024, 0, 3),
+  new Date(2024, 0, 4),
+  new Date(2024, 0, 5),
+  new Date(2024, 0, 6),
+  new Date(2024, 0, 7),
+];
 
 function escapeHtml(value) {
   return String(value)
@@ -46,6 +54,22 @@ function addMonths(date, amount) {
   return new Date(date.getFullYear(), date.getMonth() + amount, 1);
 }
 
+function addYears(date, amount) {
+  return new Date(date.getFullYear() + amount, date.getMonth(), 1);
+}
+
+function startOfYearPage(year) {
+  return Math.floor(year / yearsPerPage) * yearsPerPage;
+}
+
+function effectiveLang(host) {
+  return host.getAttribute('lang')
+    || host.closest('[lang]')?.getAttribute('lang')
+    || document.documentElement.lang
+    || navigator.language
+    || undefined;
+}
+
 function sameDate(date, otherDate) {
   return date && otherDate && formatDate(date) === formatDate(otherDate);
 }
@@ -64,12 +88,15 @@ class TblrDatepicker extends HTMLElement {
     'max',
     'icon',
     'open',
+    'lang',
   ];
 
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
     this.reflectingValue = false;
+    this.calendarView = 'days';
+    this.returnViewAfterYearSelection = 'days';
     this.viewDate = startOfMonth(parseDate(this.getAttribute('value')) ?? new Date());
     this.handleDocumentPointerDown = this.handleDocumentPointerDown.bind(this);
     this.handleInput = this.handleInput.bind(this);
@@ -202,18 +229,81 @@ class TblrDatepicker extends HTMLElement {
 
     calendar.classList.toggle('open', this.hasAttribute('open'));
 
+    if (this.calendarView === 'years') {
+      calendar.innerHTML = this.renderYearPicker(selectedDate, today);
+    } else if (this.calendarView === 'months') {
+      calendar.innerHTML = this.renderMonthPicker(selectedDate, today);
+    } else {
+      calendar.innerHTML = this.renderDaysPicker(selectedDate, today);
+    }
+
+    calendar.querySelector('.previous')?.addEventListener('click', () => {
+      if (this.calendarView === 'years') {
+        this.viewDate = addYears(this.viewDate, -yearsPerPage);
+      } else if (this.calendarView === 'months') {
+        this.viewDate = addYears(this.viewDate, -1);
+      } else {
+        this.viewDate = addMonths(this.viewDate, -1);
+      }
+
+      this.updateCalendar();
+    });
+
+    calendar.querySelector('.next')?.addEventListener('click', () => {
+      if (this.calendarView === 'years') {
+        this.viewDate = addYears(this.viewDate, yearsPerPage);
+      } else if (this.calendarView === 'months') {
+        this.viewDate = addYears(this.viewDate, 1);
+      } else {
+        this.viewDate = addMonths(this.viewDate, 1);
+      }
+
+      this.updateCalendar();
+    });
+
+    calendar.querySelector('.month-toggle')?.addEventListener('click', () => {
+      this.calendarView = 'months';
+      this.updateCalendar();
+    });
+
+    calendar.querySelector('.year-toggle')?.addEventListener('click', () => {
+      this.returnViewAfterYearSelection = this.calendarView === 'months' ? 'months' : 'days';
+      this.calendarView = 'years';
+      this.updateCalendar();
+    });
+
+    calendar.querySelectorAll('.month').forEach(monthButton => {
+      monthButton.addEventListener('click', () => this.selectMonth(Number(monthButton.dataset.month)));
+    });
+
+    calendar.querySelectorAll('.year').forEach(yearButton => {
+      yearButton.addEventListener('click', () => this.selectYear(Number(yearButton.dataset.year)));
+    });
+
+    calendar.querySelectorAll('.day').forEach(dayButton => {
+      dayButton.addEventListener('click', () => this.selectDate(dayButton.dataset.value));
+    });
+  }
+
+  renderDaysPicker(selectedDate, today) {
     const firstDay = startOfMonth(this.viewDate);
     const daysInMonth = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0).getDate();
     const leadingDays = (firstDay.getDay() + 6) % 7;
+    const lang = effectiveLang(this);
+    const monthFormatter = new Intl.DateTimeFormat(lang, { month: 'long' });
+    const weekdayFormatter = new Intl.DateTimeFormat(lang, { weekday: 'short' });
 
-    calendar.innerHTML = `
+    return `
       <div class="calendar-header">
         <button part="previous-button" class="nav-button previous" type="button" aria-label="Previous month">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m15 18-6-6 6-6"></path>
           </svg>
         </button>
-        <div part="calendar-title" class="calendar-title">${escapeHtml(monthFormatter.format(firstDay))}</div>
+        <div part="calendar-title" class="calendar-title">
+          <button part="month-button" class="month-toggle" type="button" aria-label="Change month">${escapeHtml(monthFormatter.format(firstDay))}</button>
+          <button part="year-button" class="year-toggle" type="button" aria-label="Change year">${firstDay.getFullYear()}</button>
+        </div>
         <button part="next-button" class="nav-button next" type="button" aria-label="Next month">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m9 18 6-6-6-6"></path>
@@ -221,27 +311,65 @@ class TblrDatepicker extends HTMLElement {
         </button>
       </div>
       <div class="weekdays">
-        ${weekdays.map(day => `<span class="weekday">${day}</span>`).join('')}
+        ${weekdayDates.map(day => `<span class="weekday">${escapeHtml(weekdayFormatter.format(day))}</span>`).join('')}
       </div>
       <div class="days">
         ${Array.from({ length: leadingDays }, () => '<span class="empty"></span>').join('')}
         ${Array.from({ length: daysInMonth }, (_, index) => this.renderDay(firstDay.getFullYear(), firstDay.getMonth(), index + 1, selectedDate, today)).join('')}
       </div>
     `;
+  }
 
-    calendar.querySelector('.previous')?.addEventListener('click', () => {
-      this.viewDate = addMonths(this.viewDate, -1);
-      this.updateCalendar();
-    });
+  renderMonthPicker(selectedDate, today) {
+    const year = this.viewDate.getFullYear();
+    const monthFormatter = new Intl.DateTimeFormat(effectiveLang(this), { month: 'short' });
 
-    calendar.querySelector('.next')?.addEventListener('click', () => {
-      this.viewDate = addMonths(this.viewDate, 1);
-      this.updateCalendar();
-    });
+    return `
+      <div class="calendar-header">
+        <button part="previous-button" class="nav-button previous" type="button" aria-label="Previous year">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+        </button>
+        <div part="calendar-title" class="calendar-title">
+          <button part="year-button" class="year-toggle" type="button" aria-label="Change year">${year}</button>
+        </div>
+        <button part="next-button" class="nav-button next" type="button" aria-label="Next year">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="months">
+        ${Array.from({ length: 12 }, (_, month) => this.renderMonth(year, month, selectedDate, today, monthFormatter)).join('')}
+      </div>
+    `;
+  }
 
-    calendar.querySelectorAll('.day').forEach(dayButton => {
-      dayButton.addEventListener('click', () => this.selectDate(dayButton.dataset.value));
-    });
+  renderYearPicker(selectedDate, today) {
+    const year = this.viewDate.getFullYear();
+    const startYear = startOfYearPage(year);
+    const selectedYear = selectedDate?.getFullYear();
+    const currentYear = today.getFullYear();
+
+    return `
+      <div class="calendar-header">
+        <button part="previous-button" class="nav-button previous" type="button" aria-label="Previous years">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+        </button>
+        <div part="calendar-title" class="calendar-title">${startYear} - ${startYear + yearsPerPage - 1}</div>
+        <button part="next-button" class="nav-button next" type="button" aria-label="Next years">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="years">
+        ${Array.from({ length: yearsPerPage }, (_, index) => this.renderYear(startYear + index, selectedYear, currentYear)).join('')}
+      </div>
+    `;
   }
 
   updateOpenState() {
@@ -270,12 +398,71 @@ class TblrDatepicker extends HTMLElement {
     `;
   }
 
+  renderMonth(year, month, selectedDate, today, monthFormatter) {
+    const monthDate = new Date(year, month, 1);
+    const selected = selectedDate?.getFullYear() === year && selectedDate?.getMonth() === month;
+    const isCurrent = today.getFullYear() === year && today.getMonth() === month;
+    const disabled = this.monthDisabled(year, month);
+
+    return `
+      <button
+        part="month"
+        class="month${selected ? ' selected' : ''}${isCurrent ? ' current' : ''}"
+        type="button"
+        data-month="${month}"
+        ${selected ? 'aria-pressed="true"' : ''}
+        ${disabled ? 'disabled' : ''}
+      >${escapeHtml(monthFormatter.format(monthDate))}</button>
+    `;
+  }
+
+  renderYear(year, selectedYear, currentYear) {
+    const selected = year === selectedYear;
+    const isCurrent = year === currentYear;
+    const disabled = this.yearDisabled(year);
+
+    return `
+      <button
+        part="year"
+        class="year${selected ? ' selected' : ''}${isCurrent ? ' current' : ''}"
+        type="button"
+        data-year="${year}"
+        ${selected ? 'aria-pressed="true"' : ''}
+        ${disabled ? 'disabled' : ''}
+      >${year}</button>
+    `;
+  }
+
   dateDisabled(date) {
     const min = parseDate(this.getAttribute('min'));
     const max = parseDate(this.getAttribute('max'));
 
     if (min && date < min) return true;
     if (max && date > max) return true;
+
+    return false;
+  }
+
+  monthDisabled(year, month) {
+    const min = parseDate(this.getAttribute('min'));
+    const max = parseDate(this.getAttribute('max'));
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    if (min && lastDay < min) return true;
+    if (max && firstDay > max) return true;
+
+    return false;
+  }
+
+  yearDisabled(year) {
+    const min = parseDate(this.getAttribute('min'));
+    const max = parseDate(this.getAttribute('max'));
+    const firstDay = new Date(year, 0, 1);
+    const lastDay = new Date(year, 11, 31);
+
+    if (min && lastDay < min) return true;
+    if (max && firstDay > max) return true;
 
     return false;
   }
@@ -312,6 +499,7 @@ class TblrDatepicker extends HTMLElement {
     const input = this.root.querySelector('input');
     if (input) input.value = value;
 
+    this.calendarView = 'days';
     this.viewDate = startOfMonth(parseDate(value));
     this.updateCalendar();
     this.close();
@@ -324,6 +512,23 @@ class TblrDatepicker extends HTMLElement {
       bubbles: true,
       composed: true,
     }));
+  }
+
+  selectYear(year) {
+    if (!Number.isInteger(year) || this.yearDisabled(year)) return;
+
+    this.calendarView = this.returnViewAfterYearSelection;
+    this.returnViewAfterYearSelection = 'days';
+    this.viewDate = new Date(year, this.viewDate.getMonth(), 1);
+    this.updateCalendar();
+  }
+
+  selectMonth(month) {
+    if (!Number.isInteger(month) || this.monthDisabled(this.viewDate.getFullYear(), month)) return;
+
+    this.calendarView = 'days';
+    this.viewDate = new Date(this.viewDate.getFullYear(), month, 1);
+    this.updateCalendar();
   }
 
   handleInput(event) {

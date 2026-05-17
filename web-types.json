@@ -520,6 +520,24 @@
               "name": "loading-text"
             },
             {
+              "name": "hide-header",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "hide-toolbar",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "hide-footer",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
               "name": "page"
             },
             {
@@ -611,6 +629,9 @@
             },
             {
               "name": "label"
+            },
+            {
+              "name": "lang"
             },
             {
               "name": "max"
