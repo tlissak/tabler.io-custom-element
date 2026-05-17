@@ -62,9 +62,9 @@ function normalizeRows(payload) {
 
   return {
     page: Number(payload?.page) || 1,
-    perPage: Number(payload?.perPage ?? payload?.per_page ?? rows.length) || rows.length,
+    perPage: Number(payload?.perPage ?? payload?.per_page ?? payload?.size ?? rows.length) || rows.length,
     rows: Array.isArray(rows) ? rows : [],
-    total: Number(payload?.total ?? payload?.recordsTotal ?? payload?.count ?? rows.length) || 0,
+    total: Number(payload?.total ?? payload?.recordsTotal ?? payload?.recordsFiltered ?? payload?.count ?? rows.length) || 0,
   };
 }
 
@@ -99,6 +99,10 @@ class TblrDataTable extends HTMLElement {
     'search-placeholder',
     'empty-text',
     'loading-text',
+    'data',
+    'hide-header',
+    'hide-toolbar',
+    'hide-footer',
   ];
 
   constructor() {
@@ -117,8 +121,12 @@ class TblrDataTable extends HTMLElement {
   }
 
   connectedCallback() {
-    this.render();
-    this.load();
+    if (this.hasAttribute('data')) {
+      this.setData(parseJsonAttribute(this, 'data', []));
+    } else {
+      this.render();
+      this.load();
+    }
   }
 
   disconnectedCallback() {
@@ -128,7 +136,9 @@ class TblrDataTable extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (!this.isConnected || oldValue === newValue) return;
 
-    if (['src', 'page', 'per-page', 'sort', 'direction', 'search'].includes(name)) {
+    if (name === 'data') {
+      this.setData(parseJsonAttribute(this, 'data', []));
+    } else if (['src', 'page', 'per-page', 'sort', 'direction', 'search'].includes(name)) {
       this.load();
     } else {
       this.render();
@@ -199,6 +209,7 @@ class TblrDataTable extends HTMLElement {
         typeof column === 'string'
           ? { key: column, label: columnLabel(column), sortable: true }
           : {
+            ...column,
             key: column.key ?? column.field,
             label: column.label ?? columnLabel(column.key ?? column.field),
             type: column.type ?? 'text',
@@ -230,13 +241,28 @@ class TblrDataTable extends HTMLElement {
     return Math.max(Math.ceil(this.total / this.perPage), 1);
   }
 
+  get data() {
+    return {
+      page: this.page,
+      perPage: this.perPage,
+      rows: this.rows,
+      total: this.total,
+    };
+  }
+
+  set data(payload) {
+    this.setData(payload);
+  }
+
   async load() {
     const src = this.src;
     const requestId = ++this.requestId;
 
     if (!src) {
-      this.rows = [];
-      this.total = 0;
+      if (!this.hasAttribute('data')) {
+        this.rows = [];
+        this.total = 0;
+      }
       this.render();
       return;
     }
@@ -288,16 +314,32 @@ class TblrDataTable extends HTMLElement {
     }
   }
 
+  setData(payload) {
+    const data = normalizeRows(payload);
+
+    this.rows = data.rows;
+    this.total = data.total;
+    this.loading = false;
+    this.error = '';
+
+    if (!this.hasAttribute('src')) {
+      this.render();
+    }
+  }
+
   render() {
     const title = this.getAttribute('title') ?? 'Table';
     const description = this.getAttribute('description') ?? '';
     const columns = this.columns;
     const rows = this.rows;
+    const showHeader = !this.hasAttribute('hide-header');
+    const showToolbar = !this.hasAttribute('hide-toolbar');
+    const showFooter = !this.hasAttribute('hide-footer');
 
     this.root.innerHTML = `
       <link rel="stylesheet" href="${stylesheetUrl}">
       <section part="card" class="card">
-        <header part="header" class="header">
+        ${showHeader ? `<header part="header" class="header">
           <div class="title-group">
             <h2 class="title">${escapeHtml(title)}</h2>
             ${description ? `<p class="description">${escapeHtml(description)}</p>` : ''}
@@ -307,9 +349,9 @@ class TblrDataTable extends HTMLElement {
             <button class="button" type="button" data-action="download">Download</button>
             <button class="button button-primary" type="button" data-action="primary">Button</button>
           </div>
-        </header>
+        </header>` : ''}
 
-        <div part="toolbar" class="toolbar">
+        ${showToolbar ? `<div part="toolbar" class="toolbar">
           <label class="entries">
             <span>Show</span>
             <select data-control="per-page" aria-label="Rows per page">
@@ -329,17 +371,17 @@ class TblrDataTable extends HTMLElement {
             >
             <span class="shortcut" aria-hidden="true">ctrl + K</span>
           </label>
-        </div>
+        </div>` : ''}
 
         <div part="table-wrap" class="table-wrap">
           ${this.renderTable(columns, rows)}
           ${this.loading ? `<div part="loading" class="loading">${escapeHtml(this.getAttribute('loading-text') ?? 'Loading...')}</div>` : ''}
         </div>
 
-        <footer part="footer" class="footer">
+        ${showFooter ? `<footer part="footer" class="footer">
           <span class="summary">${escapeHtml(this.summaryText)}</span>
           ${this.renderPagination()}
-        </footer>
+        </footer>` : ''}
       </section>
     `;
 
@@ -433,6 +475,40 @@ class TblrDataTable extends HTMLElement {
       const tags = Array.isArray(values) ? values : String(values).split(',').filter(Boolean);
 
       return `<span class="tags">${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</span>`;
+    }
+
+    if (column.type === 'badge') {
+      const value = getValue(row, column.key);
+      const color = getValue(row, column.colorKey) || column.color || '#667382';
+
+      return `
+        <span class="badge" style="--badge-color: ${escapeHtml(color)}">
+          ${escapeHtml(value)}
+        </span>
+      `;
+    }
+
+    if (column.type === 'link') {
+      const value = getValue(row, column.key);
+      const href = getValue(row, column.hrefKey ?? 'href') || column.href || '#';
+      const target = column.target ? ` target="${escapeHtml(column.target)}"` : '';
+      const rel = column.target === '_blank' ? ' rel="noopener noreferrer"' : '';
+
+      return `<a class="cell-link" href="${escapeHtml(href)}"${target}${rel}>${escapeHtml(value)}</a>`;
+    }
+
+    if (column.type === 'icon-link') {
+      const href = getValue(row, column.hrefKey ?? column.key);
+      const icon = column.icon ?? 'external-link';
+      const title = column.title ?? column.label ?? 'Open';
+      const target = column.target ? ` target="${escapeHtml(column.target)}"` : '';
+      const rel = column.target === '_blank' ? ' rel="noopener noreferrer"' : '';
+
+      return `
+        <a class="icon-link" href="${escapeHtml(href)}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"${target}${rel}>
+          <tblr-icon name="${escapeHtml(icon)}"></tblr-icon>
+        </a>
+      `;
     }
 
     if (column.type === 'actions') {

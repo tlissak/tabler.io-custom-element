@@ -150,7 +150,7 @@ button:focus-visible {
 
 .table-wrap {
   position: relative;
-  overflow-x: auto;
+  overflow: auto;
 }
 
 table {
@@ -168,10 +168,14 @@ td {
 }
 
 th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   background: var(--tblr-data-table-head-bg, var(--tblr-card-header-bg, #f6f8fb));
   color: var(--tblr-muted-color, #667382);
   font-size: 0.8125rem;
   font-weight: 600;
+  box-shadow: inset 0 -1px 0 var(--tblr-data-table-border-color, var(--tblr-border-color, #dce1e7));
 }
 
 td {
@@ -266,6 +270,45 @@ tbody tr:last-child td {
   color: var(--tblr-data-table-tag-color, #4d5968);
   font-size: 0.75rem;
   font-weight: 500;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.25rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--badge-color, var(--tblr-muted-color, #667382));
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cell-link,
+.icon-link {
+  color: var(--tblr-primary, #206bc4);
+  text-decoration: none;
+}
+
+.cell-link {
+  font-weight: 600;
+}
+
+.cell-link:hover,
+.icon-link:hover {
+  text-decoration: underline;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-link tblr-icon {
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 .actions {
