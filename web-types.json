@@ -749,6 +749,9 @@
               }
             },
             {
+              "name": "hint"
+            },
+            {
               "name": "label"
             },
             {
@@ -762,13 +765,43 @@
             },
             {
               "name": "placeholder"
+            },
+            {
+              "name": "required",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "with-hint",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "with-label",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
             "properties": [
               {
+                "name": "fileCount",
+                "type": "number",
+                "read-only": true
+              },
+              {
                 "name": "files",
-                "type": "any",
+                "type": "File[]"
+              },
+              {
+                "name": "value",
+                "type": "string",
                 "read-only": true
               }
             ]

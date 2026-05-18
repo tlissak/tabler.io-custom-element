@@ -679,9 +679,12 @@ form.addEventListener('tblr-complete', event => {
 <tblr-switch label="Push Notifications" checked align-end></tblr-switch>
 
 <tblr-file-input
-  label="Custom File Input"
-  button="Parcourir..."
-  placeholder="Aucun fichier sélectionné."
+  label="Upload documents"
+  hint="PDF, PNG, or JPG up to your server limit."
+  button="Choose files"
+  placeholder="Drag and drop files here or click to browse"
+  accept="pdf, image/*"
+  multiple
 ></tblr-file-input>
 
 <tblr-input label="Autosize textarea" textarea autosize rows="2" placeholder="Type something..."></tblr-input>
