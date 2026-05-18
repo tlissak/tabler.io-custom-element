@@ -13,6 +13,19 @@ Live examples: https://tlissak.github.io/tabler.io-custom-element/examples/index
 </script>
 ```
 
+## Turbo support
+
+Use `preventTurboFouce()` with Turbo Drive to load Tabler custom elements before Turbo renders the next page:
+
+```html
+<script type="module">
+  import { defineTblr, preventTurboFouce } from 'https://cdn.jsdelivr.net/gh/tlissak/tabler.io-custom-element@v1.0.0/src/main.js';
+
+  defineTblr();
+  preventTurboFouce();
+</script>
+```
+
 
 # Elements :
 - [x] Button

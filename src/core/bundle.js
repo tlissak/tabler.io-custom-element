@@ -1,83 +1,33 @@
-class ComponentRegistry {
-  constructor() {
-    this.loaders = new Map();
-    this.loading = new Map();
-  }
-
-  register(tag, loader) {
-    this.loaders.set(tag, loader);
-  }
-
-  has(tag) {
-    return this.loaders.has(tag);
-  }
-
-  async load(tag) {
-    if (customElements.get(tag)) return;
-
-    const loader = this.loaders.get(tag);
-
-    if (!loader) {
-      console.warn(`[TBLR] Unknown component: ${tag}`);
-      return;
-    }
-
-    if (!this.loading.has(tag)) {
-      this.loading.set(tag, loader());
-    }
-
-    await this.loading.get(tag);
-  }
-
-  async loadAll(tags) {
-    await Promise.all(tags.map(tag => this.load(tag)));
-  }
-}
-
-const registry = new ComponentRegistry();
-
-const modules = {
-  'tblr-alert': () => import('../components/alert/tblr-alert.js'),
-  'tblr-autocomplete': () => import('../components/autocomplete/tblr-autocomplete.js'),
-  'tblr-badge': () => import('../components/badge/tblr-badge.js'),
-  'tblr-button': () => import('../components/button/tblr-button.js'),
-  'tblr-card': () => import('../components/card/tblr-card.js'),
-  'tblr-checkbox': () => import('../components/checkbox/tblr-checkbox.js'),
-  'tblr-code-preview': () => import('../components/code-preview/tblr-code-preview.js'),
-  'tblr-colorpicker': () => import('../components/colorpicker/tblr-colorpicker.js'),
-  'tblr-copy-button': () => import('../components/copy-button/tblr-copy-button.js'),
-  'tblr-data-table': () => import('../components/data-table/tblr-data-table.js'),
-  'tblr-datepicker': () => import('../components/datepicker/tblr-datepicker.js'),
-  'tblr-dropdown': () => import('../components/dropdown/tblr-dropdown.js'),
-  'tblr-file-input': () => import('../components/file-input/tblr-file-input.js'),
-  'tblr-flex': () => import('../components/flex/tblr-flex.js'),
-  'tblr-flex-item': () => import('../components/flex/tblr-flex.js'),
-  'tblr-format-number': () => import('../components/format-number/tblr-format-number.js'),
-  'tblr-grid': () => import('../components/grid/tblr-grid.js'),
-  'tblr-grid-item': () => import('../components/grid/tblr-grid.js'),
-  'tblr-icon': () => import('../components/icon/tblr-icon.js'),
-  'tblr-include': () => import('../components/include/tblr-include.js'),
-  'tblr-input': () => import('../components/input/tblr-input.js'),
-  'tblr-modal': () => import('../components/modal/tblr-modal.js'),
-  'tblr-nav': () => import('../components/nav/tblr-nav.js'),
-  'tblr-nav-item': () => import('../components/nav/tblr-nav.js'),
-  'tblr-pagination': () => import('../components/pagination/tblr-pagination.js'),
-  'tblr-progress': () => import('../components/progress/tblr-progress.js'),
-  'tblr-qr-code': () => import('../components/qr-code/tblr-qr-code.js'),
-  'tblr-radio': () => import('../components/radio/tblr-radio.js'),
-  'tblr-relative-time': () => import('../components/relative-time/tblr-relative-time.js'),
-  'tblr-rich-editor': () => import('../components/rich-editor/tblr-rich-editor.js'),
-  'tblr-select': () => import('../components/select/tblr-select.js'),
-  'tblr-search': () => import('../components/search/tblr-search.js'),
-  'tblr-spinner': () => import('../components/spinner/tblr-spinner.js'),
-  'tblr-switch': () => import('../components/switch/tblr-switch.js'),
-  'tblr-tab': () => import('../components/tabs/tblr-tabs.js'),
-  'tblr-tabs': () => import('../components/tabs/tblr-tabs.js'),
-  'tblr-tinymce-editor': () => import('../components/tinymce-editor/tblr-tinymce-editor.js'),
+const aliases = {
+  'tblr-flex-item': 'tblr-flex',
+  'tblr-grid-item': 'tblr-grid',
+  'tblr-nav-item': 'tblr-nav',
+  'tblr-tab': 'tblr-tabs',
 };
 
-for (const [tag, loader] of Object.entries(modules)) {
-  registry.register(tag, loader);
+const loading = new Map();
+
+function getComponentName(tag) {
+  return (aliases[tag] ?? tag).replace(/^tblr-/, '');
+}
+
+async function loadComponent(tag) {
+  if (customElements.get(tag)) return;
+
+  const componentName = getComponentName(tag);
+
+  if (!loading.has(componentName)) {
+    loading.set(
+      componentName,
+      import(`../components/${componentName}/tblr-${componentName}.js`)
+        .catch(error => {
+          loading.delete(componentName);
+          console.warn(`[TBLR] Could not load component: ${tag}`, error);
+        })
+    );
+  }
+
+  await loading.get(componentName);
 }
 
 const themeStylesheetUrl = new URL('../styles/theme.css', import.meta.url);
@@ -153,7 +103,39 @@ async function autoload(root = document) {
     }
   });
 
-  await registry.loadAll([...tags]);
+  await Promise.all([...tags].map(tag => loadComponent(tag)));
+}
+
+/**
+ * Middleware for Turbo's `turbo:before-render` event. It delays rendering the
+ * next page until custom elements in the new body are loaded, reducing FOUCE.
+ */
+function preventTurboFouce(timeout = 2000) {
+  if (typeof document === 'undefined') return;
+
+  const listener = async event => {
+    const newBody = event.detail?.newBody;
+    const resume = event.detail?.resume;
+
+    if (!(newBody instanceof HTMLElement) || typeof resume !== 'function') {
+      return;
+    }
+
+    event.preventDefault();
+
+    try {
+      await Promise.race([
+        autoload(newBody),
+        new Promise(resolve => setTimeout(resolve, timeout)),
+      ]);
+    } finally {
+      resume();
+    }
+  };
+
+  document.addEventListener('turbo:before-render', listener);
+
+  return () => document.removeEventListener('turbo:before-render', listener);
 }
 
 function watchAutoload(root = document.body) {
@@ -190,7 +172,7 @@ export {
   defineTblr,
   h,
   isBrowser,
-  registry,
+  preventTurboFouce,
   safeDefine,
   themeStylesheetUrl,
   watchAutoload,

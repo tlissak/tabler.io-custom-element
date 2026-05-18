@@ -1,9 +1,8 @@
-import { autoload, watchAutoload } from './core/autoload.js';
-import { registry } from './core/registry.js';
+import { autoload, preventTurboFouce, watchAutoload } from './core/autoload.js';
 
 const themeStylesheetUrl = new URL('./styles/theme.css', import.meta.url);
 
-export { autoload, watchAutoload, registry };
+export { autoload, preventTurboFouce, watchAutoload };
 export { themeStylesheetUrl };
 
 export async function defineTblr() {
