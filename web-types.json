@@ -852,6 +852,12 @@
             },
             {
               "name": "response-type"
+            },
+            {
+              "name": "submit-as-json",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
@@ -872,6 +878,10 @@
               {
                 "name": "method",
                 "type": "any"
+              },
+              {
+                "name": "submitAsJson",
+                "type": "boolean"
               }
             ]
           }

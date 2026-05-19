@@ -1,16 +1,7 @@
 import { Component } from '../../core/component.js';
 
 const submitInputTypes = new Set(['submit', 'image']);
-const skippedInputTypes = new Set(['button', 'reset', 'submit', 'image']);
 const richTextEditorSelector = 'tinymce-editor,it-rte,tblr-tinymce-editor';
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
-}
 
 function isPlainObject(value) {
   return Object.prototype.toString.call(value) === '[object Object]';
@@ -110,63 +101,6 @@ function isSubmitter(element) {
     && (element.getAttribute('type') ?? 'button').toLowerCase() === 'submit';
 }
 
-function isTablerControl(element) {
-  return element instanceof HTMLElement
-    && element.tagName.toLowerCase().startsWith('tblr-')
-    && element.hasAttribute('name');
-}
-
-function appendNativeValue(formData, control) {
-  if (!control.name || control.disabled) return;
-
-  if (control instanceof HTMLInputElement) {
-    if (skippedInputTypes.has(control.type)) return;
-    if ((control.type === 'checkbox' || control.type === 'radio') && !control.checked) return;
-
-    if (control.type === 'file') {
-      [...control.files].forEach(file => formData.append(control.name, file));
-      return;
-    }
-
-    formData.append(control.name, control.value);
-    return;
-  }
-
-  if (control instanceof HTMLSelectElement && control.multiple) {
-    [...control.selectedOptions].forEach(option => formData.append(control.name, option.value));
-    return;
-  }
-
-  if (control instanceof HTMLSelectElement || control instanceof HTMLTextAreaElement) {
-    formData.append(control.name, control.value);
-  }
-}
-
-function appendTablerValue(formData, control) {
-  if (control.hasAttribute('disabled')) return;
-
-  const name = control.getAttribute('name');
-  const tag = control.tagName.toLowerCase();
-  const value = control.getAttribute('value');
-
-  if (!name) return;
-
-  if (tag === 'tblr-checkbox' || tag === 'tblr-switch' || tag === 'tblr-radio') {
-    if (control.checked) {
-      formData.append(name, value ?? (tag === 'tblr-switch' ? 'on' : control.getAttribute('label') ?? control.textContent.trim()));
-    }
-
-    return;
-  }
-
-  if (tag === 'tblr-file-input') {
-    [...(control.files ?? [])].forEach(file => formData.append(name, file));
-    return;
-  }
-
-  valuesOf(readValue(control)).forEach(item => formData.append(name, item));
-}
-
 function populateNative(control, value) {
   const values = valuesOf(value);
 
@@ -240,7 +174,7 @@ class TblrForm extends HTMLElement {
 
   constructor() {
     super();
-    this.root = this.attachShadow({ mode: 'open' });
+    this._form = null;
     this.loadingButtons = new Map();
     this.onSubmit = this.onSubmit.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -248,7 +182,6 @@ class TblrForm extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    this.addEventListener('submit', this.onSubmit);
     this.addEventListener('click', this.onClick);
 
     if (this.hasAttribute('data')) {
@@ -257,7 +190,7 @@ class TblrForm extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.removeEventListener('submit', this.onSubmit);
+    this.form?.removeEventListener('submit', this.onSubmit);
     this.removeEventListener('click', this.onClick);
   }
 
@@ -301,40 +234,43 @@ class TblrForm extends HTMLElement {
     this.toggleAttribute('loading', Boolean(value));
   }
 
+  get submitAsJson() {
+    return this.hasAttribute('submit-as-json');
+  }
+
+  set submitAsJson(value) {
+    this.toggleAttribute('submit-as-json', Boolean(value));
+  }
+
   get form() {
-    return this.root.querySelector('form');
+    return this._form ?? this.querySelector(':scope > form[data-tblr-form]');
   }
 
   render() {
-    this.root.innerHTML = `
-      <form part="form" action="${escapeHtml(this.action)}" method="${escapeHtml(this.method.toLowerCase())}">
-        <slot></slot>
-      </form>
-    `;
+    let form = this.form;
 
-    this.form.addEventListener('submit', this.onSubmit);
+    if (!form) {
+      form = document.createElement('form');
+      form.setAttribute('part', 'form');
+      form.setAttribute('data-tblr-form', '');
+
+      while (this.firstChild) {
+        form.appendChild(this.firstChild);
+      }
+
+      this.appendChild(form);
+      this._form = form;
+    }
+
+    form.setAttribute('action', this.action);
+    form.setAttribute('method', this.method.toLowerCase());
+    form.addEventListener('submit', this.onSubmit);
     this.syncLoading();
   }
 
   formData(submitter) {
-    const formData = new FormData();
-
-    this.querySelectorAll('input, select, textarea').forEach(control => {
-      appendNativeValue(formData, control);
-    });
-
-    this.querySelectorAll('[name]').forEach(control => {
-      if (!isNativeControl(control) && isTablerControl(control)) {
-        appendTablerValue(formData, control);
-      }
-    });
-
-    const name = submitter?.name || submitter?.getAttribute?.('name');
-    if (name) {
-      formData.append(name, submitter.value ?? submitter.getAttribute?.('value') ?? '');
-    }
-
-    return formData;
+    if (!this.form) return new FormData();
+    return new FormData(this.form);
   }
 
   populate(data) {
@@ -384,6 +320,7 @@ class TblrForm extends HTMLElement {
     try {
       const response = await fetch(request.url, {
         body: request.body,
+        headers: request.headers,
         method: request.method,
       });
       const data = await this.readResponse(response);
@@ -421,6 +358,9 @@ class TblrForm extends HTMLElement {
     const method = this.method;
     const url = new URL(this.action, window.location.href);
     let body = formData;
+    const headers = {};
+    const enctype = (this.getAttribute('enctype') ?? '').toLowerCase();
+    const submitAsJson = this.submitAsJson || enctype === 'application/json';
 
     if (!this.hasAttribute('no-ajax-param')) {
       url.searchParams.set(this.getAttribute('ajax-param') ?? 'ajax', this.getAttribute('ajax-param-value') ?? '1');
@@ -429,10 +369,15 @@ class TblrForm extends HTMLElement {
     if (method === 'GET') {
       formData.forEach((value, key) => url.searchParams.append(key, value));
       body = undefined;
+    } else if (submitAsJson) {
+      body = JSON.stringify(Object.fromEntries(formData));
+      headers['Content-Type'] = 'application/json';
+      headers.Accept = 'application/json';
     }
 
     return {
       body,
+      headers,
       method,
       url: url.href,
     };

@@ -557,6 +557,7 @@ Use `max` when the value is not based on 100.
 
 Forms, inputs, selects, search controls, and datepickers autoload with the rest of the components.
 `tblr-form` prevents normal submission, sends `fetch()` to the form action, appends `ajax=1` by default, and exposes `populate(data)` for nested objects using bracket names such as `user[name]`.
+Add `submit-as-json` to send non-GET submissions as an `application/json` request body instead of `FormData`.
 
 ```html
 <tblr-form id="profile-form" action="/api/profile" method="post">
@@ -570,6 +571,12 @@ Forms, inputs, selects, search controls, and datepickers autoload with the rest 
   ></tblr-select>
   <tblr-checkbox name="active" value="1" label="Active"></tblr-checkbox>
   <tblr-button type="submit">Save</tblr-button>
+</tblr-form>
+
+<tblr-form action="/api/profile" method="post" submit-as-json>
+  <tblr-input name="user[name]" label="Name"></tblr-input>
+  <tblr-input name="user[email]" label="Email" type="email"></tblr-input>
+  <tblr-button type="submit">Save JSON</tblr-button>
 </tblr-form>
 
 <script type="module">
