@@ -32,17 +32,59 @@ async function loadComponent(tag) {
 
 const themeStylesheetUrl = new URL('../styles/theme.css', import.meta.url);
 
+const hydratedElements = new WeakSet();
+
+function findSetter(element, property) {
+  let proto = Object.getPrototypeOf(element);
+
+  while (proto && proto !== HTMLElement.prototype) {
+    const descriptor = Object.getOwnPropertyDescriptor(proto, property);
+
+    if (descriptor) {
+      return descriptor.set;
+    }
+
+    proto = Object.getPrototypeOf(proto);
+  }
+
+  return null;
+}
+
+function hydratePreUpgradeProperties(element) {
+  if (hydratedElements.has(element)) return;
+
+  hydratedElements.add(element);
+
+  Reflect.ownKeys(element).forEach(property => {
+    const setter = findSetter(element, property);
+
+    if (!setter) return;
+
+    const value = element[property];
+
+    delete element[property];
+    element[property] = value;
+  });
+}
+
 function Component(options) {
   return function (klass) {
     if (typeof window === 'undefined') {
       return klass;
     }
 
-    if (!customElements.get(options.tag)) {
-      customElements.define(options.tag, klass);
+    class TblrComponent extends klass {
+      connectedCallback() {
+        hydratePreUpgradeProperties(this);
+        super.connectedCallback?.();
+      }
     }
 
-    return klass;
+    if (!customElements.get(options.tag)) {
+      customElements.define(options.tag, TblrComponent);
+    }
+
+    return TblrComponent;
   };
 }
 
@@ -161,9 +203,28 @@ function watchAutoload(root = document.body) {
   return observer;
 }
 
-async function defineTblr() {
-  await autoload();
-  watchAutoload();
+let defineTblrPromise;
+
+function defineTblr() {
+  if (!defineTblrPromise) {
+    defineTblrPromise = (async () => {
+      await autoload();
+      watchAutoload();
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('tblr-ready'));
+      }
+    })();
+
+    if (typeof window !== 'undefined') {
+      window.tblrReady = defineTblrPromise;
+    }
+  }
+
+  return defineTblrPromise;
+}
+
+function whenTblrReady() {
+  return defineTblrPromise ?? Promise.resolve();
 }
 
 export {
@@ -171,9 +232,11 @@ export {
   autoload,
   defineTblr,
   h,
+  hydratePreUpgradeProperties,
   isBrowser,
   preventTurboFouce,
   safeDefine,
   themeStylesheetUrl,
+  whenTblrReady,
   watchAutoload,
 };

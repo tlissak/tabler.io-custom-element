@@ -13,6 +13,23 @@ Live examples: https://tlissak.github.io/tabler.io-custom-element/examples/index
 </script>
 ```
 
+`defineTblr()` returns a promise and also assigns it to `window.tblrReady`.
+Use it before calling component methods from non-module scripts:
+
+```js
+window.tblrReady.then(() => {
+  document.querySelector('tblr-form').populate(data);
+});
+//or 
+customElements.whenDefined('tblr-form').then(() => {
+    document.querySelector('tblr-form').populate(data_json);
+});
+```
+
+Properties such as `element.value` and `element.checked` are replayed during
+component upgrade, so assigning them before the component is fully defined is
+safe.
+
 ## Turbo support
 
 Use `preventTurboFouce()` with Turbo Drive to load Tabler custom elements before Turbo renders the next page:
