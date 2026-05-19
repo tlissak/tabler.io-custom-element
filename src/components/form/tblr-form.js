@@ -2,6 +2,7 @@ import { Component } from '../../core/component.js';
 
 const submitInputTypes = new Set(['submit', 'image']);
 const skippedInputTypes = new Set(['button', 'reset', 'submit', 'image']);
+const richTextEditorSelector = 'tinymce-editor,it-rte,tblr-tinymce-editor';
 
 function escapeHtml(value) {
   return String(value)
@@ -81,6 +82,11 @@ function writeValue(element, value) {
   }
 
   element.setAttribute('value', value ?? '');
+}
+
+function dispatchControlEvents(element) {
+  element.dispatchEvent(new Event('input', { bubbles: true }));
+  element.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
 function isNativeControl(element) {
@@ -205,6 +211,30 @@ function populateTabler(control, value) {
   writeValue(control, Array.isArray(value) && tag !== 'tblr-select' ? value[0] ?? '' : value ?? '');
 }
 
+function findRichTextEditors(root, name) {
+  const selector = nameSelector(name);
+
+  return [...root.querySelectorAll(richTextEditorSelector)].filter(editor => (
+    editor.getAttribute('name') === name
+    || editor.querySelector(selector)
+    || editor.shadowRoot?.querySelector(selector)
+  ));
+}
+
+function populateRichTextEditor(editor, name, value) {
+  const stringValue = String(value ?? '');
+  const selector = nameSelector(name);
+
+  writeValue(editor, stringValue);
+  editor.querySelectorAll(selector).forEach(control => {
+    writeValue(control, stringValue);
+  });
+  editor.shadowRoot?.querySelectorAll(selector).forEach(control => {
+    writeValue(control, stringValue);
+  });
+  dispatchControlEvents(editor);
+}
+
 class TblrForm extends HTMLElement {
   static observedAttributes = ['action', 'method', 'data', 'loading'];
 
@@ -311,6 +341,10 @@ class TblrForm extends HTMLElement {
     const values = flattenObject(data);
 
     Object.entries(values).forEach(([name, value]) => {
+      findRichTextEditors(this, name).forEach(editor => {
+        populateRichTextEditor(editor, name, value);
+      });
+
       this.querySelectorAll(`${nameSelector(name)}, ${nameSelector(`${name}[]`)}`).forEach(control => {
         if (isNativeControl(control)) {
           populateNative(control, value);

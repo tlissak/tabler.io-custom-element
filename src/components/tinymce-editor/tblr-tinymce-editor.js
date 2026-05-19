@@ -116,6 +116,7 @@ class TblrTinyMceEditor extends HTMLElement {
   }
 
   connectedCallback() {
+    this.upgradeProperty('value');
     this.render();
     if (booleanAttribute(this, 'lazy')) {
       this.initLazyEditor();
@@ -162,7 +163,12 @@ class TblrTinyMceEditor extends HTMLElement {
   }
 
   set value(value) {
-    this.setAttribute('value', value ?? '');
+    const nextValue = value == null ? '' : value.toString();
+
+    if (this.getAttribute('value') !== nextValue) {
+      this.setAttribute('value', nextValue);
+    }
+
     this.syncEditorValue();
   }
 
@@ -421,6 +427,14 @@ class TblrTinyMceEditor extends HTMLElement {
 
     status.textContent = message;
     status.classList.toggle('error', error);
+  }
+
+  upgradeProperty(property) {
+    if (!Object.prototype.hasOwnProperty.call(this, property)) return;
+
+    const value = this[property];
+    delete this[property];
+    this[property] = value;
   }
 }
 
