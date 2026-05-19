@@ -359,6 +359,7 @@
                 <tblr-nav-item label="Progress" href="#progress"></tblr-nav-item>
                 <tblr-nav-item label="Form Controls" href="#form-controls"></tblr-nav-item>
                 <tblr-nav-item label="Choice Controls" href="#choice-controls"></tblr-nav-item>
+                <tblr-nav-item label="File Preview" href="#file-preview"></tblr-nav-item>
                 <tblr-nav-item label="Rich Editor" href="#rich-editor"></tblr-nav-item>
                 <tblr-nav-item label="TinyMCE Editor" href="#tinymce-section"></tblr-nav-item>
                 <tblr-nav-item label="Colorpicker" href="#colorpicker"></tblr-nav-item>
@@ -1482,6 +1483,62 @@
                         &lt;tblr-checkbox label="Checkbox input"&gt;&lt;/tblr-checkbox&gt;
                         &lt;tblr-switch label="Toggle switch" checked&gt;&lt;/tblr-switch&gt;
                         &lt;tblr-radio name="example" label="Option 1" checked&gt;&lt;/tblr-radio&gt;
+                    </tblr-code-preview>
+                </div>
+            </section>
+        </section>
+
+        <section id="file-preview">
+            <h1 class="section-title">TBLR File Preview</h1>
+            <p>Preview image, PDF, video, and audio files from a URL or from a File object assigned in JavaScript.</p>
+
+            <section class="flex" aria-label="File preview examples">
+                <div class="panel panel-main">
+                    <div class="form-grid">
+                        <tblr-file-preview
+                                title="Image preview"
+                                src="https://interactive-examples.mdn.mozilla.net/media/examples/plumeria.jpg"
+                                alt="Plumeria flower"
+                                height="18rem"
+                        ></tblr-file-preview>
+
+                        <tblr-file-preview
+                                title="PDF preview"
+                                src="https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf"
+                                type="pdf"
+                                height="18rem"
+                        ></tblr-file-preview>
+
+                        <tblr-file-preview
+                                title="Video preview"
+                                src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                                type="video"
+                                height="18rem"
+                        ></tblr-file-preview>
+
+                        <tblr-file-preview
+                                title="Audio preview"
+                                src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"
+                                type="audio"
+                        ></tblr-file-preview>
+
+                        <tblr-file-preview
+                                class="form-wide"
+                                title="Audio preview"
+                                src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"
+
+                                height="15rem"
+                        ></tblr-file-preview>
+
+                    </div>
+                </div>
+                <div class="panel-sidebar">
+                    <p class="label">Sample Code</p>
+                    <tblr-code-preview language="html" copy>
+                        &lt;tblr-file-preview src="/files/photo.jpg" alt="Product photo"&gt;&lt;/tblr-file-preview&gt;
+                        &lt;tblr-file-preview src="/files/invoice.pdf" type="pdf" title="Invoice" height="32rem"&gt;&lt;/tblr-file-preview&gt;
+                        &lt;tblr-file-preview src="/files/demo.mp4" type="video" poster="/files/demo.jpg"&gt;&lt;/tblr-file-preview&gt;
+                        &lt;tblr-file-preview src="/files/message.mp3" type="audio"&gt;&lt;/tblr-file-preview&gt;
                     </tblr-code-preview>
                 </div>
             </section>

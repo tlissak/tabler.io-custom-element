@@ -808,6 +808,108 @@
           }
         },
         {
+          "name": "tblr-file-preview",
+          "description": "Tabler File Preview custom element for image, PDF, video, and audio files",
+          "attributes": [
+            {
+              "name": "alt"
+            },
+            {
+              "name": "aspect"
+            },
+            {
+              "name": "autoplay",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "controls",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "download-label"
+            },
+            {
+              "name": "empty-label"
+            },
+            {
+              "name": "filename"
+            },
+            {
+              "name": "height"
+            },
+            {
+              "name": "loop",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "mime"
+            },
+            {
+              "name": "muted",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "open-label"
+            },
+            {
+              "name": "poster"
+            },
+            {
+              "name": "src"
+            },
+            {
+              "name": "title"
+            },
+            {
+              "name": "type",
+              "value": {
+                "type": "enum",
+                "items": [
+                  "image",
+                  "pdf",
+                  "video",
+                  "audio"
+                ]
+              }
+            },
+            {
+              "name": "unsupported-label"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "file",
+                "type": "File | Blob"
+              },
+              {
+                "name": "src",
+                "type": "string"
+              },
+              {
+                "name": "type",
+                "type": "string"
+              }
+            ],
+            "events": [
+              {
+                "name": "preview-load"
+              },
+              {
+                "name": "preview-error"
+              }
+            ]
+          }
+        },
+        {
           "name": "tblr-form",
           "description": "Tabler AJAX Form custom element",
           "attributes": [

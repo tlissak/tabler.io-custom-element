@@ -52,6 +52,7 @@ Use `preventTurboFouce()` with Turbo Drive to load Tabler custom elements before
 - [x] Radio
 - [x] Switch
 - [x] File Input
+- [x] File Preview
 - [x] Form
 - [x] Input
 - [x] Select
@@ -711,7 +712,25 @@ form.addEventListener('tblr-complete', event => {
   multiple
 ></tblr-file-input>
 
+<tblr-file-preview
+  src="/files/invoice.pdf"
+  type="pdf"
+  title="Invoice"
+  height="34rem"
+></tblr-file-preview>
+
+<tblr-file-preview src="/files/product.jpg" alt="Product photo"></tblr-file-preview>
+<tblr-file-preview src="/files/demo.mp4" type="video" poster="/files/demo.jpg"></tblr-file-preview>
+<tblr-file-preview src="/files/message.mp3" type="audio"></tblr-file-preview>
+
 <tblr-input label="Autosize textarea" textarea autosize rows="2" placeholder="Type something..."></tblr-input>
+```
+
+`tblr-file-preview` renders image, PDF, video, and audio previews. It infers the type from `type`, `mime`, or the file extension. You can also assign a `File` or `Blob` directly:
+
+```js
+const preview = document.querySelector('tblr-file-preview');
+preview.file = fileInput.files[0];
 ```
 
 Input masks use `_`, `9`, or `#` for digits, `A` for letters, and `*` for letters or digits. Other characters are inserted as literals while typing.
