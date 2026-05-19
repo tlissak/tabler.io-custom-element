@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, syncValidity } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-autocomplete.css', import.meta.url);
 
@@ -82,7 +83,9 @@ class TblrAutocomplete extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
-    this.internals = this.attachInternals?.();
+    this.internals = attachInternals(this);
+    this.defaultFormValue = null;
+    this.defaultLabelValue = null;
     this.reflectingValue = false;
     this.open = false;
     this.loading = false;
@@ -101,11 +104,24 @@ class TblrAutocomplete extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+      this.defaultLabelValue = this.getAttribute('label-value') ?? this.defaultFormValue;
+    }
+
     this.displayValue = this.getAttribute('label-value') ?? this.getAttribute('value') ?? '';
     this.query = this.displayValue;
     this.updateFormValue();
     this.render();
     document.addEventListener('click', this.handleDocumentClick);
+  }
+
+  formResetCallback() {
+    this.setValue(this.defaultFormValue ?? '', this.defaultLabelValue ?? this.defaultFormValue ?? '', null, { emit: false });
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   disconnectedCallback() {
@@ -223,6 +239,7 @@ class TblrAutocomplete extends HTMLElement {
         this.selectOption(index);
       });
     });
+    this.updateFormValue();
   }
 
   renderMenu(activeId) {
@@ -471,7 +488,8 @@ class TblrAutocomplete extends HTMLElement {
   }
 
   updateFormValue() {
-    this.internals?.setFormValue(this.value);
+    setFormValue(this.internals, booleanAttribute(this, 'disabled') ? null : this.value);
+    syncValidity(this.internals, this.input);
   }
 }
 

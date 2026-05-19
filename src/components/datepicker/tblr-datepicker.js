@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, syncValidity } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-datepicker.css', import.meta.url);
 const isoDatePattern = /^(\d{4})-(\d{2})-(\d{2})$/;
@@ -75,6 +76,8 @@ function sameDate(date, otherDate) {
 }
 
 class TblrDatepicker extends HTMLElement {
+  static formAssociated = true;
+
   static observedAttributes = [
     'name',
     'value',
@@ -94,6 +97,8 @@ class TblrDatepicker extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
+    this.defaultFormValue = null;
     this.reflectingValue = false;
     this.calendarView = 'days';
     this.returnViewAfterYearSelection = 'days';
@@ -105,12 +110,24 @@ class TblrDatepicker extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+    }
+
     this.render();
     document.addEventListener('pointerdown', this.handleDocumentPointerDown);
   }
 
   disconnectedCallback() {
     document.removeEventListener('pointerdown', this.handleDocumentPointerDown);
+  }
+
+  formResetCallback() {
+    this.value = this.defaultFormValue ?? '';
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -142,6 +159,7 @@ class TblrDatepicker extends HTMLElement {
     this.setAttribute('value', value ?? '');
     const input = this.root.querySelector('input');
     if (input) input.value = value ?? '';
+    this.updateFormState();
   }
 
   focus(options) {
@@ -204,6 +222,7 @@ class TblrDatepicker extends HTMLElement {
     });
 
     this.updateCalendar();
+    this.updateFormState();
   }
 
   renderIcon() {
@@ -503,6 +522,7 @@ class TblrDatepicker extends HTMLElement {
     this.viewDate = startOfMonth(parseDate(value));
     this.updateCalendar();
     this.close();
+    this.updateFormState();
 
     this.dispatchEvent(new InputEvent('input', {
       bubbles: true,
@@ -540,6 +560,7 @@ class TblrDatepicker extends HTMLElement {
     if (date) this.viewDate = startOfMonth(date);
 
     this.updateCalendar();
+    this.updateFormState();
     this.dispatchEvent(new InputEvent('input', {
       bubbles: true,
       composed: true,
@@ -549,6 +570,7 @@ class TblrDatepicker extends HTMLElement {
   }
 
   handleChange() {
+    this.updateFormState();
     this.dispatchEvent(new Event('change', {
       bubbles: true,
       composed: true,
@@ -565,6 +587,11 @@ class TblrDatepicker extends HTMLElement {
     if (!event.composedPath().includes(this)) {
       this.close();
     }
+  }
+
+  updateFormState() {
+    setFormValue(this.internals, this.hasAttribute('disabled') ? null : this.value);
+    syncValidity(this.internals, this.root.querySelector('input'));
   }
 }
 

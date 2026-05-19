@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, syncValidity, valuesToFormData } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-colorpicker.css', import.meta.url);
 const defaultColors = [
@@ -60,17 +61,33 @@ function isLightColor(color) {
 }
 
 class TblrColorpicker extends HTMLElement {
-  static observedAttributes = ['name', 'label', 'value', 'colors', 'type', 'disabled'];
+  static formAssociated = true;
+
+  static observedAttributes = ['name', 'label', 'value', 'colors', 'type', 'disabled', 'required'];
 
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
+    this.defaultFormValue = null;
     this.reflectingValue = false;
     this.handleNativeInput = this.handleNativeInput.bind(this);
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+    }
+
     this.render();
+  }
+
+  formResetCallback() {
+    this.value = this.defaultFormValue ?? '';
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -132,6 +149,7 @@ class TblrColorpicker extends HTMLElement {
     if (type === 'picker') {
       this.root.querySelector('.native-input')?.addEventListener('input', this.handleNativeInput);
       this.root.querySelector('.native-input')?.addEventListener('change', this.handleNativeInput);
+      this.updateFormState();
       return;
     }
 
@@ -144,6 +162,7 @@ class TblrColorpicker extends HTMLElement {
         }
       });
     });
+    this.updateFormState();
   }
 
   renderPalette(type) {
@@ -195,6 +214,7 @@ class TblrColorpicker extends HTMLElement {
           name="${escapeHtml(this.getAttribute('name') ?? '')}"
           value="${value}"
           ${disabled ? 'disabled' : ''}
+          ${this.hasAttribute('required') ? 'required' : ''}
         >
       </label>
     `;
@@ -233,6 +253,7 @@ class TblrColorpicker extends HTMLElement {
     this.reflectingValue = false;
 
     this.syncSelection();
+    this.updateFormState();
 
     this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
 
@@ -264,6 +285,21 @@ class TblrColorpicker extends HTMLElement {
       option.classList.toggle('selected', selected);
       option.setAttribute('aria-checked', selected ? 'true' : 'false');
     });
+  }
+
+  formValue() {
+    if (this.hasAttribute('disabled')) return null;
+
+    if (this.type === 'check') {
+      return valuesToFormData(this.getAttribute('name') ?? '', [...this.selectedValues]);
+    }
+
+    return normalizeColor(this.getAttribute('value')) || '';
+  }
+
+  updateFormState() {
+    setFormValue(this.internals, this.formValue());
+    syncValidity(this.internals, this.root.querySelector('.native-input'));
   }
 }
 

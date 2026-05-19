@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-rich-editor.css', import.meta.url);
 
@@ -50,6 +51,8 @@ function normalizeHtml(value) {
 }
 
 class TblrRichEditor extends HTMLElement {
+  static formAssociated = true;
+
   static observedAttributes = [
     'name',
     'value',
@@ -65,6 +68,8 @@ class TblrRichEditor extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
+    this.defaultFormValue = null;
     this.reflectingValue = false;
     this.sourceMode = false;
     this.handleToolbarPointerDown = this.handleToolbarPointerDown.bind(this);
@@ -77,7 +82,19 @@ class TblrRichEditor extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+    }
+
     this.render();
+  }
+
+  formResetCallback() {
+    this.value = this.defaultFormValue ?? '';
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -331,6 +348,7 @@ class TblrRichEditor extends HTMLElement {
     if (hiddenInput) {
       hiddenInput.value = value;
     }
+    this.updateFormState();
   }
 
   reflectValueFromEditor() {
@@ -346,6 +364,7 @@ class TblrRichEditor extends HTMLElement {
     if (hiddenInput) {
       hiddenInput.value = value;
     }
+    this.updateFormState();
   }
 
   reflectValueFromSource() {
@@ -359,6 +378,7 @@ class TblrRichEditor extends HTMLElement {
     if (hiddenInput) {
       hiddenInput.value = value;
     }
+    this.updateFormState();
   }
 
   toggleSourceMode() {
@@ -398,6 +418,25 @@ class TblrRichEditor extends HTMLElement {
       composed: true,
       inputType: 'format',
     }));
+  }
+
+  updateFormState() {
+    const value = this.value;
+
+    setFormValue(this.internals, booleanAttribute(this, 'disabled') ? null : value);
+
+    if (!this.internals?.setValidity) return;
+
+    if (!booleanAttribute(this, 'disabled') && booleanAttribute(this, 'required') && !normalizeHtml(value)) {
+      this.internals.setValidity(
+        { valueMissing: true },
+        'Please fill out this field.',
+        this.sourceMode ? this.sourceEditor : this.editor,
+      );
+      return;
+    }
+
+    this.internals.setValidity({});
   }
 }
 

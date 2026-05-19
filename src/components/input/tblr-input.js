@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, syncValidity } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-input.css', import.meta.url);
 const textLikeTypes = new Set([
@@ -86,6 +87,8 @@ function applyMask(value, mask) {
 }
 
 class TblrInput extends HTMLElement {
+  static formAssociated = true;
+
   static observedAttributes = [
     'name',
     'type',
@@ -113,6 +116,8 @@ class TblrInput extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
+    this.defaultFormValue = null;
     this.reflectingValue = false;
     this.passwordVisible = false;
     this.handleInput = this.handleInput.bind(this);
@@ -123,7 +128,19 @@ class TblrInput extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+    }
+
     this.render();
+  }
+
+  formResetCallback() {
+    this.value = this.defaultFormValue ?? '';
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -143,6 +160,7 @@ class TblrInput extends HTMLElement {
 
     this.setAttribute('value', nextValue);
     if (this.control) this.control.value = nextValue;
+    this.updateFormState();
   }
 
   get control() {
@@ -226,6 +244,7 @@ class TblrInput extends HTMLElement {
     }
 
     this.updateCounter();
+    this.updateFormState();
   }
 
   renderInput(type) {
@@ -339,6 +358,7 @@ class TblrInput extends HTMLElement {
     this.resizeTextarea();
     this.updateCounter();
     this.updateClearButton();
+    this.updateFormState();
     this.dispatchEvent(new InputEvent('input', {
       bubbles: true,
       composed: true,
@@ -372,6 +392,7 @@ class TblrInput extends HTMLElement {
     control.value = '';
     this.resizeTextarea();
     this.updateCounter();
+    this.updateFormState();
     this.render();
     this.focus();
     this.dispatchEvent(new InputEvent('input', {
@@ -433,6 +454,11 @@ class TblrInput extends HTMLElement {
 
     control.style.height = 'auto';
     control.style.height = `${control.scrollHeight}px`;
+  }
+
+  updateFormState() {
+    setFormValue(this.internals, booleanAttribute(this, 'disabled') ? null : this.value);
+    syncValidity(this.internals, this.control);
   }
 }
 

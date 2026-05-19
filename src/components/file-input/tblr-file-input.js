@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, valuesToFormData } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-file-input.css', import.meta.url);
 const imageUrlCache = new WeakMap();
@@ -142,6 +143,8 @@ async function filesFromDataTransfer(dataTransfer) {
 }
 
 class TblrFileInput extends HTMLElement {
+  static formAssociated = true;
+
   static observedAttributes = [
     'name',
     'label',
@@ -160,6 +163,7 @@ class TblrFileInput extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
     this.selectedFiles = [];
     this.customValidityMessage = '';
     this.dragDepth = 0;
@@ -179,6 +183,14 @@ class TblrFileInput extends HTMLElement {
 
   disconnectedCallback() {
     this.revokeImageUrls();
+  }
+
+  formResetCallback() {
+    this.setFiles([], { emit: false });
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -252,6 +264,7 @@ class TblrFileInput extends HTMLElement {
   }
 
   get validationMessage() {
+    if (booleanAttribute(this, 'disabled')) return '';
     if (this.customValidityMessage) return this.customValidityMessage;
     if (booleanAttribute(this, 'required') && this.selectedFiles.length === 0) return 'Please select a file.';
 
@@ -467,8 +480,25 @@ class TblrFileInput extends HTMLElement {
     const message = this.validationMessage;
 
     this.input?.setCustomValidity(message);
+    if (this.internals?.setValidity) {
+      this.internals.setValidity(
+        message ? { customError: true } : {},
+        message,
+        this.input ?? undefined,
+      );
+    }
+    this.updateFormValue();
     this.toggleAttribute('invalid', Boolean(message));
     this.toggleAttribute('blank', this.selectedFiles.length === 0);
+  }
+
+  updateFormValue() {
+    setFormValue(
+      this.internals,
+      booleanAttribute(this, 'disabled')
+        ? null
+        : valuesToFormData(this.getAttribute('name') ?? '', this.selectedFiles),
+    );
   }
 
   revokeImageUrls() {

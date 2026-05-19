@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, syncValidity, valuesToFormData } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-select.css', import.meta.url);
 
@@ -44,6 +45,8 @@ function splitValue(value) {
 }
 
 class TblrSelect extends HTMLElement {
+  static formAssociated = true;
+
   static observedAttributes = [
     'name',
     'value',
@@ -66,6 +69,8 @@ class TblrSelect extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
+    this.defaultFormValue = null;
     this.reflectingValue = false;
     this.handleChange = this.handleChange.bind(this);
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
@@ -77,12 +82,24 @@ class TblrSelect extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+    }
+
     this.render();
     document.addEventListener('click', this.handleDocumentClick);
   }
 
   disconnectedCallback() {
     document.removeEventListener('click', this.handleDocumentClick);
+  }
+
+  formResetCallback() {
+    this.value = this.defaultFormValue ?? '';
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -173,6 +190,7 @@ class TblrSelect extends HTMLElement {
     this.bindSearchableSingle();
     this.bindEnhancedMultiple();
     this.syncValue();
+    this.updateFormState();
   }
 
   getFilteredOptions(options, selectedValues = new Set()) {
@@ -513,6 +531,7 @@ class TblrSelect extends HTMLElement {
     this.reflectingValue = true;
     this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
     this.reflectingValue = false;
+    this.updateFormState();
     this.dispatchEvent(new Event('change', {
       bubbles: true,
       composed: true,
@@ -540,6 +559,7 @@ class TblrSelect extends HTMLElement {
     this.reflectingValue = false;
     this.open = false;
     this.render();
+    this.updateFormState();
     this.dispatchEvent(new Event('change', {
       bubbles: true,
       composed: true,
@@ -560,6 +580,7 @@ class TblrSelect extends HTMLElement {
     this.reflectingValue = false;
     this.open = open;
     this.render();
+    this.updateFormState();
     this.dispatchEvent(new Event('change', {
       bubbles: true,
       composed: true,
@@ -592,10 +613,26 @@ class TblrSelect extends HTMLElement {
       [...select.options].forEach(option => {
         option.selected = values.has(option.value);
       });
+      this.updateFormState();
       return;
     }
 
     select.value = value;
+    this.updateFormState();
+  }
+
+  formValue() {
+    if (this.hasAttribute('disabled')) return null;
+    if (this.hasAttribute('multiple')) {
+      return valuesToFormData(this.getAttribute('name') ?? '', splitValue(this.getAttribute('value')));
+    }
+
+    return this.getAttribute('value') ?? '';
+  }
+
+  updateFormState() {
+    setFormValue(this.internals, this.formValue());
+    syncValidity(this.internals, this.root.querySelector('select'));
   }
 }
 

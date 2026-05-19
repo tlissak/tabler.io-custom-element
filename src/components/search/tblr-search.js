@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, syncValidity } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-search.css', import.meta.url);
 
@@ -11,6 +12,8 @@ function escapeHtml(value) {
 }
 
 class TblrSearch extends HTMLElement {
+  static formAssociated = true;
+
   static observedAttributes = [
     'name',
     'value',
@@ -19,6 +22,7 @@ class TblrSearch extends HTMLElement {
     'help',
     'disabled',
     'readonly',
+    'required',
     'button',
     'icon-start',
     'rounded',
@@ -27,6 +31,8 @@ class TblrSearch extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
+    this.defaultFormValue = null;
     this.reflectingValue = false;
     this.handleInput = this.handleInput.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -34,7 +40,19 @@ class TblrSearch extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+    }
+
     this.render();
+  }
+
+  formResetCallback() {
+    this.value = this.defaultFormValue ?? '';
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -52,6 +70,7 @@ class TblrSearch extends HTMLElement {
     this.setAttribute('value', value ?? '');
     const input = this.root.querySelector('input');
     if (input) input.value = value ?? '';
+    this.updateFormState();
   }
 
   focus(options) {
@@ -63,6 +82,7 @@ class TblrSearch extends HTMLElement {
     const help = this.getAttribute('help');
     const disabled = this.hasAttribute('disabled');
     const readonly = this.hasAttribute('readonly');
+    const required = this.hasAttribute('required');
     const button = this.hasAttribute('button');
     const iconStart = this.hasAttribute('icon-start');
     const iconMarkup = this.renderIcon();
@@ -83,6 +103,7 @@ class TblrSearch extends HTMLElement {
             placeholder="${escapeHtml(this.getAttribute('placeholder') ?? 'Search...')}"
             ${disabled ? 'disabled' : ''}
             ${readonly ? 'readonly' : ''}
+            ${required ? 'required' : ''}
           >
           ${button ? `<button part="button" class="button" type="button" aria-label="Search">${iconMarkup}</button>` : `<span part="icon" class="icon">${iconMarkup}</span>`}
         </span>
@@ -104,6 +125,7 @@ class TblrSearch extends HTMLElement {
       if (event.key === 'Enter') this.handleSubmit();
     });
     submitButton?.addEventListener('click', this.handleSubmit);
+    this.updateFormState();
   }
 
   renderIcon() {
@@ -119,6 +141,7 @@ class TblrSearch extends HTMLElement {
     this.reflectingValue = true;
     this.setAttribute('value', event.target.value);
     this.reflectingValue = false;
+    this.updateFormState();
     this.dispatchEvent(new InputEvent('input', {
       bubbles: true,
       composed: true,
@@ -128,6 +151,7 @@ class TblrSearch extends HTMLElement {
   }
 
   handleChange() {
+    this.updateFormState();
     this.dispatchEvent(new Event('change', {
       bubbles: true,
       composed: true,
@@ -140,6 +164,11 @@ class TblrSearch extends HTMLElement {
       composed: true,
       detail: { value: this.value },
     }));
+  }
+
+  updateFormState() {
+    setFormValue(this.internals, this.hasAttribute('disabled') ? null : this.value);
+    syncValidity(this.internals, this.root.querySelector('input'));
   }
 }
 

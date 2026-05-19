@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, setFormValue, syncValidity } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-checkbox.css', import.meta.url);
 
@@ -11,17 +12,33 @@ function escapeHtml(value) {
 }
 
 class TblrCheckbox extends HTMLElement {
-  static observedAttributes = ['name', 'value', 'label', 'description', 'checked', 'disabled', 'inline'];
+  static formAssociated = true;
+
+  static observedAttributes = ['name', 'value', 'label', 'description', 'checked', 'disabled', 'required', 'inline'];
 
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+    this.internals = attachInternals(this);
+    this.defaultChecked = null;
     this.reflectingChecked = false;
     this.handleChange = this.handleChange.bind(this);
   }
 
   connectedCallback() {
+    if (this.defaultChecked === null) {
+      this.defaultChecked = this.hasAttribute('checked');
+    }
+
     this.render();
+  }
+
+  formResetCallback() {
+    this.checked = this.defaultChecked;
+  }
+
+  formDisabledCallback(disabled) {
+    this.toggleAttribute('disabled', disabled);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -39,6 +56,7 @@ class TblrCheckbox extends HTMLElement {
     this.toggleAttribute('checked', Boolean(value));
     const input = this.root.querySelector('input');
     if (input) input.checked = Boolean(value);
+    this.updateFormState();
   }
 
   focus(options) {
@@ -61,6 +79,7 @@ class TblrCheckbox extends HTMLElement {
           value="${escapeHtml(this.getAttribute('value') ?? label)}"
           ${this.hasAttribute('checked') ? 'checked' : ''}
           ${disabled ? 'disabled' : ''}
+          ${this.hasAttribute('required') ? 'required' : ''}
         >
         <span part="control" class="control">
           <svg class="check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -78,15 +97,28 @@ class TblrCheckbox extends HTMLElement {
     if (descriptionEl) descriptionEl.textContent = description;
 
     this.root.querySelector('input').addEventListener('change', this.handleChange);
+    this.updateFormState();
   }
 
   handleChange(event) {
     this.reflectingChecked = true;
     this.toggleAttribute('checked', event.target.checked);
     this.reflectingChecked = false;
+    this.updateFormState();
 
     this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+  }
+
+  formValue() {
+    if (!this.checked || this.hasAttribute('disabled')) return null;
+
+    return this.getAttribute('value') ?? this.getAttribute('label') ?? this.textContent.trim();
+  }
+
+  updateFormState() {
+    setFormValue(this.internals, this.formValue());
+    syncValidity(this.internals, this.root.querySelector('input'));
   }
 }
 

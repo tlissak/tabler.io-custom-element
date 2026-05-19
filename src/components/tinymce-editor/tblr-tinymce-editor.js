@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { attachInternals, syncValidity } from '../../core/form-associated.js';
 
 const stylesheetUrl = new URL('./tblr-tinymce-editor.css', import.meta.url);
 const defaultPlugins = 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table wordcount';
@@ -106,8 +107,9 @@ class TblrTinyMceEditor extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
-    this.internals = this.attachInternals?.();
+    this.internals = attachInternals(this);
     this.editor = null;
+    this.defaultFormValue = null;
     this.reflectingValue = false;
     this.initToken = 0;
     this.observer = null;
@@ -116,6 +118,10 @@ class TblrTinyMceEditor extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.defaultFormValue === null) {
+      this.defaultFormValue = this.getAttribute('value') ?? '';
+    }
+
     this.upgradeProperty('value');
     this.render();
     if (booleanAttribute(this, 'lazy')) {
@@ -186,7 +192,7 @@ class TblrTinyMceEditor extends HTMLElement {
   }
 
   formResetCallback() {
-    this.value = this.getAttribute('value') ?? '';
+    this.value = this.defaultFormValue ?? '';
   }
 
   formDisabledCallback(disabled) {
@@ -417,7 +423,8 @@ class TblrTinyMceEditor extends HTMLElement {
   }
 
   setFormValue(value) {
-    this.internals?.setFormValue?.(value);
+    this.internals?.setFormValue?.(booleanAttribute(this, 'disabled') ? null : value);
+    syncValidity(this.internals, this.textarea);
   }
 
   setStatus(message, error = false) {
