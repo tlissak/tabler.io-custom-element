@@ -932,7 +932,7 @@
             <tblr-data-table
                     title="Employee"
                     description="Table description."
-                    src="./examples/employees.json"
+                    src="./employees.json"
                     page="1"
                     per-page="10"
                     sort="name"
@@ -1233,7 +1233,7 @@
 
             <section class="flex" aria-label="AJAX form example">
                 <div class="panel panel-main">
-                    <tblr-form id="ajax-profile-form" action="./examples/employees.json" method="get">
+                    <tblr-form id="ajax-profile-form" action="./employees.json" method="get">
                         <input type="hidden" name="perPage" value="5">
                         <div class="form-grid">
                             <tblr-input name="search" label="Employee search" placeholder="Search employees"></tblr-input>
@@ -1265,7 +1265,7 @@
                 <div class="panel-sidebar">
                     <p class="label">Sample Code</p>
                     <tblr-code-preview language="html" copy>
-                        &lt;tblr-form id="employee-form" action="./examples/employees.json" method="get"&gt;
+                        &lt;tblr-form id="employee-form" action="./employees.json" method="get"&gt;
                         &lt;tblr-input name="search" label="Employee search"&gt;&lt;/tblr-input&gt;
                         &lt;tblr-select name="sort" options="name:Name|city:City"&gt;&lt;/tblr-select&gt;
                         &lt;tblr-checkbox name="includeInactive" value="1" label="Include inactive records"&gt;&lt;/tblr-checkbox&gt;
