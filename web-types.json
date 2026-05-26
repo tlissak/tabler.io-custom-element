@@ -206,10 +206,25 @@
               "name": "appearance"
             },
             {
+              "name": "caret",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "circle",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
               "name": "disabled",
               "value": {
                 "type": "boolean"
               }
+            },
+            {
+              "name": "href"
             },
             {
               "name": "icon-only",
@@ -221,10 +236,19 @@
               "name": "label"
             },
             {
+              "name": "loading",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
               "name": "outline",
               "value": {
                 "type": "boolean"
               }
+            },
+            {
+              "name": "rel"
             },
             {
               "name": "size"
@@ -237,6 +261,9 @@
             },
             {
               "name": "state"
+            },
+            {
+              "name": "target"
             },
             {
               "name": "type"

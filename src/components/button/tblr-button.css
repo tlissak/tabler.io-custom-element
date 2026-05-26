@@ -79,7 +79,8 @@
     var(--tblr-button-focus-ring, var(--tblr-focus-ring, 0 0 0 0.25rem rgb(32 107 196 / 25%)));
 }
 
-.btn:disabled {
+.btn:disabled,
+.btn[aria-disabled="true"] {
   cursor: not-allowed;
   opacity: var(--tblr-button-disabled-opacity, var(--tblr-disabled-opacity, 0.65));
   pointer-events: none;
