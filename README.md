@@ -117,7 +117,7 @@ Run the local static server:
 npm run serve
 ```
 
-Then open `http://localhost:8080/`.
+Then open `http://localhost:8090/`.
 
 Docker:
 

@@ -2,5 +2,8 @@
   "name": "@tabler-components/ui",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "serve": "node server.js"
+  },
   "web-types": "./web-types.json"
 }

@@ -927,12 +927,12 @@
 
         <section id="data-table">
             <h1 class="section-title">TBLR Data Table</h1>
-            <p>Remote server-backed table with sorting, filtering, page size controls, and pagination.</p>
+            <p>Table loaded from a JSON file with sorting, filtering, page size controls, and pagination.</p>
 
             <tblr-data-table
                     title="Employee"
                     description="Table description."
-                    src="/api/employees"
+                    src="/examples/employees.json"
                     page="1"
                     per-page="10"
                     sort="name"
@@ -1229,11 +1229,11 @@
 
         <section id="form-controls">
             <h1 class="section-title">TBLR Form Controls</h1>
-            <p>Tabler-style inputs, selects, and search controls with AJAX form example.</p>
+            <p>Tabler-style inputs, selects, and search controls using JSON file responses.</p>
 
             <section class="flex" aria-label="AJAX form example">
                 <div class="panel panel-main">
-                    <tblr-form id="ajax-profile-form" action="/api/employees" method="get">
+                    <tblr-form id="ajax-profile-form" action="/examples/employees.json" method="get">
                         <input type="hidden" name="perPage" value="5">
                         <div class="form-grid">
                             <tblr-input name="search" label="Employee search" placeholder="Search employees"></tblr-input>
@@ -1265,23 +1265,17 @@
                 <div class="panel-sidebar">
                     <p class="label">Sample Code</p>
                     <tblr-code-preview language="html" copy>
-                        &lt;tblr-form id="profile-form" action="/api/profile" method="post"&gt;
-                        &lt;tblr-input name="user[name]" label="Name"&gt;&lt;/tblr-input&gt;
-                        &lt;tblr-select name="role" label="Role" options="admin:Admin|editor:Editor"&gt;&lt;/tblr-select&gt;
-                        &lt;tblr-checkbox name="active" value="1" label="Active"&gt;&lt;/tblr-checkbox&gt;
-                        &lt;tblr-button type="submit"&gt;Save&lt;/tblr-button&gt;
+                        &lt;tblr-form id="employee-form" action="/examples/employees.json" method="get"&gt;
+                        &lt;tblr-input name="search" label="Employee search"&gt;&lt;/tblr-input&gt;
+                        &lt;tblr-select name="sort" options="name:Name|city:City"&gt;&lt;/tblr-select&gt;
+                        &lt;tblr-checkbox name="includeInactive" value="1" label="Include inactive records"&gt;&lt;/tblr-checkbox&gt;
+                        &lt;tblr-button type="submit"&gt;Fetch results&lt;/tblr-button&gt;
                         &lt;/tblr-form&gt;
 
                         &lt;script&gt;
-                          const form = document.querySelector('#profile-form');
-                          form.populate({
-                            user: { name: 'Jane Doe' },
-                            role: 'editor',
-                            active: true,
-                          });
-
+                          const form = document.querySelector('#employee-form');
                           form.addEventListener('tblr-success', event =&gt; {
-                            console.log(event.detail.data);
+                            console.log(event.detail.data); // Array from employees.json
                           });
                         &lt;/script&gt;
                     </tblr-code-preview>
@@ -1917,9 +1911,23 @@
     ajaxForm?.addEventListener('tblr-success', event => {
         if (!ajaxFormResult) return;
 
+        const formData = ajaxForm.formData();
+        const query = String(formData.get('search') ?? '').trim().toLowerCase();
+        const sort = String(formData.get('sort') ?? '');
+        const direction = formData.get('direction') === 'desc' ? -1 : 1;
+        const perPage = Number.parseInt(formData.get('perPage') ?? '5', 10);
+        const includeInactive = formData.has('includeInactive');
+        const sourceRows = Array.isArray(event.detail.data) ? event.detail.data : [];
+        const rows = sourceRows
+            .filter(row => !query || Object.values(row).flat().some(value => String(value).toLowerCase().includes(query)))
+            .filter(row => includeInactive || row.status !== 'Inactive')
+            .sort((left, right) => sort
+                ? String(left[sort] ?? '').localeCompare(String(right[sort] ?? ''), undefined, {numeric: true, sensitivity: 'base'}) * direction
+                : 0);
+
         ajaxFormResult.textContent = JSON.stringify({
-            total: event.detail.data.total,
-            rows: event.detail.data.data,
+            total: rows.length,
+            rows: rows.slice(0, perPage),
         }, null, 2);
     });
 
