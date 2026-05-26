@@ -55,6 +55,17 @@ function normalizeOptions(data, labelField, valueField) {
     .filter(option => option.label || option.value);
 }
 
+function filterOptions(options, query) {
+  const search = String(query ?? '').trim().toLowerCase();
+
+  if (!search) return options;
+
+  return options.filter(option => (
+    option.label.toLowerCase().includes(search)
+    || option.value.toLowerCase().includes(search)
+  ));
+}
+
 class TblrAutocomplete extends HTMLElement {
   static formAssociated = true;
 
@@ -426,7 +437,7 @@ class TblrAutocomplete extends HTMLElement {
       const data = await response.json();
       if (requestId !== this.requestId) return;
 
-      this.options = normalizeOptions(data, labelField, valueField);
+      this.options = filterOptions(normalizeOptions(data, labelField, valueField), this.query);
       this.loading = false;
       this.activeIndex = 0;
       const resultsSelection = {

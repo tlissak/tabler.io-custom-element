@@ -49,13 +49,35 @@ function getValue(row, key) {
   return String(key).split('.').reduce((value, part) => value?.[part], row) ?? '';
 }
 
-function normalizeRows(payload) {
+function compareValues(left, right, direction) {
+  const a = Array.isArray(left) ? left.join(' ') : left;
+  const b = Array.isArray(right) ? right.join(' ') : right;
+  const modifier = direction === 'desc' ? -1 : 1;
+
+  return String(a ?? '').localeCompare(String(b ?? ''), undefined, {
+    numeric: true,
+    sensitivity: 'base',
+  }) * modifier;
+}
+
+function normalizeRows(payload, request = {}) {
   if (Array.isArray(payload)) {
+    const page = Math.max(Number(request.page) || 1, 1);
+    const perPage = Math.max(Number(request.perPage) || payload.length || 1, 1);
+    const search = String(request.search ?? '').trim().toLowerCase();
+    const filtered = search
+      ? payload.filter(row => Object.values(row).flat().some(value => String(value).toLowerCase().includes(search)))
+      : payload;
+    const sorted = request.sort
+      ? [...filtered].sort((left, right) => compareValues(getValue(left, request.sort), getValue(right, request.sort), request.direction))
+      : filtered;
+    const start = (page - 1) * perPage;
+
     return {
-      page: 1,
-      perPage: payload.length,
-      rows: payload,
-      total: payload.length,
+      page,
+      perPage,
+      rows: sorted.slice(start, start + perPage),
+      total: sorted.length,
     };
   }
 
@@ -287,7 +309,13 @@ class TblrDataTable extends HTMLElement {
         throw new Error(`Request failed with status ${response.status}.`);
       }
 
-      const payload = normalizeRows(await response.json());
+      const payload = normalizeRows(await response.json(), {
+        direction: this.direction,
+        page: this.page,
+        perPage: this.perPage,
+        search: this.search,
+        sort: this.sort,
+      });
 
       if (requestId !== this.requestId || !this.isConnected) return;
 
