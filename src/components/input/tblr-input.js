@@ -33,6 +33,13 @@ function attributeValue(host, name) {
   return host.getAttribute(name) ?? '';
 }
 
+function renderAttributes(host, names) {
+  return names
+    .filter(name => host.hasAttribute(name))
+    .map(name => `${name}="${escapeHtml(host.getAttribute(name))}"`)
+    .join('\n        ');
+}
+
 function isMaskToken(char) {
   return char === '_' || char === '9' || char === '#' || char === 'A' || char === '*';
 }
@@ -96,6 +103,11 @@ class TblrInput extends HTMLElement {
     'placeholder',
     'label',
     'help',
+    'autocomplete',
+    'lang',
+    'min',
+    'max',
+    'step',
     'disabled',
     'readonly',
     'required',
@@ -251,6 +263,7 @@ class TblrInput extends HTMLElement {
     const safeType = textLikeTypes.has(type) ? type : 'text';
     const renderedType = safeType === 'password' && this.passwordVisible ? 'text' : safeType;
     const maxlength = this.getAttribute('mask')?.length ?? this.getAttribute('maxlength');
+    const nativeAttributes = renderAttributes(this, ['autocomplete', 'lang', 'min', 'max', 'step']);
 
     return `
       <input
@@ -264,6 +277,7 @@ class TblrInput extends HTMLElement {
         ${booleanAttribute(this, 'readonly') ? 'readonly' : ''}
         ${booleanAttribute(this, 'required') ? 'required' : ''}
         ${maxlength ? `maxlength="${escapeHtml(maxlength)}"` : ''}
+        ${nativeAttributes}
       >
     `;
   }
@@ -324,6 +338,8 @@ class TblrInput extends HTMLElement {
   }
 
   renderTextarea() {
+    const nativeAttributes = renderAttributes(this, ['autocomplete', 'lang']);
+
     return `
       <textarea
         part="control"
@@ -335,6 +351,7 @@ class TblrInput extends HTMLElement {
         ${booleanAttribute(this, 'readonly') ? 'readonly' : ''}
         ${booleanAttribute(this, 'required') ? 'required' : ''}
         ${this.getAttribute('maxlength') ? `maxlength="${escapeHtml(this.getAttribute('maxlength'))}"` : ''}
+        ${nativeAttributes}
       ></textarea>
     `;
   }

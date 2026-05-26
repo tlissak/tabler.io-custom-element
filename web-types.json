@@ -1254,6 +1254,9 @@
               "name": "action"
             },
             {
+              "name": "autocomplete"
+            },
+            {
               "name": "autosize",
               "value": {
                 "type": "boolean"
@@ -1284,10 +1287,19 @@
               "name": "label"
             },
             {
+              "name": "lang"
+            },
+            {
               "name": "mask"
             },
             {
+              "name": "max"
+            },
+            {
               "name": "maxlength"
+            },
+            {
+              "name": "min"
             },
             {
               "name": "name"
@@ -1321,6 +1333,9 @@
             },
             {
               "name": "suffix"
+            },
+            {
+              "name": "step"
             },
             {
               "name": "textarea",
