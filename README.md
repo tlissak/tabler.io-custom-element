@@ -457,14 +457,14 @@ Supported attributes are `src`, `mode="cors|no-cors|same-origin"`, and `allow-sc
 
 ## Data Table
 
-`tblr-data-table` renders a remote server-backed table with search, sortable columns, page size controls, and pagination. The request URL receives `page`, `perPage`, `search`, `sort`, and `direction` query parameters.
+`tblr-data-table` renders data loaded from JSON with search, sortable columns, page size controls, and pagination. When the response is a JSON array, filtering, sorting, and pagination are handled in JavaScript in the component. Server-paged responses remain supported.
 Badge columns can read colors from `colorKey`; values may be hex/rgb/var CSS colors or the same named color set supported by `tblr-badge`, such as `blue`, `azure`, `green`, `warning`, and `danger`.
 
 ```html
 <tblr-data-table
   title="Employee"
   description="Table description."
-  src="/api/employees"
+  src="/examples/employees.json"
   per-page="10"
   sort="name"
   columns='[
@@ -479,7 +479,21 @@ Badge columns can read colors from `colorKey`; values may be hex/rgb/var CSS col
 ></tblr-data-table>
 ```
 
-Expected response shape:
+For a JavaScript-only mock, provide a JSON array:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Pawel Kuna",
+    "email": "pawel@example.com",
+    "city": "Peimei, China",
+    "status": "Active"
+  }
+]
+```
+
+Server-paged response shape:
 
 ```json
 {

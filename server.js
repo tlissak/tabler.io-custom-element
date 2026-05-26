@@ -39,17 +39,6 @@ const mimeTypes = new Map([
   ['.woff2', 'font/woff2'],
 ]);
 
-function compareValues(left, right, direction) {
-  const a = Array.isArray(left) ? left.join(' ') : left;
-  const b = Array.isArray(right) ? right.join(' ') : right;
-  const modifier = direction === 'desc' ? -1 : 1;
-
-  return String(a ?? '').localeCompare(String(b ?? ''), undefined, {
-    numeric: true,
-    sensitivity: 'base',
-  }) * modifier;
-}
-
 function send(res, statusCode, body, headers = {}) {
   res.writeHead(statusCode, {
     'Cache-Control': 'no-store',
@@ -140,30 +129,6 @@ async function watchDirectory(directoryPath) {
   }
 }
 
-async function serveEmployees(requestUrl, res) {
-  const filePath = path.join(root, 'examples', 'employees.json');
-  const data = JSON.parse(await fs.readFile(filePath, 'utf8'));
-  const page = Math.max(Number.parseInt(requestUrl.searchParams.get('page') ?? '1', 10), 1);
-  const perPage = Math.max(Number.parseInt(requestUrl.searchParams.get('perPage') ?? '10', 10), 1);
-  const search = (requestUrl.searchParams.get('search') ?? '').trim().toLowerCase();
-  const sort = requestUrl.searchParams.get('sort') ?? 'name';
-  const direction = requestUrl.searchParams.get('direction') === 'desc' ? 'desc' : 'asc';
-  const searched = search
-    ? data.filter(row => Object.values(row).flat().some(value => String(value).toLowerCase().includes(search)))
-    : data;
-  const sorted = [...searched].sort((a, b) => compareValues(a[sort], b[sort], direction));
-  const start = (page - 1) * perPage;
-
-  send(res, 200, JSON.stringify({
-    data: sorted.slice(start, start + perPage),
-    direction,
-    page,
-    perPage,
-    sort,
-    total: sorted.length,
-  }), { 'Content-Type': 'application/json; charset=utf-8' });
-}
-
 function resolveRequestPath(url) {
   const requestUrl = new URL(url, `http://${host}:${port}`);
   const pathname = decodeURIComponent(requestUrl.pathname);
@@ -190,11 +155,6 @@ async function serveFile(req, res) {
 
   if (requestUrl.pathname === liveReloadPath) {
     serveLiveReload(req, res);
-    return;
-  }
-
-  if (requestUrl.pathname === '/api/employees') {
-    await serveEmployees(requestUrl, res);
     return;
   }
 
