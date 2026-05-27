@@ -63,6 +63,16 @@
   cursor: pointer;
 }
 
+.tab-icon {
+  flex: none;
+  margin-right: var(--tblr-tabs-icon-gap, 0.5rem);
+  --tblr-icon-size: var(--tblr-tabs-icon-size, 1rem);
+}
+
+.tab-label {
+  min-width: 0;
+}
+
 .tabs-horizontal .tab {
   min-height: var(--tblr-tabs-link-height, 2.5rem);
   padding: var(--tblr-tabs-link-padding-y, 0.625rem) var(--tblr-tabs-link-padding-x, 1rem);

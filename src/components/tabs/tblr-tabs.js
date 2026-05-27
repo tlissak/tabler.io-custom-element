@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import '../icon/tblr-icon.js';
 
 const stylesheetUrl = new URL('./tblr-tabs.css', import.meta.url);
 const orientationValues = new Set(['horizontal', 'vertical']);
@@ -17,6 +18,12 @@ function escapeHtml(value) {
 
 function getTabValue(tab, index) {
   return tab.getAttribute('value') || `tab-${index + 1}`;
+}
+
+function getTabSort(tab) {
+  const sort = Number.parseFloat(tab.dataset.sort);
+
+  return Number.isFinite(sort) ? sort : null;
 }
 
 function idToken(value) {
@@ -42,13 +49,17 @@ class TblrTabs extends HTMLElement {
     this.reflectingValue = false;
     this.handleClick = this.handleClick.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
-    this.observer = new MutationObserver(() => this.render());
+    this.observer = new MutationObserver(mutations => {
+      if (mutations.some(mutation => this.isTabDefinitionMutation(mutation))) {
+        this.render();
+      }
+    });
   }
 
   connectedCallback() {
     this.render();
     this.observer.observe(this, {
-      attributeFilter: ['label', 'value', 'disabled'],
+      attributeFilter: ['label', 'icon', 'value', 'disabled', 'data-sort'],
       attributes: true,
       childList: true,
       subtree: true,
@@ -79,7 +90,22 @@ class TblrTabs extends HTMLElement {
   }
 
   get tabs() {
-    return [...this.querySelectorAll(':scope > tblr-tab')];
+    const tabs = [...this.querySelectorAll(':scope > tblr-tab')];
+
+    if (!tabs.some(tab => getTabSort(tab) !== null)) {
+      return tabs;
+    }
+
+    return tabs
+      .map((tab, index) => ({ tab, index, sort: getTabSort(tab) }))
+      .sort((left, right) => {
+        if (left.sort === null && right.sort === null) return left.index - right.index;
+        if (left.sort === null) return 1;
+        if (right.sort === null) return -1;
+
+        return left.sort - right.sort || left.index - right.index;
+      })
+      .map(item => item.tab);
   }
 
   get orientation() {
@@ -90,6 +116,21 @@ class TblrTabs extends HTMLElement {
       'horizontal',
       orientationValues
     );
+  }
+
+  isTabDefinitionMutation(mutation) {
+    if (mutation.type === 'attributes') {
+      return mutation.target.parentElement === this
+        && mutation.target.tagName.toLowerCase() === 'tblr-tab';
+    }
+
+    if (mutation.type !== 'childList' || mutation.target !== this) {
+      return false;
+    }
+
+    return [...mutation.addedNodes, ...mutation.removedNodes].some(node => (
+      node instanceof HTMLElement && node.tagName.toLowerCase() === 'tblr-tab'
+    ));
   }
 
   render() {
@@ -123,6 +164,7 @@ class TblrTabs extends HTMLElement {
   renderTabButton(tab, index) {
     const value = getTabValue(tab, index);
     const label = tab.getAttribute('label') || tab.textContent.trim() || value;
+    const icon = tab.getAttribute('icon');
     const disabled = tab.hasAttribute('disabled');
 
     return `
@@ -138,7 +180,8 @@ class TblrTabs extends HTMLElement {
         tabindex="-1"
         ${disabled ? 'disabled aria-disabled="true"' : ''}
       >
-        ${escapeHtml(label)}
+        ${icon ? `<tblr-icon class="tab-icon" name="${escapeHtml(icon)}" aria-hidden="true"></tblr-icon>` : ''}
+        <span class="tab-label">${escapeHtml(label)}</span>
       </button>
     `;
   }
