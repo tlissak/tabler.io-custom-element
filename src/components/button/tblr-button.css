@@ -8,6 +8,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   gap: 0.5rem;
   min-height: var(--tblr-button-min-height, 2.25rem);
   min-width: var(--tblr-button-min-width, auto);
