@@ -11,6 +11,12 @@
   display: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :host([align="right"]),
 :host([align="end"]) {
   margin-left: auto;

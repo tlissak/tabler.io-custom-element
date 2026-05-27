@@ -10,6 +10,12 @@
   display: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .preview {
   overflow: hidden;
   border: var(--tblr-code-preview-border-width, var(--tblr-border-width, 1px)) solid var(--tblr-code-preview-border-color, var(--tblr-border-color, #dce1e7));

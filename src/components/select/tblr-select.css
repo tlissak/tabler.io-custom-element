@@ -10,6 +10,12 @@
   display: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .field {
   display: grid;
   gap: var(--tblr-select-label-gap, 0.375rem);

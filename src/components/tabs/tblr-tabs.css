@@ -10,6 +10,12 @@
   display: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .tabs {
   display: grid;
   min-width: 0;

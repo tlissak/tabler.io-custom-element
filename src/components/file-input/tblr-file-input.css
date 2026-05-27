@@ -10,6 +10,12 @@
   display: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :host([size="xs"]) {
   --tblr-file-input-dropzone-padding: 0.625rem;
   --tblr-file-input-icon-size: 1.75rem;

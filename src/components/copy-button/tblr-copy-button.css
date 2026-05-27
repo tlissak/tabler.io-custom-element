@@ -11,6 +11,12 @@
   display: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .copy-button {
   position: relative;
   display: inline-flex;
