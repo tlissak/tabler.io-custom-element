@@ -92,7 +92,9 @@ class TblrTabs extends HTMLElement {
   }
 
   get tabs() {
-    const tabs = [...this.querySelectorAll(':scope > tblr-tab')];
+    // Forms may wrap tab panels so their controls share one native form owner.
+    const tabs = [...this.querySelectorAll('tblr-tab')]
+      .filter(tab => tab.closest('tblr-tabs') === this);
 
     if (!tabs.some(tab => getTabSort(tab) !== null)) {
       return tabs;
@@ -122,16 +124,18 @@ class TblrTabs extends HTMLElement {
 
   isTabDefinitionMutation(mutation) {
     if (mutation.type === 'attributes') {
-      return mutation.target.parentElement === this
-        && mutation.target.tagName.toLowerCase() === 'tblr-tab';
+      return mutation.target.tagName.toLowerCase() === 'tblr-tab'
+        && mutation.target.closest('tblr-tabs') === this;
     }
 
-    if (mutation.type !== 'childList' || mutation.target !== this) {
+    if (mutation.type !== 'childList'
+      || (mutation.target !== this && mutation.target.closest('tblr-tabs') !== this)) {
       return false;
     }
 
     return [...mutation.addedNodes, ...mutation.removedNodes].some(node => (
-      node instanceof HTMLElement && node.tagName.toLowerCase() === 'tblr-tab'
+      node instanceof HTMLElement
+      && (node.tagName.toLowerCase() === 'tblr-tab' || node.querySelector('tblr-tab'))
     ));
   }
 
