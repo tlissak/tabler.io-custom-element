@@ -3,6 +3,7 @@ import '../icon/tblr-icon.js';
 
 const stylesheetUrl = new URL('./tblr-tabs.css', import.meta.url);
 const orientationValues = new Set(['horizontal', 'vertical']);
+const selectedTabStorageKey = 'tab-selected';
 
 function safeToken(value, fallback, allowedValues) {
   return allowedValues.has(value) ? value : fallback;
@@ -57,6 +58,7 @@ class TblrTabs extends HTMLElement {
   }
 
   connectedCallback() {
+    this.restoreSelection();
     this.render();
     this.observer.observe(this, {
       attributeFilter: ['label', 'icon', 'value', 'disabled', 'data-sort'],
@@ -225,7 +227,11 @@ class TblrTabs extends HTMLElement {
   }
 
   activate(value) {
-    if (!value || this.value === value) return;
+    if (!value) return;
+
+    sessionStorage.setItem(selectedTabStorageKey, value);
+
+    if (this.value === value) return;
 
     this.reflectingValue = true;
     this.setAttribute('value', value);
@@ -236,6 +242,16 @@ class TblrTabs extends HTMLElement {
       composed: true,
       detail: { value },
     }));
+  }
+
+  restoreSelection() {
+    const value = sessionStorage.getItem(selectedTabStorageKey);
+
+    if (!value) return;
+
+    this.reflectingValue = true;
+    this.setAttribute('value', value);
+    this.reflectingValue = false;
   }
 
   syncTabs() {
@@ -256,6 +272,7 @@ class TblrTabs extends HTMLElement {
     buttons.forEach(button => {
       const active = button.dataset.value === activeValue;
 
+      button.setAttribute('part', active ? 'tab tab-active' : 'tab');
       button.setAttribute('aria-selected', String(active));
       button.tabIndex = active ? 0 : -1;
     });
