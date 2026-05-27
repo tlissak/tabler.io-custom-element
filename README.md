@@ -30,6 +30,23 @@ Properties such as `element.value` and `element.checked` are replayed during
 component upgrade, so assigning them before the component is fully defined is
 safe.
 
+## Avoiding unstyled content
+
+Add this rule to the page stylesheet to hide Tabler elements until their
+definition and initial component stylesheet are ready:
+
+```css
+:not(:defined),
+[data-tblr-loading] {
+  visibility: hidden;
+}
+```
+
+`:not(:defined)` prevents unresolved custom elements from flashing before
+autoload completes. Styled Tabler components temporarily receive
+`data-tblr-loading` while their shadow stylesheet loads and remove it
+automatically when they are ready.
+
 ## Turbo support
 
 Use `preventTurboFouce()` with Turbo Drive to load Tabler custom elements before Turbo renders the next page:
