@@ -47,6 +47,7 @@ class TblrTabs extends HTMLElement {
     super();
     this.root = this.attachShadow({ mode: 'open' });
     this.uid = `tblr-tabs-${TblrTabs.nextId++}`;
+    this.initialized = false;
     this.reflectingValue = false;
     this.handleClick = this.handleClick.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
@@ -58,6 +59,7 @@ class TblrTabs extends HTMLElement {
   }
 
   connectedCallback() {
+    this.initialized = true;
     this.restoreSelection();
     this.render();
     this.observer.observe(this, {
@@ -73,7 +75,8 @@ class TblrTabs extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (!this.isConnected || oldValue === newValue) return;
+    // Existing attributes are reported during upgrade before initial state is restored.
+    if (!this.initialized || !this.isConnected || oldValue === newValue) return;
 
     if (name === 'value' && this.reflectingValue) {
       this.syncTabs();
