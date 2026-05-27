@@ -11,6 +11,7 @@ const gapTokens = new Map([
 ]);
 const alignValues = new Set(['start', 'center', 'end', 'stretch']);
 const justifyValues = new Set(['start', 'center', 'end', 'stretch']);
+const responsiveBreakpoints = ['sm', 'md', 'lg', 'xl', 'xxl'];
 
 function escapeHtml(value) {
   return String(value)
@@ -47,6 +48,7 @@ function safeToken(value, fallback, allowedValues) {
 class TblrGrid extends HTMLElement {
   static observedAttributes = [
     'columns',
+    ...responsiveBreakpoints.map(breakpoint => `columns-${breakpoint}`),
     'min',
     'gap',
     'row-gap',
@@ -82,6 +84,16 @@ class TblrGrid extends HTMLElement {
     const template = columns > 0
       ? `repeat(${columns}, minmax(0, 1fr))`
       : `repeat(auto-fit, minmax(min(${min}, 100%), 1fr))`;
+    let responsiveTemplate = template;
+    const responsiveStyles = responsiveBreakpoints.map(breakpoint => {
+      const breakpointColumns = positiveInteger(this.getAttribute(`columns-${breakpoint}`), 0);
+
+      if (breakpointColumns > 0) {
+        responsiveTemplate = `repeat(${breakpointColumns}, minmax(0, 1fr))`;
+      }
+
+      return `--tblr-grid-template-columns-${breakpoint}: ${responsiveTemplate}`;
+    });
 
     this.root.innerHTML = `
       <link rel="stylesheet" href="${stylesheetUrl}">
@@ -95,6 +107,7 @@ class TblrGrid extends HTMLElement {
           `--tblr-grid-column-gap: ${columnGap}`,
           `--tblr-grid-align-items: ${align}`,
           `--tblr-grid-justify-items: ${justify}`,
+          ...responsiveStyles,
         ].join('; '))}"
       >
         <slot></slot>
@@ -104,7 +117,13 @@ class TblrGrid extends HTMLElement {
 }
 
 class TblrGridItem extends HTMLElement {
-  static observedAttributes = ['span', 'row-span', 'align', 'justify'];
+  static observedAttributes = [
+    'span',
+    ...responsiveBreakpoints.map(breakpoint => `span-${breakpoint}`),
+    'row-span',
+    'align',
+    'justify',
+  ];
 
   connectedCallback() {
     this.updateStyles();
@@ -124,6 +143,12 @@ class TblrGridItem extends HTMLElement {
 
     this.style.setProperty('--tblr-grid-item-column-span', String(span));
     this.style.setProperty('--tblr-grid-item-row-span', String(rowSpan));
+
+    let responsiveSpan = span;
+    responsiveBreakpoints.forEach(breakpoint => {
+      responsiveSpan = positiveInteger(this.getAttribute(`span-${breakpoint}`), responsiveSpan);
+      this.style.setProperty(`--tblr-grid-item-column-span-${breakpoint}`, String(responsiveSpan));
+    });
 
     if (align) {
       this.style.setProperty('--tblr-grid-item-align-self', align);

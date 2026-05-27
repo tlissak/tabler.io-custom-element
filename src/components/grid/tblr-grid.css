@@ -41,8 +41,52 @@
   justify-self: var(--tblr-grid-item-justify-self, auto);
 }
 
-@media (max-width: 640px) {
+@media (min-width: 576px) {
+  .grid {
+    grid-template-columns: var(--tblr-grid-template-columns-sm, var(--tblr-grid-template-columns));
+  }
+
   .grid ::slotted(tblr-grid-item) {
-    grid-column: 1 / -1;
+    grid-column: span var(--tblr-grid-item-column-span-sm, var(--tblr-grid-item-column-span, 1));
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: var(--tblr-grid-template-columns-md, var(--tblr-grid-template-columns));
+  }
+
+  .grid ::slotted(tblr-grid-item) {
+    grid-column: span var(--tblr-grid-item-column-span-md, var(--tblr-grid-item-column-span, 1));
+  }
+}
+
+@media (min-width: 992px) {
+  .grid {
+    grid-template-columns: var(--tblr-grid-template-columns-lg, var(--tblr-grid-template-columns));
+  }
+
+  .grid ::slotted(tblr-grid-item) {
+    grid-column: span var(--tblr-grid-item-column-span-lg, var(--tblr-grid-item-column-span, 1));
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: var(--tblr-grid-template-columns-xl, var(--tblr-grid-template-columns));
+  }
+
+  .grid ::slotted(tblr-grid-item) {
+    grid-column: span var(--tblr-grid-item-column-span-xl, var(--tblr-grid-item-column-span, 1));
+  }
+}
+
+@media (min-width: 1400px) {
+  .grid {
+    grid-template-columns: var(--tblr-grid-template-columns-xxl, var(--tblr-grid-template-columns));
+  }
+
+  .grid ::slotted(tblr-grid-item) {
+    grid-column: span var(--tblr-grid-item-column-span-xxl, var(--tblr-grid-item-column-span, 1));
   }
 }

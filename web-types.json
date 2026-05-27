@@ -1129,6 +1129,21 @@
               "name": "columns"
             },
             {
+              "name": "columns-sm"
+            },
+            {
+              "name": "columns-md"
+            },
+            {
+              "name": "columns-lg"
+            },
+            {
+              "name": "columns-xl"
+            },
+            {
+              "name": "columns-xxl"
+            },
+            {
               "name": "dense",
               "value": {
                 "type": "boolean"
@@ -1163,6 +1178,21 @@
             },
             {
               "name": "span"
+            },
+            {
+              "name": "span-sm"
+            },
+            {
+              "name": "span-md"
+            },
+            {
+              "name": "span-lg"
+            },
+            {
+              "name": "span-xl"
+            },
+            {
+              "name": "span-xxl"
             }
           ]
         },
