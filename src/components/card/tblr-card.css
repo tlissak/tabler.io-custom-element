@@ -48,6 +48,10 @@
   border-bottom: var(--tblr-card-border-width, var(--tblr-border-width, 1px)) solid var(--tblr-card-border-color, var(--tblr-border-color, #dce1e7));
 }
 
+.card-header[hidden] {
+  display: none;
+}
+
 :host([header-bg]) .card-header,
 .card-header-bg {
   background: var(--tblr-card-header-bg, var(--tblr-secondary, #f6f8fb));
