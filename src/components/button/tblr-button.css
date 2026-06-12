@@ -51,6 +51,17 @@
   --tblr-badge-padding-x: 0.375rem;
 }
 
+.prefix,
+.suffix {
+  display: inline-flex;
+  align-items: center;
+}
+
+.prefix[hidden],
+.suffix[hidden] {
+  display: none;
+}
+
 :host([square]) .btn {
   border-radius: 0;
 }

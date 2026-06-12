@@ -57,6 +57,7 @@ class TblrButton extends HTMLElement {
     super();
     this.root = this.attachShadow({ mode: 'open' });
     this.handleClick = this.handleClick.bind(this);
+    this.updateSlotVisibility = this.updateSlotVisibility.bind(this);
   }
 
   connectedCallback() {
@@ -137,10 +138,28 @@ class TblrButton extends HTMLElement {
         ${disabled && href ? 'aria-disabled="true" tabindex="-1"' : ''}
       >
         ${loading ? '<tblr-spinner aria-hidden="true"></tblr-spinner>' : ''}
+        <span part="prefix" class="prefix" hidden><slot name="prefix"></slot></span>
         <slot></slot>
+        <span part="suffix" class="suffix" hidden><slot name="suffix"></slot></span>
         ${this.hasAttribute('caret') ? '<tblr-icon name="chevron-down" aria-hidden="true"></tblr-icon>' : ''}
       </${tag}>
     `;
+
+    this.root.querySelectorAll('slot[name="prefix"], slot[name="suffix"]').forEach(slot => {
+      slot.addEventListener('slotchange', this.updateSlotVisibility);
+    });
+    this.updateSlotVisibility();
+  }
+
+  updateSlotVisibility() {
+    this.root.querySelectorAll('slot[name="prefix"], slot[name="suffix"]').forEach(slot => {
+      const wrapper = slot.parentElement;
+      const hasContent = slot.assignedNodes({ flatten: true }).some(node => (
+        node.nodeType !== Node.TEXT_NODE || node.textContent.trim() !== ''
+      ));
+
+      wrapper.hidden = !hasContent;
+    });
   }
 
   handleClick(event) {
