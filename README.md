@@ -166,7 +166,7 @@ Global icon styling:
 
 ## Buttons
 
-Buttons support filled, outline, ghost, square, action, icon-only, and size variants.
+Buttons support filled, outline, ghost, square, action, icon-only, size variants, and the same palette color set as badges.
 
 ```html
 <tblr-button variant="primary">Primary</tblr-button>
@@ -176,6 +176,11 @@ Buttons support filled, outline, ghost, square, action, icon-only, and size vari
 <tblr-button variant="info">Info</tblr-button>
 <tblr-button variant="dark">Dark</tblr-button>
 <tblr-button variant="light">Light</tblr-button>
+
+<tblr-button color="azure">Azure</tblr-button>
+<tblr-button color="purple">Purple</tblr-button>
+<tblr-button color="orange" appearance="outline">Orange</tblr-button>
+<tblr-button color="teal" appearance="ghost">Teal</tblr-button>
 
 <tblr-button variant="primary" appearance="outline">Primary</tblr-button>
 <tblr-button variant="primary" appearance="ghost">Primary</tblr-button>

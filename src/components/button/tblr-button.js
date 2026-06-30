@@ -1,4 +1,5 @@
 import { Component } from '../../core/component.js';
+import { badgeColorMap, badgeColorToken } from '../badge/badge-colors.js';
 
 const stylesheetUrl = new URL('./tblr-button.css', import.meta.url);
 const variants = new Set(['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'dark', 'light']);
@@ -35,6 +36,7 @@ function escapeHtml(value) {
 class TblrButton extends HTMLElement {
   static observedAttributes = [
     'variant',
+    'color',
     'appearance',
     'outline',
     'size',
@@ -81,6 +83,18 @@ class TblrButton extends HTMLElement {
     this.setAttribute('variant', value ?? 'primary');
   }
 
+  get color() {
+    return this.getAttribute('color') ?? null;
+  }
+
+  set color(value) {
+    if (value == null) {
+      this.removeAttribute('color');
+    } else {
+      this.setAttribute('color', value);
+    }
+  }
+
   get size() {
     return this.getAttribute('size') ?? 'md';
   }
@@ -107,7 +121,11 @@ class TblrButton extends HTMLElement {
 
   render() {
     const requestedVariant = this.getAttribute('variant') ?? 'primary';
-    const variant = safeToken(normalizedToken(requestedVariant, legacyVariants), 'primary', variants);
+    const normalizedVariant = normalizedToken(requestedVariant, legacyVariants);
+    const variant = safeToken(normalizedVariant, 'primary', variants);
+    const colorSource = this.getAttribute('color') ?? (badgeColorMap.has(normalizedVariant) ? normalizedVariant : null);
+    const color = colorSource ? badgeColorToken(colorSource, variant) : null;
+    const colorStyles = color ? this.renderColorStyles(color) : '';
     const appearance = this.hasAttribute('outline')
       ? 'outline'
       : safeToken(this.getAttribute('appearance') ?? (requestedVariant === 'text' ? 'ghost' : 'filled'), 'filled', appearances);
@@ -133,6 +151,7 @@ class TblrButton extends HTMLElement {
       <${tag}
         part="button"
         class="btn btn-${variant} btn-${appearance} btn-${size}${iconOnly ? ' btn-icon-only' : ''}${action ? ' btn-action' : ''}${action && state !== 'default' ? ` is-${state}` : ''}"
+        ${colorStyles ? `style="${escapeHtml(colorStyles)}"` : ''}
         ${buttonAttributes}
         ${label ? `aria-label="${escapeHtml(label)}"` : ''}
         ${disabled && href ? 'aria-disabled="true" tabindex="-1"' : ''}
@@ -149,6 +168,20 @@ class TblrButton extends HTMLElement {
       slot.addEventListener('slotchange', this.updateSlotVisibility);
     });
     this.updateSlotVisibility();
+  }
+
+  renderColorStyles(color) {
+    const [background, foreground, , strong] = badgeColorMap.get(color);
+    const border = color === 'light' ? 'var(--tblr-border-color, #dce1e7)' : background;
+
+    return [
+      `--tblr-button-variant-bg: ${background}`,
+      `--tblr-button-variant-hover-bg: ${strong}`,
+      `--tblr-button-variant-active-bg: ${strong}`,
+      `--tblr-button-variant-color: ${foreground}`,
+      `--tblr-button-variant-border-color: ${border}`,
+      `--tblr-button-variant-outline-color: ${color === 'light' ? border : background}`,
+    ].join('; ');
   }
 
   updateSlotVisibility() {

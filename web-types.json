@@ -218,6 +218,10 @@
               }
             },
             {
+              "name": "color",
+              "description": "Palette color token from the badge color set, such as blue, azure, indigo, purple, pink, red, orange, yellow, lime, green, teal, cyan, or semantic aliases."
+            },
+            {
               "name": "disabled",
               "value": {
                 "type": "boolean"

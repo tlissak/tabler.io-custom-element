@@ -164,12 +164,12 @@
 
 .btn-filled {
   --tblr-button-bg: var(--tblr-button-variant-bg);
-  --tblr-button-border-color: var(--tblr-button-variant-bg);
+  --tblr-button-border-color: var(--tblr-button-variant-border-color, var(--tblr-button-variant-bg));
   --tblr-button-color: var(--tblr-button-variant-color);
   --tblr-button-hover-bg: var(--tblr-button-variant-hover-bg);
-  --tblr-button-hover-border-color: var(--tblr-button-variant-hover-bg);
+  --tblr-button-hover-border-color: var(--tblr-button-variant-hover-border-color, var(--tblr-button-variant-hover-bg));
   --tblr-button-active-bg: var(--tblr-button-variant-active-bg);
-  --tblr-button-active-border-color: var(--tblr-button-variant-active-bg);
+  --tblr-button-active-border-color: var(--tblr-button-variant-active-border-color, var(--tblr-button-variant-active-bg));
 }
 
 .btn-light.btn-filled {
