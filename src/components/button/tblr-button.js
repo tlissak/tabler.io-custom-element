@@ -175,12 +175,12 @@ class TblrButton extends HTMLElement {
     const border = color === 'light' ? 'var(--tblr-border-color, #dce1e7)' : background;
 
     return [
-      `--tblr-button-variant-bg: ${background}`,
-      `--tblr-button-variant-hover-bg: ${strong}`,
-      `--tblr-button-variant-active-bg: ${strong}`,
-      `--tblr-button-variant-color: ${foreground}`,
-      `--tblr-button-variant-border-color: ${border}`,
-      `--tblr-button-variant-outline-color: ${color === 'light' ? border : background}`,
+      `--tblr-button-variant-bg: var(--tblr-button-${color}-bg, ${background})`,
+      `--tblr-button-variant-hover-bg: var(--tblr-button-${color}-hover-bg, ${strong})`,
+      `--tblr-button-variant-active-bg: var(--tblr-button-${color}-active-bg, ${strong})`,
+      `--tblr-button-variant-color: var(--tblr-button-${color}-color, ${foreground})`,
+      `--tblr-button-variant-border-color: var(--tblr-button-${color}-border-color, ${border})`,
+      `--tblr-button-variant-outline-color: var(--tblr-button-${color}-outline-color, ${color === 'light' ? border : background})`,
     ].join('; ');
   }
 

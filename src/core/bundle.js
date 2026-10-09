@@ -31,6 +31,7 @@ async function loadComponent(tag) {
 }
 
 const themeStylesheetUrl = new URL('../styles/theme.css', import.meta.url);
+const adminThemeStylesheetUrl = new URL('../styles/admin-theme.css', import.meta.url);
 
 const hydratedElements = new WeakSet();
 const styledElements = new WeakSet();
@@ -279,6 +280,7 @@ function whenTblrReady() {
 }
 
 export {
+  adminThemeStylesheetUrl,
   Component,
   autoload,
   defineTblr,

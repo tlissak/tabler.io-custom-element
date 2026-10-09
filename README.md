@@ -1,7 +1,51 @@
 # Tabler.io Custom Element
 Tabler.io Custom Elements - Librery of custom elements style inspired by Tabler.io with  Autloader JS CSS - No dependencies 
 
-## CDN usage
+## Admin theme (05-admin-theme)
+
+The optional admin preset matches the local `../05-admin-theme` reference: compact
+controls, flat cards, soft status badges, and the Glasman blue/gray palette.
+
+```html
+<html lang="fr" data-tblr-theme="admin">
+  <head>
+    <link rel="stylesheet" href="/module/TablerCustomElement/tabler.io-custom-element/src/styles/admin-theme.css">
+  </head>
+  <body>
+    <tblr-card title="Commandes prêtes" data-risk="success">
+      <tblr-badge color="success" light>Prêtes</tblr-badge>
+      <tblr-button variant="primary">Consulter</tblr-button>
+    </tblr-card>
+    <script type="module">
+      import { defineTblr } from '/module/TablerCustomElement/tabler.io-custom-element/src/main.js';
+      defineTblr();
+    </script>
+  </body>
+</html>
+```
+
+`admin-theme.css` imports the standard tokens. Activate it on `html` for the
+whole page or on a container for a scoped theme. Remove `data-tblr-theme` to
+restore standard defaults. CSS variables inherit through shadow roots; this
+does not require component reinitialization. The stylesheet URL is also exported
+as `adminThemeStylesheetUrl` from `src/main.js`; importing JS does not inject CSS.
+Load the stylesheet before components to avoid a theme flash. Inter is used
+when available, with system fonts as fallback; the theme makes no font request.
+
+Component overrides can follow the preset, for example
+`[data-tblr-theme="admin"] { --tblr-input-min-height: 36px; }`.
+Use `light` or `variant="soft"` on semantic badges. Their palettes now support
+`--tblr-badge-<color>-soft-bg` and `--tblr-badge-<color>-soft-color` (or `solid`
+instead of `soft`), preserving the existing fallback colors.
+Cards support theme-only risk accents via `data-risk="warning|danger|success"`.
+
+Run `npm run serve` in this package, then open
+[`examples/admin-theme.html`](examples/admin-theme.html) to compare the two themes
+and exercise the local demonstration. The shell/conversation markup on this
+page is illustrative; planned reusable elements are listed in
+[`ADMIN_THEME_PLAN.md`](ADMIN_THEME_PLAN.md).
+
+## Standard CDN usage
 
 Live examples: https://tlissak.github.io/tabler.io-custom-element/examples/index.html
 
@@ -1010,3 +1054,114 @@ Global card styling:
   --tblr-card-shadow: 0 1px 2px rgb(24 36 51 / 4%);
 }
 ```
+
+
+## Workspace and agent UI (P1 / P2 / P3)
+
+All eleven elements from `ADMIN_THEME_PLAN.md` are implemented. Open the
+[standard catalog](examples/index.html#workspace-elements) or the
+[admin workspace](examples/admin-theme.html). Both use the same local fixture
+workflow: suggestion/command ? user message ? fixture response ? action preview
+? pending ? confirmed/error/cancelled ? supplied audit entry. No business API
+is called. The gallery also shows empty, disabled, pending, and image-error states.
+
+| Element | Attributes / properties | Slots | Intent events (`event.detail`) |
+| --- | --- | --- | --- |
+| `tblr-app-shell` | `collapsed` / `.collapsed`, `aside-open` / `.asideOpen`, `navigation-open` / `.navigationOpen`, `label` | `header`, `navigation`, default workspace, `aside` | `navigation-toggle` `{collapsed, open}`, `aside-toggle` `{open}` |
+| `tblr-command-bar` | `label`, `placeholder`, `value`, `disabled`, `shortcut` (also reflected properties) | ? | `command-submit` `{text}` |
+| `tblr-composer` | `label`, `placeholder`, `value`, `disabled`, `pending` (also reflected properties), `send-label` | `suggestions`, `attachments`, `hint` | `message-submit` `{text}` |
+| `tblr-message` | `role="agent|user|system"`, `author`, `timestamp`; `.author`, `.timestamp` | `avatar`, default content, `sources`, `actions` | ? |
+| `tblr-action-preview` | `state` / `.state` (`preview|pending|confirmed|cancelled|error`), `title`, `confirm-label`, `cancel-label`, `result` | `changes` (default content as fallback), `exclusions`, `hint` | `confirm` / `cancel` `{state}` |
+| `tblr-stat` | `value`, `label`, `trend="up|down|neutral"`, `description` (also reflected properties) | `value` (for `tblr-format-number`), `description`, `source` | ? |
+| `tblr-suggestion` | `text`, `value`, `disabled` (also reflected properties) | default text, `icon` | `suggestion-select` `{value}` |
+| `tblr-source-list` | `sources` JSON attribute or `.sources` array, `label`, `empty-text` | ? | ? |
+| `tblr-notification-story` | `items` JSON attribute or `.items` array, `title`, `quiet-summary`, `empty-text` | `actions`, `actions-0`, `actions-1`, etc. (item index) | `notification-select` `{id, item}` |
+| `tblr-audit-log` | `entries` JSON attribute or `.entries` array, `title`, `empty-text`, `filterable`, `exportable` (also boolean properties) | ? | `filter-request` `{query}`, `export-request` `{entries}` |
+| `tblr-avatar` | `initials`, `src`, `label`, `size="sm|md|lg"`, `variant="agent"` (also reflected properties) | ? | ? |
+
+All intent events bubble, cross shadow boundaries, and are cancelable. They
+carry data for the consumer; they do not authorize or execute server actions.
+Shell toggles reflect the state that was already changed. The audit filter both
+filters the supplied entries locally and emits the query; export only emits a
+request. Consumers choose how to download or persist data.
+
+Structured inputs:
+
+```js
+sources.sources = [
+  { label: 'Orders', url: '/orders', timestamp: '2026-10-09T07:58:00Z' }
+];
+story.items = [
+  { id: 'stock', title: 'One motor is missing', detail: 'Order CMD-2048',
+    severity: 'danger', explanation: 'Why you: your agency',
+    timestamp: '2026-10-09T07:58:00Z' }
+];
+audit.entries = [
+  { timestamp: '2026-10-09T07:58:00Z', actor: 'Camille',
+    action: 'Assignment', outcome: 'confirmed', reference: 'CMD-2048' }
+];
+```
+
+Source URLs allow HTTP(S), including relative links; executable and data URLs
+are rejected. Avatars allow HTTP(S) and blob image URLs and fall back to initials
+when an image fails. Structured strings and metadata are rendered as text, never
+HTML. Authored message/preview slots are ordinary application DOM; sanitize
+untrusted content before putting it in those slots. Assign a new array to refresh
+structured input after changing entries. The audit log preserves the order the
+caller supplied; it never generates claims of completed actions itself.
+
+The composer uses a multiline textarea: Enter sends nonblank text; Shift+Enter
+adds a line; IME composition does not submit. Values are not cleared automatically.
+Set `.pending = true` synchronously in the submit handler to prevent duplicate
+requests, then clear it and set `.value` when the caller has handled the response.
+The input tree remains stable while values or pending state change.
+
+```js
+preview.addEventListener('confirm', async () => {
+  preview.state = 'pending';
+  try {
+    const result = await performAuthorizedAction();
+    preview.setAttribute('result', result.message);
+    preview.state = 'confirmed';
+  } catch (error) {
+    preview.setAttribute('result', error.message);
+    preview.state = 'error';
+  }
+});
+preview.addEventListener('cancel', () => { preview.state = 'cancelled'; });
+```
+
+The preview locks immediately after either intent and emits it once until the
+caller supplies another state. `pending` disables both buttons. `error` permits
+retry/cancel; confirmed/cancelled are read-only. Assigning `.state = 'preview'`
+explicitly resets the lock even if the state attribute was already `preview`.
+Preventing the intent event restores the controls without executing anything.
+
+Only the first connected, visible, enabled command bar with `shortcut` owns
+Ctrl/Cmd K. Removing/disabling it allows the next eligible instance to take over;
+listeners are removed on disconnect. An already prevented key event is respected.
+At viewport widths up to 720px, shell navigation and updates open in native modal
+drawers: focus is trapped, Escape and the close button dismiss, and native dialog
+focus returns to the trigger. Entering mobile closes existing desktop panels.
+Workspace DOM and its scroll position survive toggles and breakpoint changes.
+Navigation content can observe the shell's `collapsed` attribute to hide text
+while preserving accessible names, as the examples do.
+
+Styling hooks include `part` names on every element's main surfaces, controls,
+metadata, lists, items, and slots. Use `--tblr-app-shell-height` (default `100dvh`),
+`--tblr-header-height`, `--tblr-sidebar-width`,
+`--tblr-sidebar-collapsed-width`, `--tblr-story-width`,
+`--tblr-app-shell-workspace-padding`, `--tblr-app-shell-mobile-padding`,
+`--tblr-command-bar-bg`, `--tblr-command-bar-height`,
+`--tblr-composer-radius`, `--tblr-composer-padding`, `--tblr-composer-shadow`,
+`--tblr-message-user-bg`, `--tblr-message-user-color`,
+`--tblr-action-preview-bg`, `--tblr-stat-padding`,
+`--tblr-stat-value-font-size`, `--tblr-suggestion-radius`, and
+`--tblr-avatar-size`, `--tblr-avatar-bg`, `--tblr-avatar-color` for customization.
+Every hook has a standard-theme fallback and inherits through shadow DOM.
+
+Browser verification: install dev dependencies with `npm install`, install a
+browser with `npx playwright install chromium`, then run `npm run test:ui`.
+The check starts/stops its own local server. Set `TBLR_CHROMIUM_PATH` to use an
+installed Chrome/Chromium executable; `TBLR_PLAYWRIGHT_PATH` optionally supplies
+an external Playwright module for environments without local node_modules.

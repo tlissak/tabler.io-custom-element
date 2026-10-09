@@ -1,10 +1,12 @@
 import { autoload, preventTurboFouce, watchAutoload } from './core/autoload.js';
 
 const themeStylesheetUrl = new URL('./styles/theme.css', import.meta.url);
+const adminThemeStylesheetUrl = new URL('./styles/admin-theme.css', import.meta.url);
 let defineTblrPromise;
 
 export { autoload, preventTurboFouce, watchAutoload };
 export { themeStylesheetUrl };
+export { adminThemeStylesheetUrl };
 
 export function defineTblr() {
   if (!defineTblrPromise) {

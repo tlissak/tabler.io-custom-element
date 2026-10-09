@@ -107,6 +107,7 @@
 }
 
 .btn-secondary {
+  --tblr-button-variant-border-color: var(--tblr-button-secondary-border-color, var(--tblr-button-secondary-bg, #667382));
   --tblr-button-variant-bg: var(--tblr-button-secondary-bg, #667382);
   --tblr-button-variant-hover-bg: var(--tblr-button-secondary-hover-bg, #596574);
   --tblr-button-variant-active-bg: var(--tblr-button-secondary-active-bg, #4d5968);
@@ -264,10 +265,10 @@
 }
 
 .btn-md {
-  --tblr-button-min-height: 2.25rem;
-  --tblr-button-padding-y: 0.4375rem;
-  --tblr-button-padding-x: 1rem;
-  --tblr-button-font-size: var(--tblr-font-size-md, 0.875rem);
+  --tblr-button-min-height: var(--tblr-button-md-min-height, 2.25rem);
+  --tblr-button-padding-y: var(--tblr-button-md-padding-y, 0.4375rem);
+  --tblr-button-padding-x: var(--tblr-button-md-padding-x, 1rem);
+  --tblr-button-font-size: var(--tblr-button-md-font-size, var(--tblr-font-size-md, 0.875rem));
 }
 
 .btn-lg {

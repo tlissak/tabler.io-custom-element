@@ -57,8 +57,9 @@ class TblrBadge extends HTMLElement {
     const color = badgeColorToken(this.getAttribute('color') ?? 'secondary');
     const [solidBg, solidFg, lightBg, lightFg] = badgeColorMap.get(color);
     const useLight = this.hasAttribute('light') || this.getAttribute('variant') === 'light' || this.getAttribute('variant') === 'soft';
-    const bg = useLight ? lightBg : solidBg;
-    const fg = useLight ? lightFg : solidFg;
+    const palette = useLight ? 'soft' : 'solid';
+    const bg = `var(--tblr-badge-${color}-${palette}-bg, ${useLight ? lightBg : solidBg})`;
+    const fg = `var(--tblr-badge-${color}-${palette}-color, ${useLight ? lightFg : solidFg})`;
     const border = color === 'light' && !useLight ? 'var(--tblr-border-color, #dce1e7)' : 'transparent';
     const size = validSize.has(this.getAttribute('size')) ? this.getAttribute('size') : 'md';
     const tag = this.getAttribute('href') ? 'a' : 'span';

@@ -1,0 +1,169 @@
+/* Opt-in preset derived from ../05-admin-theme/tokens.css and styles.css.
+ * Load once, then put data-tblr-theme="admin" on html or a container.
+ * Custom properties cross shadow boundaries; no component CSS imports needed.
+ */
+@import url('./theme.css');
+
+[data-tblr-theme="admin"] {
+  color-scheme: light;
+  --tblr-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --tblr-font-size-sm: .8125rem;
+  --tblr-font-size-md: .875rem;
+  --tblr-font-size-lg: 1rem;
+  --tblr-line-height: 1.45;
+  --tblr-body-color: #182433;
+  --tblr-muted-color: #667382;
+  --tblr-body-bg: #f6f8fb;
+  --tblr-bg-surface: #fff;
+  --tblr-border-color: #dce1e7;
+  --tblr-primary: #206bc4;
+  --tblr-primary-hover: #1c5aa6;
+  --tblr-primary-active: #1a5195;
+  --tblr-primary-foreground: #fff;
+  --tblr-secondary: #f6f8fb;
+  --tblr-secondary-hover: #eef1f5;
+  --tblr-secondary-active: #e6ebf1;
+  --tblr-secondary-foreground: #182433;
+  --tblr-success: #2fb344;
+  --tblr-success-bg: #eaf7ec;
+  --tblr-success-text: #1f8a33;
+  --tblr-warning: #f59f00;
+  --tblr-warning-bg: #fff6d6;
+  --tblr-warning-text: #9a6400;
+  --tblr-danger: #d63939;
+  --tblr-danger-bg: #fdecec;
+  --tblr-info: #4299e1;
+  --tblr-info-bg: #eaf5ff;
+  --tblr-info-text: #2563a8;
+  --tblr-neutral-bg: #eef1f5;
+  --tblr-navy: #002148;
+  --tblr-brand-gradient: linear-gradient(210deg, #061760, #1f5281 50%, #006f9b 79%, #019ce8 100%);
+  --tblr-agent-gradient: linear-gradient(135deg, #39cefd, #03569b);
+  --tblr-header-height: 65px;
+  --tblr-sidebar-width: 240px;
+  --tblr-sidebar-collapsed-width: 56px;
+  --tblr-story-width: 340px;
+  --tblr-prose-font-size: 15px;
+  --tblr-prose-line-height: 1.55;
+  --tblr-radius: 4px;
+  --tblr-radius-sm: 3px;
+  --tblr-radius-lg: 7px;
+  --tblr-focus-ring: 0 0 0 .25rem rgb(32 107 196 / 25%);
+  --tblr-disabled-opacity: .55;
+  --tblr-shadow-button: none;
+  --tblr-card-bg: var(--tblr-bg-surface);
+  --tblr-card-header-bg: var(--tblr-body-bg);
+  --tblr-card-footer-bg: var(--tblr-body-bg);
+  --tblr-card-shadow: none;
+  --tblr-card-padding-x: 14px;
+  --tblr-card-padding-y: 12px;
+  --tblr-card-header-padding-y: 10px;
+  --tblr-card-footer-padding-y: 10px;
+  --tblr-card-title-font-size: var(--tblr-font-size-md);
+  --tblr-card-title-margin-bottom: 6px;
+  --tblr-button-min-height: 32px;
+  --tblr-button-padding-x: 12px;
+  --tblr-button-padding-y: 5px;
+  --tblr-button-font-size: var(--tblr-font-size-sm);
+  --tblr-button-md-min-height: 32px;
+  --tblr-button-md-padding-x: 12px;
+  --tblr-button-md-padding-y: 5px;
+  --tblr-button-md-font-size: var(--tblr-font-size-sm);
+  --tblr-button-secondary-bg: var(--tblr-bg-surface);
+  --tblr-button-secondary-color: var(--tblr-body-color);
+  --tblr-button-secondary-hover-bg: var(--tblr-body-bg);
+  --tblr-button-secondary-active-bg: var(--tblr-neutral-bg);
+  --tblr-button-secondary-border-color: var(--tblr-border-color);
+  --tblr-nav-font-size: var(--tblr-font-size-sm);
+  --tblr-nav-item-color: var(--tblr-body-color);
+  --tblr-nav-item-min-height: 34px;
+  --tblr-nav-item-padding-x: 10px;
+  --tblr-nav-item-padding-y: 6px;
+  --tblr-nav-item-gap: 10px;
+  --tblr-nav-item-active-bg: var(--tblr-info-bg);
+  --tblr-nav-item-hover-bg: var(--tblr-body-bg);
+  --tblr-badge-font-size: 11.5px;
+  --tblr-badge-border-radius: 10px;
+  --tblr-badge-padding-y: 2px;
+  --tblr-badge-padding-x: 8px;
+  --tblr-badge-line-height: 1.4;
+  --tblr-badge-success-soft-bg: var(--tblr-success-bg);
+  --tblr-badge-success-soft-color: var(--tblr-success-text);
+  --tblr-badge-warning-soft-bg: var(--tblr-warning-bg);
+  --tblr-badge-warning-soft-color: var(--tblr-warning-text);
+  --tblr-badge-danger-soft-bg: var(--tblr-danger-bg);
+  --tblr-badge-danger-soft-color: var(--tblr-danger);
+  --tblr-badge-info-soft-bg: var(--tblr-info-bg);
+  --tblr-badge-info-soft-color: var(--tblr-info-text);
+  --tblr-badge-secondary-soft-bg: var(--tblr-neutral-bg);
+  --tblr-badge-secondary-soft-color: var(--tblr-muted-color);
+  --tblr-pagination-item-size: 32px;
+  --tblr-pagination-padding-y: 4px;
+  --tblr-pagination-padding-x: 8px;
+  --tblr-tabs-link-height: 34px;
+  --tblr-tabs-link-padding-x: 12px;
+  --tblr-tabs-link-padding-y: 6px;
+  --tblr-data-table-font-size: var(--tblr-font-size-sm);
+  --tblr-data-table-title-font-size: var(--tblr-font-size-md);
+  --tblr-data-table-padding-x: 14px;
+  --tblr-data-table-cell-padding-y: 10px;
+  --tblr-data-table-header-padding-y: 10px;
+  --tblr-data-table-head-font-size: 12px;
+  --tblr-data-table-shadow: none;
+  --tblr-data-table-row-hover-bg: var(--tblr-body-bg);
+  --tblr-data-table-avatar-bg: var(--tblr-navy);
+  --tblr-data-table-avatar-color: #fff;
+  /* Compact, flat form controls; component-specific overrides still work. */
+  --tblr-input-min-height: 32px;
+  --tblr-input-padding-x: 10px;
+  --tblr-input-padding-y: 5px;
+  --tblr-input-border-radius: var(--tblr-radius);
+  --tblr-input-shadow: 0 0 0 0 transparent;
+  --tblr-input-bg: var(--tblr-bg-surface);
+  --tblr-select-min-height: 32px;
+  --tblr-select-padding-x: 10px;
+  --tblr-select-padding-y: 5px;
+  --tblr-select-border-radius: var(--tblr-radius);
+  --tblr-select-shadow: 0 0 0 0 transparent;
+  --tblr-select-bg: var(--tblr-bg-surface);
+  --tblr-autocomplete-min-height: 32px;
+  --tblr-autocomplete-padding-x: 10px;
+  --tblr-autocomplete-padding-y: 5px;
+  --tblr-autocomplete-border-radius: var(--tblr-radius);
+  --tblr-autocomplete-shadow: 0 0 0 0 transparent;
+  --tblr-autocomplete-bg: var(--tblr-bg-surface);
+  --tblr-datepicker-min-height: 32px;
+  --tblr-datepicker-padding-x: 10px;
+  --tblr-datepicker-padding-y: 5px;
+  --tblr-datepicker-border-radius: var(--tblr-radius);
+  --tblr-datepicker-shadow: 0 0 0 0 transparent;
+  --tblr-datepicker-bg: var(--tblr-bg-surface);
+  --tblr-search-min-height: 32px;
+  --tblr-search-padding-x: 10px;
+  --tblr-search-padding-y: 5px;
+  --tblr-search-border-radius: var(--tblr-radius);
+  --tblr-search-shadow: 0 0 0 0 transparent;
+  --tblr-search-bg: var(--tblr-bg-surface);
+  --tblr-file-input-border-radius: var(--tblr-radius);
+  --tblr-file-input-shadow: none;
+  --tblr-file-input-dropzone-padding: 12px;
+  --tblr-colorpicker-option-radius: var(--tblr-radius);
+  --tblr-colorpicker-picker-radius: var(--tblr-radius);
+  --tblr-colorpicker-shadow: none;
+  font-family: var(--tblr-font-sans);
+  font-size: var(--tblr-font-size-md);
+  line-height: var(--tblr-line-height);
+  color: var(--tblr-body-color);
+  background: var(--tblr-body-bg);
+}
+
+/* Risk accents use the existing public card part. */
+[data-tblr-theme="admin"] tblr-card[data-risk]::part(card) {
+  border-left: 3px solid var(--tblr-warning);
+}
+[data-tblr-theme="admin"] tblr-card[data-risk="danger"]::part(card) {
+  border-left-color: var(--tblr-danger);
+}
+[data-tblr-theme="admin"] tblr-card[data-risk="success"]::part(card) {
+  border-left-color: var(--tblr-success);
+}

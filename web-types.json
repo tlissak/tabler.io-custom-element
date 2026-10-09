@@ -2225,6 +2225,477 @@
               }
             ]
           }
+        },
+        {
+          "name": "tblr-app-shell",
+          "description": "Tabler app shell UI element. Slots: header, navigation, default, aside. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "collapsed",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "aside-open",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "navigation-open",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "label"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "collapsed",
+                "type": "any"
+              },
+              {
+                "name": "asideOpen",
+                "type": "any"
+              },
+              {
+                "name": "navigationOpen",
+                "type": "any"
+              }
+            ],
+            "events": [
+              {
+                "name": "navigation-toggle",
+                "description": "Bubbling, composed, cancelable intent event."
+              },
+              {
+                "name": "aside-toggle",
+                "description": "Bubbling, composed, cancelable intent event."
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-command-bar",
+          "description": "Tabler command bar UI element. Slots: none. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "label"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "shortcut",
+              "value": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "label",
+                "type": "any"
+              },
+              {
+                "name": "placeholder",
+                "type": "any"
+              },
+              {
+                "name": "value",
+                "type": "any"
+              },
+              {
+                "name": "disabled",
+                "type": "any"
+              },
+              {
+                "name": "shortcut",
+                "type": "any"
+              }
+            ],
+            "events": [
+              {
+                "name": "command-submit",
+                "description": "Bubbling, composed, cancelable intent event."
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-composer",
+          "description": "Tabler composer UI element. Slots: suggestions, hint, attachments. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "label"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "pending",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "send-label"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "label",
+                "type": "any"
+              },
+              {
+                "name": "placeholder",
+                "type": "any"
+              },
+              {
+                "name": "value",
+                "type": "any"
+              },
+              {
+                "name": "disabled",
+                "type": "any"
+              },
+              {
+                "name": "pending",
+                "type": "any"
+              }
+            ],
+            "events": [
+              {
+                "name": "message-submit",
+                "description": "Bubbling, composed, cancelable intent event."
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-message",
+          "description": "Tabler message UI element. Slots: avatar, default, sources, actions. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "role"
+            },
+            {
+              "name": "author"
+            },
+            {
+              "name": "timestamp"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "author",
+                "type": "any"
+              },
+              {
+                "name": "timestamp",
+                "type": "any"
+              }
+            ],
+            "events": []
+          }
+        },
+        {
+          "name": "tblr-action-preview",
+          "description": "Tabler action preview UI element. Slots: changes, default, exclusions, hint. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "state"
+            },
+            {
+              "name": "title"
+            },
+            {
+              "name": "confirm-label"
+            },
+            {
+              "name": "cancel-label"
+            },
+            {
+              "name": "result"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "state",
+                "type": "any"
+              }
+            ],
+            "events": [
+              {
+                "name": "confirm",
+                "description": "Bubbling, composed, cancelable intent event."
+              },
+              {
+                "name": "cancel",
+                "description": "Bubbling, composed, cancelable intent event."
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-stat",
+          "description": "Tabler stat UI element. Slots: value, description, source. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "value"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "trend"
+            },
+            {
+              "name": "description"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "value",
+                "type": "any"
+              },
+              {
+                "name": "label",
+                "type": "any"
+              },
+              {
+                "name": "trend",
+                "type": "any"
+              },
+              {
+                "name": "description",
+                "type": "any"
+              }
+            ],
+            "events": []
+          }
+        },
+        {
+          "name": "tblr-suggestion",
+          "description": "Tabler suggestion UI element. Slots: default, icon. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "value"
+            },
+            {
+              "name": "disabled",
+              "value": {
+                "type": "boolean"
+              }
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "text",
+                "type": "any"
+              },
+              {
+                "name": "value",
+                "type": "any"
+              },
+              {
+                "name": "disabled",
+                "type": "any"
+              }
+            ],
+            "events": [
+              {
+                "name": "suggestion-select",
+                "description": "Bubbling, composed, cancelable intent event."
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-source-list",
+          "description": "Tabler source list UI element. Slots: none. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "sources"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "empty-text"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "sources",
+                "type": "any"
+              }
+            ],
+            "events": []
+          }
+        },
+        {
+          "name": "tblr-notification-story",
+          "description": "Tabler notification story UI element. Slots: actions, actions-N. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "items"
+            },
+            {
+              "name": "title"
+            },
+            {
+              "name": "quiet-summary"
+            },
+            {
+              "name": "empty-text"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "items",
+                "type": "any"
+              }
+            ],
+            "events": [
+              {
+                "name": "notification-select",
+                "description": "Bubbling, composed, cancelable intent event."
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-audit-log",
+          "description": "Tabler audit log UI element. Slots: none. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "entries"
+            },
+            {
+              "name": "title"
+            },
+            {
+              "name": "filterable",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "exportable",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "empty-text"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "entries",
+                "type": "any"
+              },
+              {
+                "name": "filterable",
+                "type": "any"
+              },
+              {
+                "name": "exportable",
+                "type": "any"
+              }
+            ],
+            "events": [
+              {
+                "name": "filter-request",
+                "description": "Bubbling, composed, cancelable intent event."
+              },
+              {
+                "name": "export-request",
+                "description": "Bubbling, composed, cancelable intent event."
+              }
+            ]
+          }
+        },
+        {
+          "name": "tblr-avatar",
+          "description": "Tabler avatar UI element. Slots: none. See README for data and event contracts.",
+          "attributes": [
+            {
+              "name": "initials"
+            },
+            {
+              "name": "src"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "size"
+            },
+            {
+              "name": "variant"
+            }
+          ],
+          "js": {
+            "properties": [
+              {
+                "name": "initials",
+                "type": "any"
+              },
+              {
+                "name": "src",
+                "type": "any"
+              },
+              {
+                "name": "label",
+                "type": "any"
+              },
+              {
+                "name": "size",
+                "type": "any"
+              },
+              {
+                "name": "variant",
+                "type": "any"
+              }
+            ],
+            "events": []
+          }
         }
       ]
     }
