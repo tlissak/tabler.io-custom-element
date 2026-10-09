@@ -4,7 +4,7 @@ import '../badge/tblr-badge.js';
 const stylesheetUrl = new URL('./tblr-audit-log.css', import.meta.url);
 const colors = { confirmed: 'success', cancelled: 'secondary', refused: 'danger', error: 'danger', pending: 'warning', read: 'info' };
 class TblrAuditLog extends UIElement {
-  static observedAttributes = ['entries', 'title', 'filterable', 'exportable', 'empty-text'];
+  static observedAttributes = ['entries', 'title', 'filterable', 'exportable', 'empty-text', 'appearance'];
   get entries() { return this._entries ?? readArray(this, 'entries'); }
   set entries(value) { this._entries = Array.isArray(value) ? value : []; if (this.mounted) this.update(); }
   attributeChangedCallback(name) { if (name === 'entries') this._entries = undefined; super.attributeChangedCallback(); }
@@ -29,6 +29,7 @@ class TblrAuditLog extends UIElement {
       const badge = document.createElement('tblr-badge'); badge.setAttribute('light', ''); badge.setAttribute('color', colors[item.outcome] || 'secondary'); badge.textContent = item.outcome || 'unknown'; li.append(badge);
       appendText(li, 'span', [item.actor, item.reference].filter(Boolean).join(' · '), 'muted');
       appendTime(li, item.timestamp);
+      if (!item.timestamp && item.timeLabel) appendText(li, 'span', item.timeLabel, 'muted');
     });
     this.root.querySelector('[part="empty"]').hidden = Boolean(list.children.length);
     this.setText('[part="empty"]', this.getAttribute('empty-text') || 'No audit entries match.');

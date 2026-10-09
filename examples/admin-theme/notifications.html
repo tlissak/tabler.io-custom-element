@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html data-tblr-theme="admin" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Notifications et journal — Glasman F4</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
+<link href="reference-layout.css" rel="stylesheet"/>
+<style>
+  .pipeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .pipeline .node { position: relative; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); display: flex; flex-direction: column; gap: 4px; }
+  .pipeline .node + .node { margin-left: 22px; }
+  .pipeline .node + .node::before { content: "\ea61"; font-family: tabler-icons; position: absolute; left: -19px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+  .pipeline .node h3 { font-size: var(--fs-md); display: flex; align-items: center; gap: 8px; }
+  .pipeline .node h3 i { color: var(--primary); }
+  .pipeline .node p { font-size: var(--fs-sm); color: var(--muted); line-height: 1.45; }
+  .roles { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+  .roles span { font-size: 11px; padding: 1px 6px; border-radius: 3px; background: var(--neutral-bg); color: var(--muted); white-space: nowrap; }
+  .digest { display: grid; gap: 12px; }
+  .digest .card-body p { font-size: var(--fs-md); line-height: 1.5; }
+  .digest .who { padding: 0; gap: 8px; }
+  .digest .who .avatar { width: 26px; height: 26px; font-size: 10.5px; }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filters .chip.on { border-color: var(--primary); color: var(--primary); background: var(--info-bg); }
+  .never { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+  .never div { display: grid; grid-template-columns: 20px 1fr; gap: 8px; font-size: var(--fs-sm); padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+  .never i { color: var(--danger); font-size: 1.05rem; }
+  @media (max-width: 1024px) { .pipeline { grid-template-columns: 1fr 1fr; } .pipeline .node + .node { margin-left: 0; } .pipeline .node + .node::before { display: none; } }
+</style>
+<link href="../../src/styles/admin-theme.css" rel="stylesheet"/><link href="custom-elements.css" rel="stylesheet"/></head>
+<body class="admin-reference" data-reference-page="notifications" data-user="Thomas L."><tblr-app-shell aside-open="" class="reference-shell" label="Espace de travail"><a class="brand" href="index.html" slot="brand"><span class="logo">4</span><span>Glasman</span></a><tblr-command-bar class="admin-command" label="Demander à l'assistant" placeholder="Demander à Fil : « qu'est-ce que tu as fait hier pour la vente ? »" shortcut="" shortcut-label="Ctrl K" slot="header" value=""><tblr-avatar label="Fil" slot="mark" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar><tblr-icon aria-hidden="true" base-url="./icons" name="microphone" slot="submit-icon"></tblr-icon></tblr-command-bar><div class="who" slot="account"><tblr-avatar initials="TL" label="TL"></tblr-avatar><span class="text"><b>Thomas L.</b><small>Direction · Paris</small></span></div><tblr-icon base-url="./icons" name="layout-sidebar" slot="navigation-icon"></tblr-icon><span class="bell-icon" slot="aside-icon"><tblr-icon base-url="./icons" name="bell"></tblr-icon><span class="count">3</span></span><div class="rail" slot="navigation">
+<div class="rail-group">
+<div class="rail-title">Aujourd'hui</div>
+<tblr-nav-item href="direction.html" label="Briefing du matin"><tblr-icon aria-hidden="true" base-url="./icons" name="sunrise" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item active="" href="notifications.html" label="Depuis hier"><tblr-icon aria-hidden="true" base-url="./icons" name="bell" slot="icon"></tblr-icon><span class="n hot" slot="suffix">3</span></tblr-nav-item>
+<tblr-nav-item href="#journal" label="Journal de l'agent"><tblr-icon aria-hidden="true" base-url="./icons" name="history" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="#reglages" label="Réglages des notifications"><tblr-icon aria-hidden="true" base-url="./icons" name="adjustments" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<div class="rail-group">
+<div class="rail-title">Mon poste — Direction</div>
+<tblr-nav-item href="paiements.html" label="Suivi des paiements"><tblr-icon aria-hidden="true" base-url="./icons" name="cash" slot="icon"></tblr-icon><span class="n" slot="suffix">61</span></tblr-nav-item>
+<tblr-nav-item href="file-preparation.html" label="File de préparation"><tblr-icon aria-hidden="true" base-url="./icons" name="package" slot="icon"></tblr-icon><span class="n" slot="suffix">38</span></tblr-nav-item>
+<tblr-nav-item href="parc-machines.html" label="Parc machines clients"><tblr-icon aria-hidden="true" base-url="./icons" name="engine" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<details>
+<summary><tblr-icon aria-hidden="true" base-url="./icons" name="layout-list"></tblr-icon><span>Navigation classique</span></summary>
+<tblr-nav-item href="parc-machines.html" label="Clients"></tblr-nav-item>
+<div class="sub-title">Documents</div>
+<tblr-nav-item href="#" label="Devis"></tblr-nav-item>
+<tblr-nav-item href="#" label="Bons de commande"></tblr-nav-item>
+<tblr-nav-item href="file-preparation.html" label="Bons de commande (W)"></tblr-nav-item>
+<tblr-nav-item href="paiements.html" label="Factures"></tblr-nav-item>
+<tblr-nav-item href="#" label="Location (devis, factures, BL)"></tblr-nav-item>
+<div class="sub-title">Autres</div>
+<tblr-nav-item href="#" label="Administration"></tblr-nav-item>
+</details>
+<div class="rail-group rail-foot">
+<div class="rail-title">Profils (démo)</div>
+<tblr-nav-item active="" href="direction.html" label="Direction"><tblr-icon aria-hidden="true" base-url="./icons" name="briefcase" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="vente.html" label="Vente / ADV"><tblr-icon aria-hidden="true" base-url="./icons" name="file-invoice" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="preparation.html" label="Préparation"><tblr-icon aria-hidden="true" base-url="./icons" name="package" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="technicien.html" label="Technicien SAV"><tblr-icon aria-hidden="true" base-url="./icons" name="tool" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+</div><div class="work-content">
+<div class="page">
+<div class="page-head">
+<div>
+<div class="crumbs"><a href="direction.html">Accueil</a> / Notifications et journal</div>
+<h1>Notifications racontées, actions auditées</h1>
+<div class="muted" style="font-size:12.5px;margin-top:3px">Les événements bruts du backoffice deviennent un récit par rôle ; chaque action de l'agent laisse une trace lisible.</div>
+</div>
+<div class="actions">
+<tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="checks"></tblr-icon> Tout marquer lu</tblr-button>
+<tblr-button href="#reglages" size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="adjustments"></tblr-icon> Réglages</tblr-button>
+</div>
+</div>
+<section aria-label="Du signal au récit" class="pipeline">
+<div class="node"><h3><tblr-icon aria-hidden="true" base-url="./icons" name="bolt"></tblr-icon> Événement</h3><p>Paiement reçu, commande payée, échéance dépassée, pièce reçue… écrit dans la table <code style="font-family:inherit">notification</code> par les modules existants.</p></div>
+<div class="node"><h3><tblr-icon aria-hidden="true" base-url="./icons" name="route"></tblr-icon> Routage</h3><p>Chaque type d'événement vise des rôles, un site et parfois un vendeur ou un préparateur précis.</p></div>
+<div class="node"><h3><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread"></tblr-icon> Récit</h3><p>L'agent regroupe, explique en une phrase pourquoi cela vous concerne, et sépare « à décider » de « pour information ».</p></div>
+<div class="node"><h3><tblr-icon aria-hidden="true" base-url="./icons" name="send"></tblr-icon> Diffusion</h3><p>Cloche en continu, digest du matin dans le briefing, WhatsApp seulement pour l'urgent et si vous l'avez choisi.</p></div>
+</section>
+<div class="cols">
+<tblr-card class="admin-panel">
+<div class="admin-card-heading" slot="header"><h2>Événements bruts depuis hier</h2><span class="muted">8 événements · 4 non lus</span></div>
+<div class="admin-card-content flush">
+<tblr-data-table aria-label="events" authored="" class="admin-table"><table class="table" id="events">
+<thead><tr><th>Quand</th><th>Type</th><th>Événement</th><th>Destinataires</th><th></th></tr></thead>
+<tbody><tr><td style="white-space:nowrap">il y a 4 min</td><td><tblr-badge color="success" light="">Paiement</tblr-badge></td><td><b>Paiement reçu 3 890 €</b><span class="sub">Virement SARL Textile du Nord · CMD-11892 passe en « à préparer »</span></td><td><span class="roles"><span>Préparation</span><span>Vente / ADV</span><span>Direction</span></span></td><td><tblr-button appearance="ghost" icon-only="" label="Marquer lu" size="sm" title="Marquer lu" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="mail-opened"></tblr-icon></tblr-button></td></tr><tr><td style="white-space:nowrap">il y a 25 min</td><td><tblr-badge color="info" light="">Commande</tblr-badge></td><td><b>3 nouvelles commandes web payées</b><span class="sub">CO-26456, CO-26457, CO-26458 · Paris</span></td><td><span class="roles"><span>Préparation</span></span></td><td><tblr-button appearance="ghost" icon-only="" label="Marquer lu" size="sm" title="Marquer lu" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="mail-opened"></tblr-icon></tblr-button></td></tr><tr><td style="white-space:nowrap">il y a 1 h</td><td><tblr-badge color="danger" light="">Retard</tblr-badge></td><td><b>Commande en attente depuis plus de 24 h</b><span class="sub">CO-26449 · Mme Vaucher · payée hier 09:12</span></td><td><span class="roles"><span>Préparation</span><span>Direction</span></span></td><td><tblr-button appearance="ghost" icon-only="" label="Marquer lu" size="sm" title="Marquer lu" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="mail-opened"></tblr-icon></tblr-button></td></tr><tr><td style="white-space:nowrap">il y a 2 h</td><td><tblr-badge color="warning" light="">Stock</tblr-badge></td><td><b>Rupture : pied presseur réf. 40034</b><span class="sub">Bloque CMD-11885 · commande fournisseur BCF-0019 attendue le 08/10</span></td><td><span class="roles"><span>Préparation</span><span>Technicien SAV</span></span></td><td><tblr-button appearance="ghost" icon-only="" label="Marquer lu" size="sm" title="Marquer lu" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="mail-opened"></tblr-icon></tblr-button></td></tr><tr><td style="white-space:nowrap">il y a 3 h</td><td><tblr-badge color="info" light="">Devis</tblr-badge></td><td>Devis sans réponse depuis 15 jours<span class="sub">DEV-30385 Confection Bernard · 12 400 €</span></td><td><span class="roles"><span>Vente / ADV</span></span></td><td><span class="muted" title="Lu"><tblr-icon aria-hidden="true" base-url="./icons" name="check"></tblr-icon></span></td></tr><tr><td style="white-space:nowrap">hier 17:40</td><td><tblr-badge color="dark" style="--tblr-badge-dark-solid-bg:var(--tblr-navy)">SAV</tblr-badge></td><td>Pièce reçue pour intervention<span class="sub">Moteur servo · Zoje ZJ-9513-LOC-0032 · intervention demain 08:30</span></td><td><span class="roles"><span>Technicien SAV</span></span></td><td><span class="muted" title="Lu"><tblr-icon aria-hidden="true" base-url="./icons" name="check"></tblr-icon></span></td></tr><tr><td style="white-space:nowrap">hier 16:05</td><td><tblr-badge color="success" light="">Paiement</tblr-badge></td><td>Échéance CB refusée<span class="sub">CO-26429 Lemaire Création · 2e échéance 71,67 €</span></td><td><span class="roles"><span>Vente / ADV</span><span>Compta</span></span></td><td><span class="muted" title="Lu"><tblr-icon aria-hidden="true" base-url="./icons" name="check"></tblr-icon></span></td></tr><tr><td style="white-space:nowrap">hier 09:00</td><td><tblr-badge color="secondary" light="">Pilotage</tblr-badge></td><td>Objectif du mois : 72 % atteint<span class="sub">452 k€ sur 630 k€ · Lens en retard de 8 %</span></td><td><span class="roles"><span>Direction</span></span></td><td><span class="muted" title="Lu"><tblr-icon aria-hidden="true" base-url="./icons" name="check"></tblr-icon></span></td></tr></tbody>
+</table></tblr-data-table>
+</div>
+</tblr-card>
+<tblr-card class="admin-panel">
+<div class="admin-card-heading" slot="header"><h2>Récit généré, par rôle</h2><span class="muted">ce matin</span></div>
+<div class="admin-card-content">
+<tblr-card class="admin-card">
+<div class="admin-card-heading" slot="header"><span class="who"><tblr-avatar initials="KB" label="KB"></tblr-avatar></span><h3>Préparation · Karim B.</h3><tblr-badge color="danger" light="">4 choses</tblr-badge></div>
+<div class="admin-card-content"><p>Quatre choses ont changé dans votre file : Textile du Nord a payé (CMD-11892 entre, palette machine), trois commandes web sont payées pour Paris, CO-26449 dépasse 24 h, et le pied presseur 40034 bloque CMD-11885 jusqu'au 8 octobre. Rien à lire pour le reste.</p></div>
+</tblr-card>
+<tblr-card class="admin-card">
+<div class="admin-card-heading" slot="header"><span class="who"><tblr-avatar initials="LD" label="LD"></tblr-avatar></span><h3>Vente / ADV · Laurence D.</h3><tblr-badge color="warning" light="">3 choses</tblr-badge></div>
+<div class="admin-card-content"><p>Trois choses : le paiement de votre client Textile du Nord est arrivé (livraison à confirmer), l'échéance CB de Lemaire Création a été refusée et bloque l'expédition, et DEV-30385 de Nadia passe à 15 jours, pour information.</p></div>
+</tblr-card>
+<tblr-card class="admin-card">
+<div class="admin-card-heading" slot="header"><span class="who"><tblr-avatar initials="YP" label="YP"></tblr-avatar></span><h3>Technicien SAV · Yann P.</h3><tblr-badge color="info" light="">2 choses</tblr-badge></div>
+<div class="admin-card-content"><p>Deux choses : le moteur servo pour la Zoje de Confection Bernard est dans votre casier pour 08:30, et la rupture du pied presseur 40034 touche l'installation Ferreira, qui reste faisable.</p></div>
+</tblr-card>
+<tblr-card class="admin-card">
+<div class="admin-card-heading" slot="header"><span class="who"><tblr-avatar initials="TL" label="TL"></tblr-avatar></span><h3>Direction · Thomas L.</h3><tblr-badge color="secondary" light="">3 choses</tblr-badge></div>
+<div class="admin-card-content"><p>Trois choses : 3 890 € reçus et une commande machine débloquée sans intervention, une commande en retard de plus de 24 h dans votre indicateur, et l'objectif du mois à 72 % avec Lens en retard. Les ruptures et pièces reçues sont gérées par les équipes.</p></div>
+</tblr-card>
+</div>
+</tblr-card>
+</div>
+<!-- Réglages -->
+<tblr-card class="admin-panel" id="reglages">
+<div class="admin-card-heading" slot="header"><h2>Réglages par type d'événement</h2><span class="muted">qui reçoit quoi, et par quel canal · modifiable par l'Administration</span><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="device-floppy"></tblr-icon> Enregistrer</tblr-button></div>
+<div class="admin-card-content flush">
+<tblr-data-table aria-label="Tableau de démonstration" authored="" class="admin-table"><table class="settings">
+<thead><tr><th>Événement</th><th>Rôles destinataires</th><th>Cloche</th><th>Digest du matin</th><th>E-mail</th><th>WhatsApp</th><th>Seuil</th></tr></thead>
+<tbody>
+<tr><td>Paiement reçu</td><td><span class="roles"><span>Préparation</span><span>Vente</span><span>Direction</span><span>Compta</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Montant &gt; 500 € ou machine"><option>Toujours</option><option selected="">Montant &gt; 500 € ou machine</option></tblr-select></td></tr>
+<tr><td>Commande à préparer</td><td><span class="roles"><span>Préparation</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Groupées par 15 min"><option selected="">Groupées par 15 min</option><option>Une par une</option></tblr-select></td></tr>
+<tr><td>Commande en attente &gt; 24 h</td><td><span class="roles"><span>Préparation</span><span>Direction</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="24 h"><option>12 h</option><option selected="">24 h</option><option>48 h</option></tblr-select></td></tr>
+<tr><td>Rupture de stock bloquante</td><td><span class="roles"><span>Préparation</span><span>Technicien</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Si une commande payée est bloquée"><option selected="">Si une commande payée est bloquée</option><option>Toujours</option></tblr-select></td></tr>
+<tr><td>Devis sans réponse</td><td><span class="roles"><span>Vente (vendeur du devis)</span><span>Direction si &gt; 10 k€</span></span></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="7 j"><option>5 j</option><option selected="">7 j</option><option>14 j</option></tblr-select></td></tr>
+<tr><td>Échéance de facture dépassée</td><td><span class="roles"><span>Compta</span><span>Vente (vendeur)</span></span></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="J+3"><option selected="">J+3</option><option>J+7</option></tblr-select></td></tr>
+<tr><td>Échéance CB refusée</td><td><span class="roles"><span>Vente</span><span>Compta</span><span>Préparation (si prête)</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Toujours"><option selected="">Toujours</option></tblr-select></td></tr>
+<tr><td>Pièce reçue pour une intervention</td><td><span class="roles"><span>Technicien</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Toujours"><option selected="">Toujours</option></tblr-select></td></tr>
+<tr><td>Réception fournisseur</td><td><span class="roles"><span>Préparation</span><span>Technicien</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Si attendue par une commande"><option selected="">Si attendue par une commande</option><option>Toujours</option></tblr-select></td></tr>
+<tr><td>Retour ou réclamation client</td><td><span class="roles"><span>Vente</span><span>Préparation</span></span></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Toujours"><option selected="">Toujours</option></tblr-select></td></tr>
+<tr><td>Objectif et pilotage</td><td><span class="roles"><span>Direction</span></span></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox checked="" class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><label class="toggle"><tblr-checkbox class="admin-check" label="Sélectionner"></tblr-checkbox></label></td><td><tblr-select aria-label="Réglage de notification" value="Lundi matin"><option selected="">Lundi matin</option><option>Chaque jour</option></tblr-select></td></tr>
+</tbody>
+</table></tblr-data-table>
+</div>
+</tblr-card>
+<!-- Journal -->
+<tblr-card class="admin-panel" id="journal">
+<div class="admin-card-heading" slot="header"><h2>Journal des actions de l'agent</h2><span class="muted">audit complet · conservé 5 ans · exportable</span><tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="download"></tblr-icon> Export CSV</tblr-button></div>
+<div class="admin-card-content" style="padding-bottom:0">
+<div class="filters">
+<tblr-button class="on admin-filter" data-filter="all" variant="secondary">Tout (12)</tblr-button>
+<tblr-button class="admin-filter" data-filter="ok" variant="secondary">Actions confirmées (6)</tblr-button>
+<tblr-button class="admin-filter" data-filter="ro" variant="secondary">Lectures (3)</tblr-button>
+<tblr-button class="admin-filter" data-filter="no" variant="secondary">Annulées ou refusées (3)</tblr-button>
+</div>
+</div>
+<div class="panel-body flush">
+<tblr-data-table aria-label="journal-table" authored="" class="admin-table"><table class="table" id="journal-table">
+<thead><tr><th>Horodatage</th><th>Utilisateur</th><th>Demande</th><th>Ce que l'agent a fait</th><th>Compétence / route</th><th>Résultat</th></tr></thead>
+<tbody>
+<tr data-k="ro"><td>05/10 08:12</td><td>Thomas L.</td><td>« Pourquoi Lens est en retard ? »</td><td>Analyse devis, encours, demandes web de Lens. Aucune écriture.</td><td><code>search_orders</code> <code>get_contact</code></td><td><tblr-badge color="info" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="eye"></tblr-icon> lecture</tblr-badge></td></tr>
+<tr data-k="ok"><td>05/10 08:11</td><td>Laurence D.</td><td>Carte « Envoyer un lien de paiement » (CO-26429)</td><td>Lien de paiement 143,34 € créé et envoyé à Lemaire Création.</td><td><code>PaymentLink</code></td><td><tblr-badge color="success" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> confirmé</tblr-badge></td></tr>
+<tr data-k="no"><td>05/10 08:09</td><td>Laurence D.</td><td>« Relance Maison Lenoir pour sa facture »</td><td>Refus : FAC-20655 est au contentieux ; l'agent a expliqué la règle et proposé d'alerter Compta.</td><td>règle « jamais au contentieux »</td><td><tblr-badge color="danger" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="hand-stop"></tblr-icon> garde-fou</tblr-badge></td></tr>
+<tr data-k="ok"><td>05/10 07:58</td><td>Karim B.</td><td>Carte « Lancer la tournée »</td><td>4 commandes passées en statut 25, 4 fiches + 4 étiquettes imprimées.</td><td><code>DashParts</code> prise en charge · <code>PDF\PreparationSheet</code></td><td><tblr-badge color="success" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> confirmé</tblr-badge></td></tr>
+<tr data-k="ro"><td>05/10 07:58</td><td>système</td><td>Briefing du matin (4 profils)</td><td>Génération des briefings Direction, Vente, Préparation, Technicien.</td><td><code>agent_json</code> · vues métier</td><td><tblr-badge color="info" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="eye"></tblr-icon> lecture</tblr-badge></td></tr>
+<tr data-k="no"><td>04/10 18:20</td><td>Nadia K.</td><td>Carte « Préparer l'avenant 12 mois » (Confection Bernard)</td><td>Aperçu affiché, confirmation refusée par l'utilisatrice.</td><td><code>create_quote_draft</code> (non appelé)</td><td><tblr-badge color="secondary" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="x"></tblr-icon> annulé</tblr-badge></td></tr>
+<tr data-k="ok"><td>04/10 17:12</td><td>Laurence D.</td><td>« Relance DEV-30398 »</td><td>E-mail niveau 1 avec PDF envoyé à Atelier des Halles ; relance notée sur le devis.</td><td><code>form_email_send</code></td><td><tblr-badge color="success" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> confirmé</tblr-badge></td></tr>
+<tr data-k="ok"><td>04/10 16:40</td><td>Karim B.</td><td>Carte « Prête » (CO-26431)</td><td>Statut « prête », étiquette Colissimo imprimée.</td><td><code>DashParts</code> · <code>Colissimo</code></td><td><tblr-badge color="success" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> confirmé</tblr-badge></td></tr>
+<tr data-k="no"><td>04/10 11:02</td><td>Yann P.</td><td>« Commande 10 moteurs servo »</td><td>Refus : quantité au-dessus du seuil technicien (3) ; demande transmise à la Direction.</td><td>règle « seuil d'achat »</td><td><tblr-badge color="danger" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="hand-stop"></tblr-icon> garde-fou</tblr-badge></td></tr>
+<tr data-k="ok"><td>02/10 15:05</td><td>Karim B.</td><td>« Expédie la palette Rousseau »</td><td>CMD-11879 passée en Expédié (11), facture VD créée, suivi GEODIS envoyé.</td><td><code>DashParts</code> expédition</td><td><tblr-badge color="success" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> confirmé</tblr-badge></td></tr>
+<tr data-k="ro"><td>02/10 09:40</td><td>Thomas L.</td><td>« Exporte le CA par agence »</td><td>Fichier Excel généré (3 agences, 12 mois). Aucune écriture.</td><td><code>Stats</code> export</td><td><tblr-badge color="info" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="eye"></tblr-icon> lecture</tblr-badge></td></tr>
+<tr data-k="ok"><td>01/10 09:30</td><td>Compta</td><td>Carte « Valider et envoyer » (1 relance)</td><td>Relance niveau 1 FAC-20874 envoyée, journal de relances mis à jour.</td><td><code>form_email_send</code> · <code>relance</code></td><td><tblr-badge color="success" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> confirmé</tblr-badge></td></tr>
+</tbody>
+</table></tblr-data-table>
+</div>
+</tblr-card>
+<section>
+<h2 style="margin-bottom:10px">Ce que l'agent ne fait jamais</h2>
+<div class="never">
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="ban"></tblr-icon><span>Écrire en base ou envoyer un message sans une confirmation explicite, carte par carte ou lot par lot, avec la liste exacte des documents touchés.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="ban"></tblr-icon><span>Relancer un client au contentieux, sous promesse de paiement, en litige ouvert, ou visité par un technicien le jour même.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="ban"></tblr-icon><span>Envoyer un devis ou une facture au client : il crée des brouillons, l'envoi reste un geste humain.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="ban"></tblr-icon><span>Modifier un prix, une remise ou un montant déjà facturé ; dépasser les seuils d'achat de pièces par rôle.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="ban"></tblr-icon><span>Agir hors du périmètre du rôle : un technicien ne déclenche pas de relance, un préparateur ne crée pas de devis.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="ban"></tblr-icon><span>Inventer une donnée : chaque chiffre du briefing est tracé vers une requête et un horodatage, affichés sous la réponse.</span></div>
+</div>
+</section>
+</div>
+</div><div aria-label="Ce qui a changé depuis hier" class="story" slot="aside">
+<tblr-notification-story appearance="narrative" class="story-sec" items='[{"id": 0, "title": "3 890 € reçus", "detail": "de SARL Textile du Nord.", "explanation": "", "timeLabel": "il y a 4 min", "severity": "success"}, {"id": 1, "title": "CO-26449 attend depuis plus de 24 h.", "detail": "", "explanation": "", "timeLabel": "il y a 1 h", "severity": "danger"}, {"id": 2, "title": "Objectif du mois à 72 %", "detail": ", Lens en retard.", "explanation": "", "timeLabel": "hier 09:00", "severity": "secondary"}]'><div class="story-head" slot="header"><h2>Depuis hier</h2></div><p class="story-lead" slot="lead"><b>3 choses ont changé</b> qui vous concernent.</p></tblr-notification-story>
+<div class="story-sec">
+<div class="story-head"><h2>Journal de l'agent</h2><tblr-badge class="journal-count" color="secondary" light="">12</tblr-badge></div>
+<tblr-audit-log appearance="compact" entries='[{"action": "Briefing Direction généré (lecture seule).", "outcome": "confirmed", "timeLabel": "07:58 · automatique"}]'></tblr-audit-log>
+</div>
+</div></tblr-app-shell><script src="app.js" type="module"></script><div aria-live="polite" class="demo-status" hidden="" id="demo-status" role="status"></div></body></html>

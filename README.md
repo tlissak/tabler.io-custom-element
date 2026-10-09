@@ -40,10 +40,13 @@ instead of `soft`), preserving the existing fallback colors.
 Cards support theme-only risk accents via `data-risk="warning|danger|success"`.
 
 Run `npm run serve` in this package, then open
-[`examples/admin-theme.html`](examples/admin-theme.html) to compare the two themes
-and exercise the local demonstration. The shell/conversation markup on this
-page is illustrative; planned reusable elements are listed in
-[`ADMIN_THEME_PLAN.md`](ADMIN_THEME_PLAN.md).
+[`examples/admin-theme.html`](examples/admin-theme.html) for the nine reference
+screens reproduced with custom elements. The French content, populated tables,
+chart, navigation, and simulated workflows are preserved; see the
+[example documentation](examples/admin-theme/README.md).
+[`examples/workspace-theme.html`](examples/workspace-theme.html) retains the
+smaller workspace demo with a standard/admin theme comparison. Reusable element
+APIs and implementation status are in [`ADMIN_THEME_PLAN.md`](ADMIN_THEME_PLAN.md).
 
 ## Standard CDN usage
 
@@ -1060,23 +1063,23 @@ Global card styling:
 
 All eleven elements from `ADMIN_THEME_PLAN.md` are implemented. Open the
 [standard catalog](examples/index.html#workspace-elements) or the
-[admin workspace](examples/admin-theme.html). Both use the same local fixture
+[admin workspace comparison](examples/workspace-theme.html). Both use the same local fixture
 workflow: suggestion/command ? user message ? fixture response ? action preview
 ? pending ? confirmed/error/cancelled ? supplied audit entry. No business API
 is called. The gallery also shows empty, disabled, pending, and image-error states.
 
 | Element | Attributes / properties | Slots | Intent events (`event.detail`) |
 | --- | --- | --- | --- |
-| `tblr-app-shell` | `collapsed` / `.collapsed`, `aside-open` / `.asideOpen`, `navigation-open` / `.navigationOpen`, `label` | `header`, `navigation`, default workspace, `aside` | `navigation-toggle` `{collapsed, open}`, `aside-toggle` `{open}` |
+| `tblr-app-shell` | `collapsed` / `.collapsed`, `aside-open` / `.asideOpen`, `navigation-open` / `.navigationOpen`, `label` | `brand`, `header`, `account`, `navigation-icon`, `aside-icon`, `navigation`, default workspace, `aside` | `navigation-toggle` `{collapsed, open}`, `aside-toggle` `{open}` |
 | `tblr-command-bar` | `label`, `placeholder`, `value`, `disabled`, `shortcut` (also reflected properties) | ? | `command-submit` `{text}` |
-| `tblr-composer` | `label`, `placeholder`, `value`, `disabled`, `pending` (also reflected properties), `send-label` | `suggestions`, `attachments`, `hint` | `message-submit` `{text}` |
-| `tblr-message` | `message-role="agent|user|system"`, `author`, `timestamp`; `.messageRole`, `.author`, `.timestamp` | `avatar`, default content, `sources`, `actions` | ? |
-| `tblr-action-preview` | `state` / `.state` (`preview|pending|confirmed|cancelled|error`), `title`, `confirm-label`, `cancel-label`, `result` | `changes` (default content as fallback), `exclusions`, `hint` | `confirm` / `cancel` `{state}` |
+| `tblr-composer` | `label`, `placeholder`, `value`, `disabled`, `pending` (also reflected properties), `send-label`, `rows` | `suggestions`, `attachments`, `hint`, `mark`, `controls`, `submit-icon` | `message-submit` `{text}` |
+| `tblr-message` | `message-role="agent|user|system"`, `author`, `timestamp`; `.messageRole`, `.author`, `.timestamp` | `avatar`, `metadata`, default content, `sources`, `actions` | ? |
+| `tblr-action-preview` | `state` / `.state` (`preview|pending|confirmed|cancelled|error`), `title`, `confirm-label`, `cancel-label`, `result` | `header`, `changes` (default content as fallback), `exclusions`, `hint` | `confirm` / `cancel` `{state}` |
 | `tblr-stat` | `value`, `label`, `trend="up|down|neutral"`, `description` (also reflected properties) | `value` (for `tblr-format-number`), `description`, `source` | ? |
 | `tblr-suggestion` | `text`, `value`, `disabled` (also reflected properties) | default text, `icon` | `suggestion-select` `{value}` |
 | `tblr-source-list` | `sources` JSON attribute or `.sources` array, `label`, `empty-text` | ? | ? |
-| `tblr-notification-story` | `items` JSON attribute or `.items` array, `title`, `quiet-summary`, `empty-text` | `actions`, `actions-0`, `actions-1`, etc. (item index) | `notification-select` `{id, item}` |
-| `tblr-audit-log` | `entries` JSON attribute or `.entries` array, `title`, `empty-text`, `filterable`, `exportable` (also boolean properties) | ? | `filter-request` `{query}`, `export-request` `{entries}` |
+| `tblr-notification-story` | `items` JSON attribute or `.items` array, `title`, `quiet-summary`, `empty-text`, `appearance="narrative"` | `header`, `lead`, `actions`, `actions-0`, `actions-1`, etc. (item index) | `notification-select` `{id, item}` |
+| `tblr-audit-log` | `entries` JSON attribute or `.entries` array, `title`, `empty-text`, `filterable`, `exportable` (also boolean properties), `appearance="compact"` | ? | `filter-request` `{query}`, `export-request` `{entries}` |
 | `tblr-avatar` | `initials`, `src`, `label`, `size="sm|md|lg"`, `variant="agent"` (also reflected properties) | ? | ? |
 
 All intent events bubble, cross shadow boundaries, and are cancelable. They

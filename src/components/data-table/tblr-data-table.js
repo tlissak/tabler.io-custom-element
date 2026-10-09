@@ -109,6 +109,7 @@ function initials(value) {
 
 class TblrDataTable extends HTMLElement {
   static observedAttributes = [
+    'authored',
     'src',
     'columns',
     'title',
@@ -145,6 +146,10 @@ class TblrDataTable extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.hasAttribute('authored')) {
+      this.render();
+      return;
+    }
     if (this.hasAttribute('data')) {
       this.setData(parseJsonAttribute(this, 'data', []));
     } else {
@@ -159,6 +164,12 @@ class TblrDataTable extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (!this.isConnected || oldValue === newValue) return;
+
+    if (this.hasAttribute('authored') || name === 'authored') {
+      this.render();
+      if (!this.hasAttribute('authored')) this.load();
+      return;
+    }
 
     if (name === 'data') {
       this.setData(parseJsonAttribute(this, 'data', []));
@@ -359,6 +370,10 @@ class TblrDataTable extends HTMLElement {
   }
 
   render() {
+    if (this.hasAttribute('authored')) {
+      this.root.innerHTML = `<link rel="stylesheet" href="${stylesheetUrl}"><div part="table-wrap" class="table-wrap authored"><slot></slot></div>`;
+      return;
+    }
     const title = this.getAttribute('title') ?? 'Table';
     const description = this.getAttribute('description') ?? '';
     const columns = this.columns;

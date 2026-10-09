@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html data-tblr-theme="admin" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Direction 5 · Assistant IA au centre — Glasman F4</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
+<link href="reference-layout.css" rel="stylesheet"/>
+<style>
+  .demo-cmd { max-width: 720px; }
+  .demo-cmd .cmd { height: 48px; border-radius: 9px; background: var(--card); box-shadow: 0 8px 30px rgba(24,36,51,.10); }
+  .demo-cmd .cmd .agent-mark { width: 28px; height: 28px; font-size: 15px; }
+  .demo-cmd .cmd input { font-size: var(--prose); }
+  .examples { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: var(--fs-sm); color: var(--muted); }
+  .examples span::before { content: "« "; } .examples span::after { content: " »"; }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .compare .side { padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); }
+  .compare .side.now { background: var(--bg); }
+  .compare h3 { font-size: var(--fs-md); margin-bottom: 8px; }
+  .compare ul { margin: 0; padding-left: 18px; font-size: var(--fs-sm); line-height: 1.55; }
+  .compare li + li { margin-top: 4px; }
+  .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+  .rules div { padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); font-size: var(--fs-sm); line-height: 1.5; display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+  .rules i { color: var(--primary); font-size: 1.1rem; }
+  .rules b { display: block; margin-bottom: 2px; }
+  section > h2 { margin-bottom: 10px; }
+  .sect-lead { font-size: var(--fs-md); color: var(--muted); margin: -6px 0 12px; max-width: 80ch; }
+  @media (max-width: 720px) { .compare { grid-template-columns: 1fr; } }
+</style>
+<link href="../../src/styles/admin-theme.css" rel="stylesheet"/><link href="custom-elements.css" rel="stylesheet"/></head>
+<body class="admin-reference" data-reference-page="index" data-user="visiteur"><tblr-app-shell class="reference-shell" label="Espace de travail"><a class="brand" href="index.html" slot="brand"><span class="logo">4</span><span>Glasman</span></a><tblr-command-bar class="admin-command" label="Demander à l'assistant" placeholder="Demander à Fil : « quelles commandes de Lens sont en retard ? »" shortcut="" shortcut-label="Ctrl K" slot="header" value=""><tblr-avatar label="Fil" slot="mark" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar><tblr-icon aria-hidden="true" base-url="./icons" name="microphone" slot="submit-icon"></tblr-icon></tblr-command-bar><div class="who" slot="account"><tblr-avatar initials="F4" label="F4"></tblr-avatar><span class="text"><b>Maquette 05</b><small>Direction 5 · présentation</small></span></div><tblr-icon base-url="./icons" name="layout-sidebar" slot="navigation-icon"></tblr-icon><span class="bell-icon" slot="aside-icon"><tblr-icon base-url="./icons" name="bell"></tblr-icon><span class="count">3</span></span><div class="rail" slot="navigation">
+<div class="rail-group">
+<div class="rail-title">Présentation</div>
+<tblr-nav-item active="" href="index.html" label="Le concept"><tblr-icon aria-hidden="true" base-url="./icons" name="presentation" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="REFERENCE.md" label="README (concept détaillé)"><tblr-icon aria-hidden="true" base-url="./icons" name="file-description" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<div class="rail-group">
+<div class="rail-title">Briefings par profil</div>
+<tblr-nav-item href="direction.html" label="Direction"><tblr-icon aria-hidden="true" base-url="./icons" name="briefcase" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="vente.html" label="Vente / ADV"><tblr-icon aria-hidden="true" base-url="./icons" name="file-invoice" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="preparation.html" label="Préparation"><tblr-icon aria-hidden="true" base-url="./icons" name="package" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="technicien.html" label="Technicien SAV"><tblr-icon aria-hidden="true" base-url="./icons" name="tool" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<div class="rail-group">
+<div class="rail-title">Écrans clés (repli + agent)</div>
+<tblr-nav-item href="file-preparation.html" label="File de préparation"><tblr-icon aria-hidden="true" base-url="./icons" name="list-check" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="parc-machines.html" label="Parc machines d'un client"><tblr-icon aria-hidden="true" base-url="./icons" name="engine" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="paiements.html" label="Suivi des paiements"><tblr-icon aria-hidden="true" base-url="./icons" name="cash" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="notifications.html" label="Notifications et journal"><tblr-icon aria-hidden="true" base-url="./icons" name="bell" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<details>
+<summary><tblr-icon aria-hidden="true" base-url="./icons" name="layout-list"></tblr-icon><span>Navigation classique</span></summary>
+<tblr-nav-item href="parc-machines.html" label="Clients"></tblr-nav-item>
+<div class="sub-title">Documents</div>
+<tblr-nav-item href="#" label="Devis"></tblr-nav-item>
+<tblr-nav-item href="file-preparation.html" label="Bons de commande (W)"></tblr-nav-item>
+<tblr-nav-item href="paiements.html" label="Factures"></tblr-nav-item>
+<tblr-nav-item href="#" label="… 16 autres types"></tblr-nav-item>
+</details>
+</div><div class="work-content">
+<div class="page" style="max-width:1100px">
+<section class="hero">
+<div><tblr-badge color="info" light="">Direction 5 · Assistant IA au centre</tblr-badge></div>
+<h1>Le backoffice commence par une phrase, pas par un menu.</h1>
+<p class="lead">Chaque matin, l'agent du projet (module <b>Agent</b>, compétences <b>search_orders</b>, <b>get_contact</b>, <b>create_quote_draft</b>…) lit les données et écrit à chaque personne ce qui a changé, ce qu'elle doit faire et ce qui risque de coincer. On lui parle, on lui dicte ; il répond par des cartes qui portent les vraies actions du logiciel. Rien ne s'exécute sans confirmation et tout est consigné. Les listes par type de document existent toujours, repliées à gauche.</p>
+<div class="demo-cmd">
+<tblr-command-bar class="admin-command" label="Exemple de demande" placeholder="" shortcut-label="Ctrl K" value="Prépare le devis Lenoir en location 6 mois"><tblr-avatar label="Fil" slot="mark" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar><tblr-icon aria-hidden="true" base-url="./icons" name="microphone" slot="submit-icon"></tblr-icon></tblr-command-bar>
+</div>
+<div class="examples">
+<span>quelles commandes de Lens sont en retard ?</span><span>relance les factures de plus de 60 jours</span><span>expédie tout ce qui est prêt</span><span>quelles pièces pour des points sautés sur une DDL-8700 ?</span><span>pourquoi Lens est en retard ?</span>
+</div>
+</section>
+<section>
+<h2>Le parcours d'une demande</h2>
+<p class="sect-lead">Cinq étapes, toujours les mêmes, quel que soit le rôle. L'étape 4 est la seule qui écrit en base, et elle n'a lieu qu'après un « Confirmer ».</p>
+<div class="flow">
+<div class="node"><span class="no">1</span><h3>Barre de commande</h3><p>Dans le header, à la place des sept menus. Clavier ou dictée, Ctrl K depuis n'importe quel écran.</p><div class="ex">« prépare le devis Lenoir en location 6 mois »</div></div>
+<div class="node"><span class="no">2</span><h3>L'agent lit</h3><p>Il appelle les compétences existantes en lecture : commandes, contacts, produits, parc, paiements. Les sources sont affichées sous la réponse.</p><div class="ex">get_order · get_contact · search_products</div></div>
+<div class="node"><span class="no">3</span><h3>Cartes actionnables</h3><p>Une réponse en français, puis des cartes : chaque carte est un document ou une décision, avec les boutons du métier.</p><div class="ex">Brouillon Devis (LOC) · 4 lignes · 1 290 € HT</div></div>
+<div class="node"><span class="no">4</span><h3>Aperçu, puis confirmation</h3><p>Avant d'écrire, l'agent liste ce qu'il va faire et ce qu'il ne fera pas. Un seul bouton Confirmer, un Annuler.</p><div class="ex">create_quote_draft · form_assign · DashParts</div></div>
+<div class="node"><span class="no">5</span><h3>Journal</h3><p>Chaque action confirmée, chaque lecture et chaque refus laissent une ligne : qui, quoi, quelle route, quel résultat.</p><div class="ex">08:20 · Laurence D. · DEVL-2232 créé</div></div>
+</div>
+</section>
+<section>
+<h2>Ce qui change par rapport au backoffice actuel</h2>
+<div class="compare">
+<div class="side now">
+<h3>Aujourd'hui</h3>
+<ul>
+<li>Sept menus déroulants en haut (Procédures, Administration, Relation client, Catalogue, Communication, Marketing, Liens) et dix-neuf types de documents à gauche.</li>
+<li>Accueil = formulaires attribués + mes brouillons. Chacun doit savoir où chercher ce qu'il a à faire.</li>
+<li>Aucune notification persistante : des toasts qui disparaissent.</li>
+<li>Compta et Technicien enfermés sur une page ; pas de poste pour la préparation.</li>
+<li>L'agent existe (API, skills, brouillons de devis) mais sans entrée de menu.</li>
+</ul>
+</div>
+<div class="side">
+<h3>Direction 5</h3>
+<ul>
+<li>Une barre de commande au centre du header ; un rail gauche repliable : « Aujourd'hui », « Mon poste », puis la navigation classique dans un volet replié.</li>
+<li>Accueil = briefing du matin écrit pour mon rôle, mon agence et mon portefeuille, avec les chiffres et les cartes d'action.</li>
+<li>Les événements deviennent un récit (« 3 choses ont changé depuis hier ») avec, pour chacun, pourquoi il me concerne.</li>
+<li>Chaque rôle a ses suggestions et ses garde-fous ; les écrans de repli (file, parc, paiements) portent la même couche agent.</li>
+<li>Aperçu avant toute écriture, journal auditable, règles « jamais » affichées.</li>
+</ul>
+</div>
+</div>
+</section>
+<section>
+<h2>Les écrans</h2>
+<div class="screens">
+<a class="screen" href="direction.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="briefcase"></tblr-icon></span><h3>Briefing Direction</h3><p>CA du mois vs N-1 par agence, retards, balance âgée ; échange « Pourquoi Lens est en retard ? » avec attribution et message interne.</p><span class="tag">Thomas L. · toutes agences</span></a>
+<a class="screen" href="vente.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="file-invoice"></tblr-icon></span><h3>Briefing Vente / ADV</h3><p>Devis à relancer, demandes web, échéance refusée, panier abandonné ; échange « Prépare le devis Lenoir en location 6 mois » jusqu'au brouillon.</p><span class="tag">Laurence D. · Paris</span></a>
+<a class="screen" href="preparation.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="package"></tblr-icon></span><h3>Briefing Préparation</h3><p>File de Paris, retard &gt; 24 h, rupture, palette machine ; échange « Qu'est-ce que je prends en premier ? » avec ordre de passage.</p><span class="tag">Karim B. · Paris</span></a>
+<a class="screen" href="technicien.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon></span><h3>Briefing Technicien SAV</h3><p>Tournée du jour avec un conflit d'horaire détecté, assemblage à l'atelier ; échange sur les pièces pour une DDL-8700.</p><span class="tag">Yann P. · Paris + Lens</span></a>
+<a class="screen" href="file-preparation.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="list-check"></tblr-icon></span><h3>File de préparation</h3><p>Écran classique par étape, avec l'ordre de picking proposé, les risques signalés et « expédie tout ce qui est prêt » confirmé commande par commande.</p><span class="tag">repli + couche agent</span></a>
+<a class="screen" href="parc-machines.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="engine"></tblr-icon></span><h3>Parc machines d'un client</h3><p>Confection Bernard : 4 machines, garanties, contrat LOC, encours, interventions ; l'agent résume et propose avenant, devis maintenance, rappel.</p><span class="tag">repli + couche agent</span></a>
+<a class="screen" href="paiements.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="cash"></tblr-icon></span><h3>Suivi des paiements</h3><p>Balance âgée en cinq tranches, factures non soldées, relances rédigées par niveau et validées en lot, promesses de paiement suivies.</p><span class="tag">repli + couche agent</span></a>
+<a class="screen" href="notifications.html"><span class="ico"><tblr-icon aria-hidden="true" base-url="./icons" name="bell"></tblr-icon></span><h3>Notifications et journal</h3><p>Événements bruts, récit par rôle, réglages de routage et de canal, journal d'audit des actions de l'agent, règles « jamais ».</p><span class="tag">modèle + audit</span></a>
+</div>
+</section>
+<section>
+<h2>Garde-fous visibles</h2>
+<div class="rules">
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon><span><b>Aperçu avant écriture</b>Chaque carte qui modifie quelque chose affiche « voici ce que je vais faire » et « ce que je ne ferai pas », puis attend Confirmer.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="history"></tblr-icon><span><b>Journal auditable</b>Lectures, actions confirmées, annulations et refus sont consignés avec l'utilisateur, la compétence appelée et le résultat.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="database"></tblr-icon><span><b>Sources affichées</b>Sous chaque réponse, les tables et compétences utilisées et l'heure des données. Un chiffre sans source n'est pas affiché.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="user-shield"></tblr-icon><span><b>Périmètre par rôle</b>Les actions proposées respectent le rôle et le site ; un technicien ne relance pas, un préparateur ne crée pas de devis.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="file-off"></tblr-icon><span><b>Brouillons seulement</b>L'agent crée des brouillons de devis et des messages à relire ; l'envoi au client reste un geste humain.</span></div>
+<div><tblr-icon aria-hidden="true" base-url="./icons" name="door-exit"></tblr-icon><span><b>Repli toujours possible</b>La navigation classique est à un clic dans le rail ; les listes par type de document fonctionnent sans l'agent.</span></div>
+</div>
+</section>
+<p class="muted" style="font-size:12.5px">Maquette statique : données de démonstration partagées avec les autres directions (<code style="font-family:inherit">donnees.js</code>), noms de clients et de personnes inventés. Les échanges joués sont ceux décrits dans chaque page ; une question libre reçoit une réponse « non scénarisée ». Concept détaillé, catalogue des cartes et risques : <a href="REFERENCE.md">README.md</a>.</p>
+</div>
+</div><div aria-label="Ce qui a changé depuis hier" class="story" slot="aside">
+<div class="story-sec">
+<div class="story-head"><h2>Depuis hier</h2><a href="notifications.html">Tout voir</a></div>
+<p class="story-lead">Ce panneau raconte les événements qui vous concernent. Ouvrez un briefing pour le voir rempli.</p>
+</div>
+</div></tblr-app-shell><script src="app.js" type="module"></script><div aria-live="polite" class="demo-status" hidden="" id="demo-status" role="status"></div></body></html>

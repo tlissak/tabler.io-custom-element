@@ -158,6 +158,9 @@ button:focus-visible {
   overflow: auto;
 }
 
+.authored { overflow: auto; }
+.authored ::slotted(table) { width: 100%; border-collapse: collapse; }
+
 table {
   width: 100%;
   border-collapse: collapse;

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html data-tblr-theme="admin" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File de préparation — Glasman F4</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
+<link href="reference-layout.css" rel="stylesheet"/>
+<style>
+  .stage-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .stage-head h2 { font-size: var(--fs-md); }
+  .stage-head .badge { margin-left: 2px; }
+  .stage-head .muted { margin-left: auto; font-size: 12px; }
+  .chat-result { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); max-width: 756px; margin-bottom: 10px; display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 16px; }
+  .chat-result .q { font-size: var(--fs-sm); color: var(--muted); margin-bottom: 6px; }
+  .chat-result .q b { color: var(--ink); font-weight: 500; }
+  .chat-result .inner { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .chat-result .confirm, .chat-result .done { margin: 0; }
+  .mini { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+  .mini td { padding: 5px 8px; border-bottom: 1px solid var(--border); }
+  .mini tr:last-child td { border-bottom: 0; }
+  .mini td.num { text-align: right; font-variant-numeric: tabular-nums; }
+</style>
+<link href="../../src/styles/admin-theme.css" rel="stylesheet"/><link href="custom-elements.css" rel="stylesheet"/></head>
+<body class="admin-reference" data-reference-page="file-preparation" data-user="Karim B."><tblr-app-shell aside-open="" class="reference-shell" label="Espace de travail"><a class="brand" href="index.html" slot="brand"><span class="logo">4</span><span>Glasman</span></a><tblr-command-bar class="admin-command" label="Demander à l'assistant" placeholder="Demander à Fil : « expédie tout ce qui est prêt »" shortcut="" shortcut-label="Ctrl K" slot="header" value=""><tblr-avatar label="Fil" slot="mark" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar><tblr-icon aria-hidden="true" base-url="./icons" name="microphone" slot="submit-icon"></tblr-icon></tblr-command-bar><div class="who" slot="account"><tblr-avatar initials="KB" label="KB"></tblr-avatar><span class="text"><b>Karim B.</b><small>Préparation · Paris</small></span></div><tblr-icon base-url="./icons" name="layout-sidebar" slot="navigation-icon"></tblr-icon><span class="bell-icon" slot="aside-icon"><tblr-icon base-url="./icons" name="bell"></tblr-icon><span class="count">4</span></span><div class="rail" slot="navigation">
+<div class="rail-group">
+<div class="rail-title">Aujourd'hui</div>
+<tblr-nav-item href="preparation.html" label="Briefing du matin"><tblr-icon aria-hidden="true" base-url="./icons" name="sunrise" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="notifications.html" label="Depuis hier"><tblr-icon aria-hidden="true" base-url="./icons" name="bell" slot="icon"></tblr-icon><span class="n hot" slot="suffix">4</span></tblr-nav-item>
+<tblr-nav-item href="notifications.html#journal" label="Journal de l'agent"><tblr-icon aria-hidden="true" base-url="./icons" name="history" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<div class="rail-group">
+<div class="rail-title">Mon poste — Préparation</div>
+<tblr-nav-item active="" href="file-preparation.html" label="File de préparation"><tblr-icon aria-hidden="true" base-url="./icons" name="package" slot="icon"></tblr-icon><span class="n hot" slot="suffix">5</span></tblr-nav-item>
+<tblr-nav-item href="file-preparation.html#prete" label="À expédier"><tblr-icon aria-hidden="true" base-url="./icons" name="truck" slot="icon"></tblr-icon><span class="n" slot="suffix">2</span></tblr-nav-item>
+<tblr-nav-item href="#" label="Réceptions fournisseur"><tblr-icon aria-hidden="true" base-url="./icons" name="package-import" slot="icon"></tblr-icon><span class="n" slot="suffix">1</span></tblr-nav-item>
+<tblr-nav-item href="#" label="Retours clients"><tblr-icon aria-hidden="true" base-url="./icons" name="arrow-back-up" slot="icon"></tblr-icon><span class="n" slot="suffix">0</span></tblr-nav-item>
+<tblr-nav-item href="#" label="Étiquettes et fiches"><tblr-icon aria-hidden="true" base-url="./icons" name="printer" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<details open="">
+<summary><tblr-icon aria-hidden="true" base-url="./icons" name="layout-list"></tblr-icon><span>Navigation classique</span></summary>
+<tblr-nav-item href="parc-machines.html" label="Clients"></tblr-nav-item>
+<div class="sub-title">Documents</div>
+<tblr-nav-item href="file-preparation.html" label="Bons de commande (W)"></tblr-nav-item>
+<tblr-nav-item href="#" label="Bons de commande"></tblr-nav-item>
+<tblr-nav-item href="#" label="Bons de livraison"></tblr-nav-item>
+<tblr-nav-item href="#" label="Factures (VD)"></tblr-nav-item>
+<tblr-nav-item href="#" label="Bons de retour"></tblr-nav-item>
+<tblr-nav-item href="#" label="Bons de commande fournisseur"></tblr-nav-item>
+<div class="sub-title">Autres</div>
+<tblr-nav-item href="#" label="Comptoir pièces (DashParts)"></tblr-nav-item>
+<tblr-nav-item href="#" label="Stock"></tblr-nav-item>
+</details>
+<div class="rail-group rail-foot">
+<div class="rail-title">Profils (démo)</div>
+<tblr-nav-item href="direction.html" label="Direction"><tblr-icon aria-hidden="true" base-url="./icons" name="briefcase" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="vente.html" label="Vente / ADV"><tblr-icon aria-hidden="true" base-url="./icons" name="file-invoice" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item active="" href="preparation.html" label="Préparation"><tblr-icon aria-hidden="true" base-url="./icons" name="package" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="technicien.html" label="Technicien SAV"><tblr-icon aria-hidden="true" base-url="./icons" name="tool" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+</div><div class="work-content">
+<div class="page">
+<div class="page-head">
+<div>
+<div class="crumbs"><a href="preparation.html">Préparation</a> / File de préparation</div>
+<h1>File de préparation · Paris</h1>
+<div class="muted" style="font-size:12.5px;margin-top:3px">Commandes web payées et bons de commande comptoir réglés, sans statut Expédié. Écran classique, enrichi par l'agent.</div>
+</div>
+<div class="actions">
+<tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="filter"></tblr-icon> Paris</tblr-button>
+<tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="printer"></tblr-icon> Imprimer les fiches cochées</tblr-button>
+<tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="download"></tblr-icon> Export</tblr-button>
+</div>
+</div>
+<!-- Couche agent -->
+<section aria-label="Lecture de l'agent" class="agent-layer">
+<tblr-avatar label="Fil" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar>
+<div class="inner">
+<div class="meta"><b>Fil</b><time>07:41</time><span class="muted">lecture de la file · mise à jour toutes les 5 min</span></div>
+<p class="prose">Dix commandes dans la vue ; <b>deux risques</b> : <span class="ref">CO-26449</span> dépasse 24 h et <span class="ref">CMD-11885</span> est bloquée par la rupture du pied presseur 40034 (BCF-0019 le 08/10). <span class="ref">CO-26429</span> est prête mais à retenir : échéance CB refusée hier. Ordre de passage proposé pour tenir la levée Colissimo de 11:30 :</p>
+<div class="steps">
+<div class="step danger"><span class="no">1</span><div><b>CO-26449</b> Vaucher<span class="sub">lettre suivie · 27 h</span></div></div>
+<div class="step"><span class="no">2</span><div><b>CO-26458</b> Maillard<span class="sub">Colissimo · 1 ligne</span></div></div>
+<div class="step"><span class="no">3</span><div><b>CO-26456</b> Haddad<span class="sub">Colissimo · 2 lignes</span></div></div>
+<div class="step"><span class="no">4</span><div><b>CO-26457</b> Deblaise<span class="sub">Colissimo · 3 lignes</span></div></div>
+<div class="step warn"><span class="no">5</span><div><b>CMD-11892</b> Textile du Nord<span class="sub">palette · après assemblage</span></div></div>
+</div>
+<div class="chips">
+<tblr-suggestion data-fill="Prends en charge les 4 premières et imprime les fiches" value="Prends en charge les 4 premières et imprime les fiches"><tblr-icon aria-hidden="true" base-url="./icons" name="player-play" slot="icon"></tblr-icon> Lancer la tournée dans cet ordre</tblr-suggestion>
+<tblr-suggestion data-fill="Expédie tout ce qui est prêt" value="Expédie tout ce qui est prêt"><tblr-icon aria-hidden="true" base-url="./icons" name="send" slot="icon"></tblr-icon> Expédie tout ce qui est prêt</tblr-suggestion>
+<tblr-suggestion data-fill="Quelles commandes contiennent une machine ?" value="Quelles commandes contiennent une machine ?"><tblr-icon aria-hidden="true" base-url="./icons" name="engine" slot="icon"></tblr-icon> Lesquelles contiennent une machine ?</tblr-suggestion>
+</div>
+</div>
+</section>
+<!-- Listes classiques par étape -->
+<tblr-card class="admin-panel" id="a_preparer">
+<div class="admin-card-heading stage-head" slot="header"><h2>À préparer</h2><tblr-badge color="info" data-count="a_preparer" light="">5</tblr-badge><span class="muted">payées, personne dessus</span></div>
+<div class="admin-card-content flush"><tblr-data-table aria-label="Tableau de démonstration" authored="" class="admin-table"><table class="table" data-stage="a_preparer"><thead><tr><th></th><th>Réf.</th><th>Client</th><th>Contenu</th><th>Expédition</th><th>Paiement</th><th class="num">Total</th><th>Depuis</th><th>Signal</th><th></th></tr></thead><tbody><tr><td><tblr-checkbox aria-label="Sélectionner CO-26458" class="admin-check" label="Sélectionner CO-26458"></tblr-checkbox></td><td><span class="ref">CO-26458</span><span class="sub">Bon de commande (W)</span></td><td>Atelier Maillard<span class="sub">Lyon</span></td><td>1 ligne<span class="sub">pièces / accessoires</span></td><td>Colissimo<span class="sub">0,3 kg</span></td><td><tblr-badge color="success" light="">Payé (CB)</tblr-badge></td><td class="num">22,50 €</td><td class="num" style="text-align:left">2 h</td><td><span class="muted">—</span></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="hand-grab"></tblr-icon> Prendre</tblr-button> <tblr-button icon-only="" label="Fiche de préparation" size="sm" title="Fiche de préparation" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="printer"></tblr-icon></tblr-button></td></tr><tr><td><tblr-checkbox aria-label="Sélectionner CO-26457" class="admin-check" label="Sélectionner CO-26457"></tblr-checkbox></td><td><span class="ref">CO-26457</span><span class="sub">Bon de commande (W)</span></td><td>Confection Deblaise<span class="sub">Chateaugiron</span></td><td>3 lignes<span class="sub">pièces / accessoires</span></td><td>Colissimo<span class="sub">1,2 kg</span></td><td><tblr-badge color="success" light="">Payé (PayPal)</tblr-badge></td><td class="num">96,00 €</td><td class="num" style="text-align:left">5 h</td><td><span class="muted">—</span></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="hand-grab"></tblr-icon> Prendre</tblr-button> <tblr-button icon-only="" label="Fiche de préparation" size="sm" title="Fiche de préparation" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="printer"></tblr-icon></tblr-button></td></tr><tr><td><tblr-checkbox aria-label="Sélectionner CO-26456" class="admin-check" label="Sélectionner CO-26456"></tblr-checkbox></td><td><span class="ref">CO-26456</span><span class="sub">Bon de commande (W)</span></td><td>Haddad Couture<span class="sub">Marseille</span></td><td>2 lignes<span class="sub">pièces / accessoires</span></td><td>Colissimo<span class="sub">0,4 kg</span></td><td><tblr-badge color="success" light="">Payé (CB)</tblr-badge></td><td class="num">34,60 €</td><td class="num" style="text-align:left">6 h</td><td><span class="muted">—</span></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="hand-grab"></tblr-icon> Prendre</tblr-button> <tblr-button icon-only="" label="Fiche de préparation" size="sm" title="Fiche de préparation" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="printer"></tblr-icon></tblr-button></td></tr><tr class="flag danger"><td><tblr-checkbox aria-label="Sélectionner CMD-11892" class="admin-check" label="Sélectionner CMD-11892"></tblr-checkbox></td><td><span class="ref">CMD-11892</span><span class="sub">Bon de commande</span></td><td>SARL Textile du Nord<span class="sub">Roubaix</span></td><td><b>Juki DDL-9000C + table</b><span class="sub">2 lignes · machine</span></td><td>Palette<span class="sub">68 kg</span></td><td><tblr-badge color="success" light="">Payé (Virement)</tblr-badge></td><td class="num">3 890,00 €</td><td class="num" style="text-align:left">1 j 6 h</td><td><tblr-badge color="secondary" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="settings-bolt"></tblr-icon> assemblage requis</tblr-badge></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="hand-grab"></tblr-icon> Prendre</tblr-button> <tblr-button icon-only="" label="Fiche de préparation" size="sm" title="Fiche de préparation" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="printer"></tblr-icon></tblr-button></td></tr><tr class="flag danger"><td><tblr-checkbox aria-label="Sélectionner CO-26449" class="admin-check" label="Sélectionner CO-26449"></tblr-checkbox></td><td><span class="ref">CO-26449</span><span class="sub">Bon de commande (W)</span></td><td>Mme Vaucher<span class="sub">Nantes</span></td><td>1 ligne<span class="sub">pièces / accessoires</span></td><td>Lettre suivie<span class="sub">0,1 kg</span></td><td><tblr-badge color="success" light="">Payé (CB)</tblr-badge></td><td class="num">10,00 €</td><td class="num" style="text-align:left">1 j 3 h</td><td><tblr-badge color="danger" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="clock-exclamation"></tblr-icon> Plus de 24 h</tblr-badge></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="hand-grab"></tblr-icon> Prendre</tblr-button> <tblr-button icon-only="" label="Fiche de préparation" size="sm" title="Fiche de préparation" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="printer"></tblr-icon></tblr-button></td></tr></tbody></table></tblr-data-table></div>
+</tblr-card>
+<tblr-card class="admin-panel" id="en_preparation">
+<div class="admin-card-heading stage-head" slot="header"><h2>En cours de préparation</h2><tblr-badge color="warning" data-count="en_preparation" light="">2</tblr-badge><span class="muted">statut 25</span></div>
+<div class="admin-card-content flush"><tblr-data-table aria-label="Tableau de démonstration" authored="" class="admin-table"><table class="table" data-stage="en_preparation"><thead><tr><th></th><th>Réf.</th><th>Client</th><th>Contenu</th><th>Expédition</th><th>Préparateur</th><th class="num">Total</th><th>Depuis</th><th>Signal</th><th></th></tr></thead><tbody><tr><td><tblr-checkbox aria-label="Sélectionner CO-26440" class="admin-check" label="Sélectionner CO-26440"></tblr-checkbox></td><td><span class="ref">CO-26440</span><span class="sub">Bon de commande (W)</span></td><td>Boullier Nadine<span class="sub">Toulouse</span></td><td>1 ligne<span class="sub">pièces / accessoires</span></td><td>Colissimo<span class="sub">0,2 kg</span></td><td>Karim B.</td><td class="num">10,50 €</td><td class="num" style="text-align:left">2 j 2 h</td><td><span class="muted">—</span></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="check"></tblr-icon> Prête</tblr-button> <tblr-button icon-only="" label="Signaler un problème" size="sm" title="Signaler un problème" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="alert-circle"></tblr-icon></tblr-button></td></tr><tr class="flag"><td><tblr-checkbox aria-label="Sélectionner CMD-11885" class="admin-check" label="Sélectionner CMD-11885"></tblr-checkbox></td><td><span class="ref">CMD-11885</span><span class="sub">Bon de commande</span></td><td>Atelier Ferreira<span class="sub">Paris 20e</span></td><td><b>Jack F4 + bâti</b><span class="sub">4 lignes · machine</span></td><td>Retrait Paris<span class="sub">24 kg</span></td><td>Karim B.</td><td class="num">1 240,00 €</td><td class="num" style="text-align:left">2 j 4 h</td><td><tblr-badge color="warning" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="alert-triangle"></tblr-icon> Rupture : pied presseur 40034</tblr-badge></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="check"></tblr-icon> Prête</tblr-button> <tblr-button icon-only="" label="Signaler un problème" size="sm" title="Signaler un problème" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="alert-circle"></tblr-icon></tblr-button></td></tr></tbody></table></tblr-data-table></div>
+</tblr-card>
+<tblr-card class="admin-panel" id="prete">
+<div class="admin-card-heading stage-head" slot="header"><h2>Prêtes à expédier</h2><tblr-badge color="success" data-count="prete" light="">2</tblr-badge><span class="muted">étiquette à générer, passage en Expédié (11) + facture VD</span></div>
+<div class="admin-card-content flush"><tblr-data-table aria-label="Tableau de démonstration" authored="" class="admin-table"><table class="table" data-stage="prete"><thead><tr><th></th><th>Réf.</th><th>Client</th><th>Contenu</th><th>Expédition</th><th>Paiement</th><th class="num">Total</th><th>Depuis</th><th>Signal</th><th></th></tr></thead><tbody><tr><td><tblr-checkbox aria-label="Sélectionner CO-26431" class="admin-check" label="Sélectionner CO-26431"></tblr-checkbox></td><td><span class="ref">CO-26431</span><span class="sub">Bon de commande (W)</span></td><td>Preat Juliette<span class="sub">Bordeaux</span></td><td>1 ligne<span class="sub">pièces / accessoires</span></td><td>Colissimo<span class="sub">0,2 kg</span></td><td><tblr-badge color="success" light="">Payé (CB)</tblr-badge></td><td class="num">18,80 €</td><td class="num" style="text-align:left">2 j 22 h</td><td><span class="muted">—</span></td><td style="white-space:nowrap"><tblr-button size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="send"></tblr-icon> Expédier</tblr-button> <tblr-button icon-only="" label="Étiquette" size="sm" title="Étiquette" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="tag"></tblr-icon></tblr-button></td></tr><tr class="flag"><td><tblr-checkbox aria-label="Sélectionner CO-26429" class="admin-check" label="Sélectionner CO-26429"></tblr-checkbox></td><td><span class="ref">CO-26429</span><span class="sub">Bon de commande (W)</span></td><td>Lemaire Création<span class="sub">Lille</span></td><td>5 lignes<span class="sub">pièces / accessoires</span></td><td>Chronopost<span class="sub">3,1 kg</span></td><td><tblr-badge color="info" light="">Payé (CB) plusieurs fois</tblr-badge></td><td class="num">215,00 €</td><td class="num" style="text-align:left">3 j </td><td><tblr-badge color="warning" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="credit-card-off"></tblr-icon> échéance refusée</tblr-badge></td><td style="white-space:nowrap"><tblr-button disabled="" size="sm" title="Retenue : échéance refusée" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="send"></tblr-icon> Expédier</tblr-button> <tblr-button icon-only="" label="Étiquette" size="sm" title="Étiquette" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="tag"></tblr-icon></tblr-button></td></tr></tbody></table></tblr-data-table></div>
+</tblr-card>
+<tblr-card class="admin-panel" id="expediee">
+<div class="admin-card-heading stage-head" slot="header"><h2>Expédiées cette semaine</h2><tblr-badge color="secondary" data-count="expediee" light="">1</tblr-badge><span class="muted">suivi transporteur</span></div>
+<div class="admin-card-content flush"><tblr-data-table aria-label="Tableau de démonstration" authored="" class="admin-table"><table class="table" data-stage="expediee"><thead><tr><th></th><th>Réf.</th><th>Client</th><th>Contenu</th><th>Expédition</th><th>Paiement</th><th class="num">Total</th><th>Depuis</th><th>Suivi</th><th></th></tr></thead><tbody><tr><td><tblr-checkbox aria-label="Sélectionner CMD-11879" class="admin-check" label="Sélectionner CMD-11879"></tblr-checkbox></td><td><span class="ref">CMD-11879</span><span class="sub">Bon de commande</span></td><td>Ets Rousseau<span class="sub">Angers</span></td><td><b>Zoje ZJ-9513 + table + moteur</b><span class="sub">3 lignes · machine</span></td><td>Palette<span class="sub">95 kg</span></td><td><tblr-badge color="success" light="">Payé (Virement)</tblr-badge></td><td class="num">5 120,00 €</td><td class="num" style="text-align:left">4 j </td><td><a href="#">GEODIS 884120</a></td><td style="white-space:nowrap"><tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="truck"></tblr-icon> Suivi</tblr-button></td></tr></tbody></table></tblr-data-table></div>
+</tblr-card>
+</div>
+<!-- Bandeau de conversation -->
+<div class="composer-wrap static" id="chat">
+<div class="chat-result">
+<tblr-avatar label="Fil" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar>
+<div class="inner">
+<div class="q">Vous, 09:02 : <b>« expédie tout ce qui est prêt »</b></div>
+<p class="prose" style="font-size:var(--fs-md)">Deux commandes sont prêtes. J'en expédie <b>une</b> ; je retiens CO-26429 Lemaire Création parce que la 2<sup>e</sup> échéance CB a été refusée hier et que Laurence D. a envoyé un lien de paiement ce matin.</p>
+<tblr-data-table aria-label="Tableau de démonstration" authored="" class="admin-table"><table class="mini">
+<tbody><tr><td><tblr-icon aria-hidden="true" base-url="./icons" name="check" style="color:var(--success)"></tblr-icon></td><td class="ref">CO-26431</td><td>Preat Juliette, Bordeaux</td><td>Colissimo, 0,2 kg</td><td class="num">18,80 €</td><td><tblr-badge color="success" light="">Payé (CB)</tblr-badge></td></tr>
+<tr><td><tblr-icon aria-hidden="true" base-url="./icons" name="hand-stop" style="color:var(--warning)"></tblr-icon></td><td class="ref">CO-26429</td><td>Lemaire Création, Lille</td><td>Chronopost, 3,1 kg</td><td class="num">215,00 €</td><td><tblr-badge color="warning" light="">échéance refusée</tblr-badge></td></tr>
+</tbody></table></tblr-data-table>
+<div>
+<tblr-button data-confirm="c-expedie" data-done-label="Expédiée" size="sm" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="send"></tblr-icon> Expédier CO-26431</tblr-button>
+<tblr-button data-fill="Expédie aussi CO-26429, Laurence est d'accord" size="sm" variant="secondary">Expédier les deux</tblr-button>
+</div>
+<tblr-action-preview cancel-label="Annuler" class="admin-preview" confirm-label="Confirmer" data-journal="CO-26431 expédiée : étiquette Colissimo, statut 11, facture VD créée, e-mail de suivi envoyé (DashParts)" hidden="" id="c-expedie" title="Avant d'agir, voici ce que je vais faire">
+<div class="admin-confirm-heading" slot="header"><tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon> Avant d'agir, voici ce que je vais faire</div>
+<div class="admin-confirm-changes" slot="changes"><ul><li>Générer l'étiquette <b>Colissimo</b> pour CO-26431 (0,2 kg, Bordeaux) et l'imprimer.</li><li>Passer CO-26431 au statut <b>Expédié (11)</b> et créer la facture VD correspondante.</li><li>Envoyer au client l'e-mail d'expédition avec le numéro de suivi.</li></ul></div>
+
+<div slot="exclusions"><div class="no">CO-26429 reste « prête ». Rien d'autre n'est modifié.</div></div><div slot="hint"><span class="hint">Consigné au journal</span></div></tblr-action-preview>
+<div class="done" hidden=""><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> CO-26431 expédiée à <time>—</time>. Suivi Colissimo 6A 2104 … envoyé au client. <a href="notifications.html#journal">Journal</a></div>
+</div>
+</div>
+<tblr-composer class="admin-composer" label="Votre demande" placeholder="Une consigne sur cette file : « expédie tout ce qui est prêt », « imprime les fiches cochées »…" rows="1" send-label="Envoyer"><div class="admin-composer-hint" slot="hint"><tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon> Chaque expédition est listée commande par commande avant confirmation. <span class="right"><a href="notifications.html#journal">Journal des actions</a><a href="preparation.html">Retour au briefing</a></span></div><tblr-avatar label="Fil" slot="mark" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar><tblr-button class="mic" icon-only="" label="Dicter" slot="controls" title="Dicter" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="microphone"></tblr-icon></tblr-button><tblr-icon aria-hidden="true" base-url="./icons" name="arrow-up" slot="submit-icon"></tblr-icon></tblr-composer>
+</div>
+</div><div aria-label="Ce qui a changé depuis hier" class="story" slot="aside">
+<tblr-notification-story appearance="narrative" class="story-sec" items='[{"id": 0, "title": "CMD-11892 entre dans la file", "detail": "virement 3 890 € reçu.", "explanation": "", "timeLabel": "il y a 4 min", "severity": "success"}, {"id": 1, "title": "3 commandes web payées", "detail": "CO-26456, CO-26457, CO-26458.", "explanation": "", "timeLabel": "il y a 25 min", "severity": "secondary"}, {"id": 2, "title": "CO-26449 dépasse 24 h.", "detail": "", "explanation": "", "timeLabel": "il y a 1 h", "severity": "danger"}, {"id": 3, "title": "Rupture 40034", "detail": ", bloque CMD-11885.", "explanation": "", "timeLabel": "il y a 2 h", "severity": "warning"}]'><div class="story-head" slot="header"><h2>Depuis hier</h2><a href="notifications.html">Tout voir</a></div><p class="story-lead" slot="lead"><b>4 choses ont changé</b> dans votre file.</p></tblr-notification-story>
+<div class="story-sec">
+<div class="story-head"><h2>Journal de l'agent</h2><tblr-badge class="journal-count" color="secondary" light="">2</tblr-badge><a href="notifications.html#journal">Audit</a></div>
+<tblr-audit-log appearance="compact" entries='[{"action": "Lecture de la file et ordre de passage proposé.", "outcome": "confirmed", "timeLabel": "07:41 · automatique"}, {"action": "CO-26431 passée en « prête », étiquette Colissimo imprimée.", "outcome": "confirmed", "timeLabel": "hier 16:40 · confirmé par Karim B."}]'></tblr-audit-log>
+</div>
+</div></tblr-app-shell><script src="app.js" type="module"></script><div aria-live="polite" class="demo-status" hidden="" id="demo-status" role="status"></div></body></html>

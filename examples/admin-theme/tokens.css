@@ -1,0 +1,16 @@
+/* Tokens communs aux maquettes : issus du thème Tabler du backoffice F4 + marque Glasman. */
+:root {
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-sm: 0.8125rem; --fs-md: 0.875rem; --fs-lg: 1rem;
+  --ink: #182433; --muted: #667382; --bg: #f6f8fb; --card: #ffffff; --card-head: #f6f8fb; --border: #dce1e7;
+  --primary: #206bc4; --primary-hover: #1c5aa6; --secondary: #f6f8fb; --danger: #d63939;
+  --success: #2fb344; --success-bg: #eaf7ec; --warning: #f59f00; --warning-bg: #fff6d6;
+  --info: #4299e1; --info-bg: #eaf5ff; --danger-bg: #fdecec; --neutral: #667382; --neutral-bg: #eef1f5;
+  --radius: 4px; --radius-sm: 3px; --radius-lg: 7px;
+  --shadow: 0 1px 2px rgba(24,36,51,.06), 0 1px 1px rgba(24,36,51,.04);
+  --focus: 0 0 0 .25rem rgb(32 107 196 / 25%);
+  --brand-grad: linear-gradient(210deg, #061760, #1f5281 50%, #006f9b 79%, #019ce8 100%);
+  --logo-grad: linear-gradient(135deg, #39cefd, #03569b);
+  --navy: #002148;
+  --header-h: 65px; --sidebar-w: 240px;
+}

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html data-tblr-theme="admin" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Parc machines Confection Bernard — Glasman F4</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
+    <link href="reference-layout.css" rel="stylesheet"/>
+    <style>
+        .client-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .client-head .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: var(--info-bg);
+            color: var(--primary);
+            font-size: 15px;
+        }
+
+        .client-head .meta {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            font-size: var(--fs-sm);
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .client-head .meta b {
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 2px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tabs a {
+            padding: 8px 12px;
+            font-size: var(--fs-sm);
+            color: var(--muted);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .tabs a.on {
+            color: var(--primary);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tabs a:hover {
+            text-decoration: none;
+            color: var(--ink);
+        }
+    </style>
+    <link href="../../src/styles/admin-theme.css" rel="stylesheet"/>
+    <link href="custom-elements.css" rel="stylesheet"/>
+</head>
+<body class="admin-reference" data-reference-page="parc-machines" data-user="Nadia K.">
+<tblr-app-shell aside-open="" class="reference-shell" label="Espace de travail"><a class="brand" href="index.html"
+                                                                                   slot="brand"><span
+        class="logo">4</span><span>Glasman</span></a>
+    <tblr-command-bar class="admin-command" label="Demander à l'assistant"
+                      placeholder="Demander à Fil : « résume la relation avec Confection Bernard »" shortcut=""
+                      shortcut-label="Ctrl K" slot="header" value="">
+        <tblr-avatar label="Fil" slot="mark" variant="agent">
+            <tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon>
+        </tblr-avatar>
+        <tblr-icon aria-hidden="true" base-url="./icons" name="microphone" slot="submit-icon"></tblr-icon>
+    </tblr-command-bar>
+    <div class="who" slot="account">
+        <tblr-avatar initials="NK" label="NK"></tblr-avatar>
+        <span class="text"><b>Nadia K.</b><small>Vente / ADV · Lens</small></span></div>
+    <tblr-icon base-url="./icons" name="layout-sidebar" slot="navigation-icon"></tblr-icon>
+    <span class="bell-icon" slot="aside-icon"><tblr-icon base-url="./icons" name="bell"></tblr-icon><span class="count">2</span></span>
+    <div class="rail" slot="navigation">
+        <div class="rail-group">
+            <div class="rail-title">Aujourd'hui</div>
+            <tblr-nav-item href="vente.html" label="Briefing du matin">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="sunrise" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+            <tblr-nav-item href="notifications.html" label="Depuis hier">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="bell" slot="icon"></tblr-icon>
+                <span class="n hot" slot="suffix">2</span></tblr-nav-item>
+            <tblr-nav-item href="notifications.html#journal" label="Journal de l'agent">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="history" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+        </div>
+        <div class="rail-group">
+            <div class="rail-title">Mon poste — Vente / ADV</div>
+            <tblr-nav-item href="#" label="Devis à relancer">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="file-text" slot="icon"></tblr-icon>
+                <span class="n hot" slot="suffix">2</span></tblr-nav-item>
+            <tblr-nav-item href="#" label="Demandes de devis web">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="inbox" slot="icon"></tblr-icon>
+                <span class="n" slot="suffix">1</span></tblr-nav-item>
+            <tblr-nav-item active="" href="parc-machines.html" label="Parc machines clients">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="engine" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+            <tblr-nav-item href="paiements.html" label="Encours de mes clients">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="cash" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+        </div>
+        <details open="">
+            <summary>
+                <tblr-icon aria-hidden="true" base-url="./icons" name="layout-list"></tblr-icon>
+                <span>Navigation classique</span></summary>
+            <tblr-nav-item href="parc-machines.html" label="Clients"></tblr-nav-item>
+            <div class="sub-title">Documents</div>
+            <tblr-nav-item href="#" label="Devis"></tblr-nav-item>
+            <tblr-nav-item href="#" label="Bons de commande"></tblr-nav-item>
+            <tblr-nav-item href="paiements.html" label="Factures"></tblr-nav-item>
+            <tblr-nav-item href="#" label="Location (devis, factures, BL)"></tblr-nav-item>
+            <tblr-nav-item href="#" label="Devis (R) et Factures (R)"></tblr-nav-item>
+            <div class="sub-title">Autres</div>
+            <tblr-nav-item href="#" label="Catalogue"></tblr-nav-item>
+        </details>
+        <div class="rail-group rail-foot">
+            <div class="rail-title">Profils (démo)</div>
+            <tblr-nav-item href="direction.html" label="Direction">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="briefcase" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+            <tblr-nav-item active="" href="vente.html" label="Vente / ADV">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="file-invoice" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+            <tblr-nav-item href="preparation.html" label="Préparation">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="package" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+            <tblr-nav-item href="technicien.html" label="Technicien SAV">
+                <tblr-icon aria-hidden="true" base-url="./icons" name="tool" slot="icon"></tblr-icon>
+            </tblr-nav-item>
+        </div>
+    </div>
+    <div class="work-content">
+        <div class="page">
+            <div class="page-head">
+                <div class="client-head">
+                    <tblr-avatar initials="CB" label="CB"></tblr-avatar>
+                    <div>
+                        <div class="crumbs"><a href="#">Clients</a> / Confection Bernard</div>
+                        <h1>Confection Bernard</h1>
+                        <div class="meta"><span><b>Lens</b> · agence de Lens</span><span>Contact <b>Sophie Bernard</b> · 06 12 34 56 78</span><span>Vendeuse <b>Nadia K.</b></span><span>Client depuis <b>2019</b></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <tblr-badge color="warning" light="">Encours échu 6 200 €</tblr-badge>
+                    <tblr-button size="sm" variant="secondary">
+                        <tblr-icon aria-hidden="true" base-url="./icons" name="file-plus"></tblr-icon>
+                        Nouveau devis
+                    </tblr-button>
+                    <tblr-button size="sm" variant="secondary">
+                        <tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon>
+                        Planifier une intervention
+                    </tblr-button>
+                    <tblr-button size="sm" variant="secondary">
+                        <tblr-icon aria-hidden="true" base-url="./icons" name="pencil"></tblr-icon>
+                        Modifier
+                    </tblr-button>
+                </div>
+            </div>
+            <nav aria-label="Sections de la fiche" class="tabs">
+                <a class="on" href="#">Parc machines et contrats</a><a href="#">Documents (31)</a><a href="#">Contacts
+                (2)</a><a href="#">Paiements</a><a href="#">Historique</a>
+            </nav>
+            <section aria-label="Résumé de l'agent" class="agent-layer">
+                <tblr-avatar label="Fil" variant="agent">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon>
+                </tblr-avatar>
+                <div class="inner">
+                    <div class="meta"><b>Fil</b>
+                        <time>08:05</time>
+                        <span class="muted">résumé de la relation · recalculé à l'ouverture</span></div>
+                    <p class="prose">Confection Bernard a <b>4 machines</b> chez Glasman : deux Jack F4 achetées en mars
+                        2024 dont la garantie a expiré en mars dernier (une seule a été révisée), une Juki DDL-9000C
+                        sous garantie jusqu'en septembre 2027, et une Zoje ZJ-9513 <b>en location</b> à 145 €/mois
+                        jusqu'au 30 novembre, en panne moteur depuis le 28 septembre : Yann la répare <b>ce matin à
+                            08:30</b>. Côté argent, <b>6 200 € restent dus</b> sur FAC-20874 (échue depuis 8 jours,
+                        relancée le 1<sup>er</sup> octobre), et le devis <b>DEV-30385</b> de 12 400 € (3 Jack + bâtis)
+                        attend une réponse depuis 15 jours. Un client fidèle, en phase d'équipement, avec un agacement
+                        probable lié à la panne : je conseille un seul appel après l'intervention plutôt que trois
+                        relances séparées.</p>
+                    <div class="cards two">
+                        <tblr-card class="admin-card">
+                            <div class="admin-card-heading" slot="header">
+                                <tblr-icon aria-hidden="true" base-url="./icons" name="refresh"></tblr-icon>
+                                <h3>Contrat LOC Zoje : fin dans 8 semaines</h3>
+                                <tblr-badge color="info" light="">30/11/2026</tblr-badge>
+                            </div>
+                            <div class="admin-card-content"><p>ZJ-9513-LOC-0032, 145 €/mois, 6 mois. Je peux préparer un
+                                avenant de 12 mois au même loyer, ou une offre de rachat à 1 650 € HT (valeur résiduelle
+                                de la grille).</p></div>
+                            <div class="admin-card-actions" slot="footer">
+                                <tblr-button data-confirm="c-loc" data-done-label="Brouillon créé" size="sm"
+                                             variant="primary">
+                                    <tblr-icon aria-hidden="true" base-url="./icons" name="file-plus"></tblr-icon>
+                                    Préparer l'avenant 12 mois
+                                </tblr-button>
+                                <tblr-button data-fill="Prépare une offre de rachat pour la Zoje de Confection Bernard"
+                                             size="sm" variant="secondary">Offre de rachat
+                                </tblr-button>
+                            </div>
+                            <tblr-action-preview cancel-label="Annuler" class="admin-preview" confirm-label="Confirmer"
+                                                 data-journal="Brouillon Devis (LOC) avenant 12 mois créé pour Confection Bernard, Zoje ZJ-9513 (create_quote_draft) — non envoyé"
+                                                 hidden="" id="c-loc" slot="after-footer"
+                                                 title="Avant d'agir, voici ce que je vais faire">
+                                <div class="admin-confirm-heading" slot="header">
+                                    <tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon>
+                                    Avant d'agir, voici ce que je vais faire
+                                </div>
+                                <div class="admin-confirm-changes" slot="changes">
+                                    <ul>
+                                        <li>Créer un <b>Devis (LOC)</b> brouillon : Zoje ZJ-9513, 12 mois du 01/12/2026
+                                            au 30/11/2027, 145 €/mois HT, maintenance incluse, rattaché au contrat en
+                                            cours.
+                                        </li>
+                                        <li>Ajouter la note interne « à présenter après la réparation du 05/10 ».</li>
+                                    </ul>
+                                </div>
+
+                                <div slot="exclusions">
+                                    <div class="no">Rien n'est envoyé au client ; le contrat actuel n'est pas modifié.
+                                    </div>
+                                </div>
+                                <div slot="hint"><span class="hint">Consigné au journal</span></div>
+                            </tblr-action-preview>
+                            <div class="done" hidden="" slot="after-footer">
+                                <tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon>
+                                Brouillon créé à
+                                <time>—</time>
+                                , non envoyé. <a href="#">Ouvrir le devis</a></div>
+                        </tblr-card>
+                        <tblr-card class="admin-card">
+                            <div class="admin-card-heading" slot="header">
+                                <tblr-icon aria-hidden="true" base-url="./icons" name="shield-off"></tblr-icon>
+                                <h3>2 Jack F4 hors garantie depuis mars</h3>
+                                <tblr-badge color="warning" light="">1 non révisée</tblr-badge>
+                            </div>
+                            <div class="admin-card-content"><p>JK-F4-2024-0871 révisée en février ; JK-F4-2024-0872
+                                jamais vue depuis l'installation. Un contrat d'entretien annuel pour les deux (2 × 190 €
+                                HT, une visite par an + pièces d'usure) se justifie.</p></div>
+                            <div class="admin-card-actions" slot="footer">
+                                <tblr-button data-confirm="c-maint" data-done-label="Brouillon créé" size="sm"
+                                             variant="primary">
+                                    <tblr-icon aria-hidden="true" base-url="./icons" name="file-plus"></tblr-icon>
+                                    Devis maintenance
+                                </tblr-button>
+                                <tblr-button href="technicien.html" size="sm" variant="secondary">
+                                    <tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon>
+                                    Planifier une révision
+                                </tblr-button>
+                            </div>
+                            <tblr-action-preview cancel-label="Annuler" class="admin-preview" confirm-label="Confirmer"
+                                                 data-journal="Brouillon devis entretien annuel 2 × Jack F4 créé pour Confection Bernard, 380 € HT (create_quote_draft) — non envoyé"
+                                                 hidden="" id="c-maint" slot="after-footer"
+                                                 title="Avant d'agir, voici ce que je vais faire">
+                                <div class="admin-confirm-heading" slot="header">
+                                    <tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon>
+                                    Avant d'agir, voici ce que je vais faire
+                                </div>
+                                <div class="admin-confirm-changes" slot="changes">
+                                    <ul>
+                                        <li>Créer un <b>Devis</b> brouillon « Contrat d'entretien annuel, 2 machines
+                                            Jack F4 », 380 € HT, numéros de série en lignes.
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div slot="exclusions">
+                                    <div class="no">Rien n'est envoyé au client.</div>
+                                </div>
+                                <div slot="hint"><span class="hint">Consigné au journal</span></div>
+                            </tblr-action-preview>
+                            <div class="done" hidden="" slot="after-footer">
+                                <tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon>
+                                Brouillon créé à
+                                <time>—</time>
+                                , non envoyé. <a href="#">Ouvrir le devis</a></div>
+                        </tblr-card>
+                        <tblr-card class="admin-card" data-risk="warning">
+                            <div class="admin-card-heading" slot="header">
+                                <tblr-icon aria-hidden="true" base-url="./icons" name="cash"></tblr-icon>
+                                <h3>6 200 € échus et 12 400 € de devis en attente</h3>
+                                <tblr-badge color="warning" light="">un seul appel</tblr-badge>
+                            </div>
+                            <div class="admin-card-content"><p>FAC-20874 a été relancée il y a 4 jours ; DEV-30385 n'a
+                                pas été relancé. Je ne propose pas d'e-mail aujourd'hui. Je vous suggère d'appeler
+                                Sophie Bernard <b>jeudi</b>, une fois la Zoje réparée, pour aborder le solde, le devis
+                                et le renouvellement en une fois.</p></div>
+                            <div class="admin-card-actions" slot="footer">
+                                <tblr-button data-confirm="c-rappel" data-done-label="Rappel créé" size="sm"
+                                             variant="primary">
+                                    <tblr-icon aria-hidden="true" base-url="./icons" name="calendar-plus"></tblr-icon>
+                                    Me rappeler jeudi 10 h
+                                </tblr-button>
+                                <tblr-button href="paiements.html" size="sm" variant="secondary">Voir la facture
+                                </tblr-button>
+                            </div>
+                            <tblr-action-preview cancel-label="Annuler" class="admin-preview" confirm-label="Confirmer"
+                                                 data-journal="Rappel créé pour Nadia K. jeudi 10 h (Confection Bernard) ; relance niveau 2 FAC-20874 suspendue jusqu'au 09/10"
+                                                 hidden="" id="c-rappel" slot="after-footer"
+                                                 title="Avant d'agir, voici ce que je vais faire">
+                                <div class="admin-confirm-heading" slot="header">
+                                    <tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon>
+                                    Avant d'agir, voici ce que je vais faire
+                                </div>
+                                <div class="admin-confirm-changes" slot="changes">
+                                    <ul>
+                                        <li>Créer un rappel pour vous jeudi 8 octobre à 10 h avec le résumé de la fiche
+                                            et les trois sujets.
+                                        </li>
+                                        <li>Suspendre la relance automatique niveau 2 de FAC-20874 jusqu'à vendredi.
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div slot="exclusions">
+                                    <div class="no">Aucun message au client.</div>
+                                </div>
+                                <div slot="hint"><span class="hint">Consigné au journal</span></div>
+                            </tblr-action-preview>
+                            <div class="done" hidden="" slot="after-footer">
+                                <tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon>
+                                Rappel créé à
+                                <time>—</time>
+                                . Relance automatique suspendue jusqu'à vendredi.
+                            </div>
+                        </tblr-card>
+                    </div>
+                    <tblr-source-list label="Sources : (FAC-20874, DEV-30385) · lecture seule"
+                                      sources='[{"label": "get_contact"}, {"label": "client_machine"}, {"label": "contrat_location"}, {"label": "intervention"}, {"label": "search_orders"}]'></tblr-source-list>
+                </div>
+            </section>
+            <div class="cols">
+                <tblr-card class="admin-panel">
+                    <div class="admin-card-heading" slot="header"><h2>Machines installées</h2><span class="muted">4 machines · 3 ventes · 1 location</span>
+                        <tblr-button size="sm" variant="secondary">
+                            <tblr-icon aria-hidden="true" base-url="./icons" name="plus"></tblr-icon>
+                            Ajouter une machine
+                        </tblr-button>
+                    </div>
+                    <div class="admin-card-content flush">
+                        <tblr-data-table aria-label="machines" authored="" class="admin-table">
+                            <table class="table" id="machines">
+                                <thead>
+                                <tr>
+                                    <th>N° de série</th>
+                                    <th>Modèle</th>
+                                    <th>Origine</th>
+                                    <th>Date</th>
+                                    <th>Garantie</th>
+                                    <th>Statut</th>
+                                    <th>Dernière intervention</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><span class="ref">JK-F4-2024-0871</span></td>
+                                    <td>Jack F4 piqueuse plate</td>
+                                    <td>
+                                        <tblr-badge color="secondary" light="">Vente</tblr-badge>
+                                    </td>
+                                    <td>12/03/2024</td>
+                                    <td>12/03/2026</td>
+                                    <td>
+                                        <tblr-badge color="warning" light="">Garantie expirée</tblr-badge>
+                                    </td>
+                                    <td>Révision 02/2026</td>
+                                    <td style="white-space:nowrap">
+                                        <tblr-button icon-only="" label="Planifier une intervention" size="sm"
+                                                     title="Planifier une intervention" variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon>
+                                        </tblr-button>
+                                        <tblr-button icon-only="" label="Devis pièces" size="sm" title="Devis pièces"
+                                                     variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons"
+                                                       name="file-plus"></tblr-icon>
+                                        </tblr-button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="ref">JK-F4-2024-0872</span></td>
+                                    <td>Jack F4 piqueuse plate</td>
+                                    <td>
+                                        <tblr-badge color="secondary" light="">Vente</tblr-badge>
+                                    </td>
+                                    <td>12/03/2024</td>
+                                    <td>12/03/2026</td>
+                                    <td>
+                                        <tblr-badge color="warning" light="">Garantie expirée</tblr-badge>
+                                    </td>
+                                    <td>—</td>
+                                    <td style="white-space:nowrap">
+                                        <tblr-button icon-only="" label="Planifier une intervention" size="sm"
+                                                     title="Planifier une intervention" variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon>
+                                        </tblr-button>
+                                        <tblr-button icon-only="" label="Devis pièces" size="sm" title="Devis pièces"
+                                                     variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons"
+                                                       name="file-plus"></tblr-icon>
+                                        </tblr-button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="ref">JU-9000C-2025-114</span></td>
+                                    <td>Juki DDL-9000C</td>
+                                    <td>
+                                        <tblr-badge color="secondary" light="">Vente</tblr-badge>
+                                    </td>
+                                    <td>04/09/2025</td>
+                                    <td>04/09/2027</td>
+                                    <td>
+                                        <tblr-badge color="success" light="">Sous garantie</tblr-badge>
+                                    </td>
+                                    <td>Installation 09/2025</td>
+                                    <td style="white-space:nowrap">
+                                        <tblr-button icon-only="" label="Planifier une intervention" size="sm"
+                                                     title="Planifier une intervention" variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon>
+                                        </tblr-button>
+                                        <tblr-button icon-only="" label="Devis pièces" size="sm" title="Devis pièces"
+                                                     variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons"
+                                                       name="file-plus"></tblr-icon>
+                                        </tblr-button>
+                                    </td>
+                                </tr>
+                                <tr class="flag">
+                                    <td><span class="ref">ZJ-9513-LOC-0032</span></td>
+                                    <td>Zoje ZJ-9513 (location)<span class="sub">145 €/mois HT</span></td>
+                                    <td>
+                                        <tblr-badge color="dark" style="--tblr-badge-dark-solid-bg:var(--tblr-navy)">
+                                            Location
+                                        </tblr-badge>
+                                    </td>
+                                    <td>01/06/2026</td>
+                                    <td>—</td>
+                                    <td>
+                                        <tblr-badge color="info" light="">Contrat LOC → 30/11/2026</tblr-badge>
+                                    </td>
+                                    <td>
+                                        <tblr-badge color="warning" light="">
+                                            <tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon>
+                                            Panne moteur 28/09/2026 (en cours)
+                                        </tblr-badge>
+                                    </td>
+                                    <td style="white-space:nowrap">
+                                        <tblr-button icon-only="" label="Planifier une intervention" size="sm"
+                                                     title="Planifier une intervention" variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons" name="tool"></tblr-icon>
+                                        </tblr-button>
+                                        <tblr-button icon-only="" label="Devis pièces" size="sm" title="Devis pièces"
+                                                     variant="secondary">
+                                            <tblr-icon aria-hidden="true" base-url="./icons"
+                                                       name="file-plus"></tblr-icon>
+                                        </tblr-button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </tblr-data-table>
+                    </div>
+                </tblr-card>
+                <div class="stack">
+                    <tblr-card class="admin-panel">
+                        <div class="admin-card-heading" slot="header"><h2>Interventions</h2><span class="muted">SAV, installation, révision</span>
+                        </div>
+                        <div class="admin-card-content">
+                            <ul class="timeline" id="interventions">
+                                <li class="open">
+                                    <time>Aujourd'hui 08:30</time>
+                                    <b>SAV</b> · ZJ-9513-LOC-0032 · Yann P.<br/>Remplacement moteur servo (pièce reçue
+                                    hier).
+                                    <tblr-badge color="warning" light="">planifiée</tblr-badge>
+                                </li>
+                                <li>
+                                    <time>28/09/2026</time>
+                                    <b>SAV</b> · ZJ-9513-LOC-0032 · Yann P.<br/>Pièce commandée (moteur servo) · attendu
+                                    le 08/10/2026
+                                    <tblr-badge color="info" light="">en cours</tblr-badge>
+                                </li>
+                                <li>
+                                    <time>14/02/2026</time>
+                                    <b>Révision</b> · JK-F4-2024-0871 · Yann P.<br/>
+                                    <tblr-badge color="success" light="">Clôturée</tblr-badge>
+                                </li>
+                                <li>
+                                    <time>04/09/2025</time>
+                                    <b>Installation</b> · JU-9000C-2025-114 · Yann P.<br/>
+                                    <tblr-badge color="success" light="">Clôturée</tblr-badge>
+                                </li>
+                            </ul>
+                        </div>
+                    </tblr-card>
+                    <tblr-card class="admin-panel">
+                        <div class="admin-card-heading" slot="header"><h2>Encours et documents</h2><a
+                                href="paiements.html" style="font-size:12px">Paiements</a></div>
+                        <div class="admin-card-content">
+                            <dl class="kv">
+                                <dt>Reste dû</dt>
+                                <dd><b>6 200 €</b> sur FAC-20874 (12 400 €, 50 % payé) · échue depuis 8 j ·
+                                    <tblr-badge color="warning" light="">0-30 j</tblr-badge>
+                                </dd>
+                                <dt>Devis ouvert</dt>
+                                <dd>DEV-30385 · 3 Jack + bâtis · 12 400 € · envoyé il y a 15 j</dd>
+                                <dt>Location</dt>
+                                <dd>FACL mensuelle 145 € · prochain prélèvement 01/11</dd>
+                                <dt>CA 12 mois</dt>
+                                <dd>21 870 € HT</dd>
+                            </dl>
+                        </div>
+                    </tblr-card>
+                </div>
+            </div>
+        </div>
+        <div class="composer-wrap">
+            <div class="chips">
+                <tblr-suggestion data-fill="Quelles machines de ce client sont hors garantie ?"
+                                 value="Quelles machines de ce client sont hors garantie ?">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="shield-off" slot="icon"></tblr-icon>
+                    Machines hors garantie
+                </tblr-suggestion>
+                <tblr-suggestion data-fill="Qu'est-ce qui a été facturé à Confection Bernard en 2026 ?"
+                                 value="Qu'est-ce qui a été facturé à Confection Bernard en 2026 ?">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="file-invoice" slot="icon"></tblr-icon>
+                    Facturé en 2026
+                </tblr-suggestion>
+                <tblr-suggestion data-fill="Prépare un devis de 3 Jack F4 avec bâtis au tarif de DEV-30385"
+                                 value="Prépare un devis de 3 Jack F4 avec bâtis au tarif de DEV-30385">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="copy" slot="icon"></tblr-icon>
+                    Dupliquer DEV-30385
+                </tblr-suggestion>
+                <tblr-suggestion data-fill="Historique des pannes de la Zoje en location"
+                                 value="Historique des pannes de la Zoje en location">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="history" slot="icon"></tblr-icon>
+                    Pannes de la Zoje
+                </tblr-suggestion>
+            </div>
+            <tblr-composer class="admin-composer" label="Votre demande" placeholder="Une question sur ce client…"
+                           rows="1" send-label="Envoyer">
+                <div class="admin-composer-hint" slot="hint">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon>
+                    Les devis proposés sont créés en brouillon, jamais envoyés sans vous. <span class="right"><a
+                        href="notifications.html#journal">Journal des actions</a><a
+                        href="vente.html">Retour au briefing</a></span></div>
+                <tblr-avatar label="Fil" slot="mark" variant="agent">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon>
+                </tblr-avatar>
+                <tblr-button class="mic" icon-only="" label="Dicter" slot="controls" title="Dicter" variant="secondary">
+                    <tblr-icon aria-hidden="true" base-url="./icons" name="microphone"></tblr-icon>
+                </tblr-button>
+                <tblr-icon aria-hidden="true" base-url="./icons" name="arrow-up" slot="submit-icon"></tblr-icon>
+            </tblr-composer>
+        </div>
+    </div>
+    <div aria-label="Ce qui a changé depuis hier" class="story" slot="aside">
+        <tblr-notification-story appearance="narrative" class="story-sec"
+                                 items='[{"id": 0, "title": "Pièce reçue", "detail": "pour la Zoje en location, intervention ce matin 08:30.", "explanation": "Pour vous : la panne sera réglée avant votre appel.", "timeLabel": "hier 17:40", "severity": "secondary"}, {"id": 1, "title": "DEV-30385 passe à 15 jours", "detail": "sans réponse.", "explanation": "Pour vous : regroupé avec le solde dans la carte « un seul appel ».", "timeLabel": "il y a 3 h", "severity": "secondary"}]'>
+            <div class="story-head" slot="header"><h2>Depuis hier</h2><a href="notifications.html">Tout voir</a></div>
+            <p class="story-lead" slot="lead"><b>2 choses ont changé</b> sur ce client.</p></tblr-notification-story>
+        <div class="story-sec">
+            <div class="story-head"><h2>Journal de l'agent</h2>
+                <tblr-badge class="journal-count" color="secondary" light="">2</tblr-badge>
+                <a href="notifications.html#journal">Audit</a></div>
+            <tblr-audit-log appearance="compact"
+                            entries='[{"action": "Résumé de la relation Confection Bernard généré (lecture seule).", "outcome": "confirmed", "timeLabel": "08:05 · automatique"}, {"action": "Relance niveau 1 FAC-20874 envoyée par e-mail.", "outcome": "confirmed", "timeLabel": "01/10 09:30 · confirmé par Compta"}]'></tblr-audit-log>
+        </div>
+    </div>
+</tblr-app-shell>
+<script src="app.js" type="module"></script>
+<div aria-live="polite" class="demo-status" hidden="" id="demo-status" role="status"></div>
+</body>
+</html>

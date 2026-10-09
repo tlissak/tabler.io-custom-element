@@ -176,6 +176,7 @@ class TblrNavItem extends HTMLElement {
       <div part="item" class="item${open ? ' open' : ''}">
         <${tag}
           part="link"
+          aria-label="${escapeHtml(label)}"
           class="nav-link${activeClass}${disabledClass}"
           ${linkAttrs}
           ${expandedAttrs}

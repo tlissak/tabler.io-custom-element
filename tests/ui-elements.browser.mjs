@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { testAdminReference } from './admin-reference.browser.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.TBLR_PLAYWRIGHT_PATH || 'playwright');
@@ -121,7 +122,7 @@ try {
   assert.equal(await page.locator('#stat').evaluate(element => getComputedStyle(element.shadowRoot.querySelector('section')).boxShadow), 'none');
 
   // Both requested example pages contain all eleven new elements and a complete workflow.
-  for (const file of ['admin-theme.html', 'index.html']) {
+  for (const file of ['workspace-theme.html', 'index.html']) {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(`${origin}/examples/${file}`);
     await page.waitForSelector('[data-demo-ready="true"]');
@@ -176,8 +177,9 @@ try {
     await demo.locator('tblr-app-shell').getByRole('button', {name:'Open navigation',exact:true}).click();
     await page.keyboard.press('Escape');
   }
+  await testAdminReference(page, origin);
   assert.deepEqual(errors, [], 'No browser runtime errors');
-  console.log('PASS: all 11 elements; hydration, escaping, events, duplicate guards, keyboard, dialogs, themes, mobile, and both example workflows.');
+  console.log('PASS: all 11 elements, catalog and workspace workflows, and all nine admin reference screens; desktop/mobile, confirmations, journal persistence, selection, escaping, and local assets.');
 } finally {
   await browser?.close();
   server.kill();

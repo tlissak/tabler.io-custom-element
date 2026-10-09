@@ -11,7 +11,7 @@ function handleShortcut(event) {
   target.focus();
 }
 class TblrCommandBar extends UIElement {
-  static observedAttributes = ['label', 'placeholder', 'value', 'disabled', 'shortcut'];
+  static observedAttributes = ['label', 'placeholder', 'value', 'disabled', 'shortcut', 'shortcut-label'];
   connectedCallback() {
     super.connectedCallback();
     if (!instances.size) document.addEventListener('keydown', handleShortcut);
@@ -22,7 +22,7 @@ class TblrCommandBar extends UIElement {
     if (!instances.size) document.removeEventListener('keydown', handleShortcut);
   }
   mount() {
-    this.template(stylesheetUrl, `<form part="bar" class="bar surface"><tblr-avatar variant="agent" size="sm" label="Assistant"></tblr-avatar><input part="input" type="text"><kbd aria-hidden="true">Ctrl / ⌘ K</kbd><button part="submit" class="button" type="submit">↵</button></form>`);
+    this.template(stylesheetUrl, `<form part="bar" class="bar surface"><slot name="mark"><tblr-avatar variant="agent" size="sm" label="Assistant"></tblr-avatar></slot><input part="input" type="text"><kbd aria-hidden="true">Ctrl / ⌘ K</kbd><button part="submit" class="button" type="submit"><slot name="submit-icon">↵</slot></button></form>`);
     this.input = this.root.querySelector('input');
     this.input.addEventListener('input', () => { this.value = this.input.value; });
     this.root.querySelector('form').addEventListener('submit', event => {
@@ -39,6 +39,7 @@ class TblrCommandBar extends UIElement {
     this.root.querySelector('button').disabled = this.disabled;
     this.root.querySelector('button').setAttribute('aria-label', this.label || 'Submit command');
     this.root.querySelector('kbd').hidden = !this.shortcut;
+    this.setText('kbd', this.getAttribute('shortcut-label') || 'Ctrl / ⌘ K');
   }
   focus(options) { this.input?.focus(options); }
 }

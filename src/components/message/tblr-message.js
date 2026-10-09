@@ -5,7 +5,7 @@ const stylesheetUrl = new URL('./tblr-message.css', import.meta.url);
 class TblrMessage extends UIElement {
   static observedAttributes = ['role', 'message-role', 'author', 'timestamp'];
   mount() {
-    this.template(stylesheetUrl, `<article part="message" class="message"><div part="avatar" class="avatar"><slot name="avatar"><tblr-avatar variant="agent" label="Assistant"></tblr-avatar></slot></div><div class="inner"><header part="metadata"><b></b><time class="muted"></time></header><div part="body" class="body"><slot></slot></div><div part="sources"><slot name="sources"></slot></div><div part="actions"><slot name="actions"></slot></div></div></article>`);
+    this.template(stylesheetUrl, `<article part="message" class="message"><div part="avatar" class="avatar"><slot name="avatar"><tblr-avatar variant="agent" label="Assistant"></tblr-avatar></slot></div><div part="content" class="inner"><header part="metadata"><b></b><time class="muted"></time><slot name="metadata"></slot></header><div part="body" class="body"><slot></slot></div><div part="sources"><slot name="sources"></slot></div><div part="actions"><slot name="actions"></slot></div></div></article>`);
   }
   update() {
     // Accept the plan's role shorthand without leaving invalid ARIA roles on the host.

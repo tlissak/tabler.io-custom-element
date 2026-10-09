@@ -6,7 +6,7 @@ const states = new Set(['preview', 'pending', 'confirmed', 'cancelled', 'error']
 class TblrActionPreview extends UIElement {
   static observedAttributes = ['state', 'title', 'confirm-label', 'cancel-label', 'result'];
   mount() {
-    this.template(stylesheetUrl, `<section part="preview" class="surface"><header part="header"><b></b></header><div part="changes" class="changes"><slot name="changes"><slot></slot></slot></div><div part="exclusions" class="muted exclusions"><slot name="exclusions"></slot></div><footer part="actions"><button part="confirm" class="button primary" type="button"></button><button part="cancel" class="button" type="button"></button><tblr-spinner hidden aria-hidden="true"></tblr-spinner><span part="hint" class="muted"><slot name="hint"></slot></span></footer><p part="result" role="status" hidden></p></section>`);
+    this.template(stylesheetUrl, `<section part="preview" class="surface"><header part="header"><slot name="header"><b></b></slot></header><div part="changes" class="changes"><slot name="changes"><slot></slot></slot></div><div part="exclusions" class="muted exclusions"><slot name="exclusions"></slot></div><footer part="actions"><button part="confirm" class="button primary" type="button"></button><button part="cancel" class="button" type="button"></button><tblr-spinner hidden aria-hidden="true"></tblr-spinner><span part="hint" class="muted"><slot name="hint"></slot></span></footer><p part="result" role="status" hidden></p></section>`);
     this.root.querySelector('[part="confirm"]').addEventListener('click', () => this.request('confirm'));
     this.root.querySelector('[part="cancel"]').addEventListener('click', () => this.request('cancel'));
   }

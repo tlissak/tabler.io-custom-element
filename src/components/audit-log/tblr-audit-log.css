@@ -6,3 +6,8 @@ input { min-width: 0; padding: 5px 8px; border: 1px solid var(--tblr-border-colo
 ol { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 12px; }
 li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid var(--tblr-border-color, #dce1e7); overflow-wrap: anywhere; }
 li > .muted { flex-basis: 100%; }
+:host([appearance="compact"]) header, :host([appearance="compact"]) tblr-badge { display: none; }
+:host([appearance="compact"]) ol { margin: 0; gap: 10px; }
+:host([appearance="compact"]) li { border: 0; padding: 0; gap: 2px; font-size: 12.5px; }
+:host([appearance="compact"]) li > b { font-weight: 400; }
+:host([appearance="compact"]) .muted { font-size: 11.5px; }

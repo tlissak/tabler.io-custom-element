@@ -591,6 +591,13 @@
             },
             {
               "name": "title"
+            },
+            {
+              "name": "authored",
+              "description": "Preserve an authored semantic table in the default slot; the application owns its interactions.",
+              "value": {
+                "type": "boolean"
+              }
             }
           ],
           "js": {
@@ -2303,6 +2310,13 @@
               "value": {
                 "type": "boolean"
               }
+            },
+            {
+              "name": "shortcut-label",
+              "description": "Optional reference layout configuration.",
+              "value": {
+                "type": "string"
+              }
             }
           ],
           "js": {
@@ -2363,6 +2377,13 @@
             },
             {
               "name": "send-label"
+            },
+            {
+              "name": "rows",
+              "description": "Optional reference layout configuration.",
+              "value": {
+                "type": "string"
+              }
             }
           ],
           "js": {
@@ -2588,6 +2609,13 @@
             },
             {
               "name": "empty-text"
+            },
+            {
+              "name": "appearance",
+              "description": "Optional reference layout configuration.",
+              "value": {
+                "type": "string"
+              }
             }
           ],
           "js": {
@@ -2629,6 +2657,13 @@
             },
             {
               "name": "empty-text"
+            },
+            {
+              "name": "appearance",
+              "description": "Optional reference layout configuration.",
+              "value": {
+                "type": "string"
+              }
             }
           ],
           "js": {

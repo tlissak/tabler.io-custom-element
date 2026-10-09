@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html data-tblr-theme="admin" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Suivi des paiements — Glasman F4</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+
+<link href="reference-layout.css" rel="stylesheet"/>
+<style>
+  .drafts { display: grid; gap: 12px; }
+  .draft-item { display: grid; grid-template-columns: auto 1fr; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); }
+  .draft-item.off { opacity: .75; background: var(--bg); }
+  .draft-item .top-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: var(--fs-sm); margin-bottom: 8px; }
+  .draft-item .top-line .ref { font-weight: 600; }
+  .draft-item .top-line .muted { font-size: 12px; }
+  .draft-item .channels { margin-left: auto; display: flex; gap: 6px; }
+  .draft-item .why { font-size: var(--fs-sm); color: var(--muted); }
+  .batch { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-top: 1px solid var(--border); background: var(--card-head); border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+  .batch .n { font-weight: 600; }
+  .lvl { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .lvl-1 { background: var(--info-bg); color: #2563a8; } .lvl-2 { background: var(--warning-bg); color: #9a6400; } .lvl-3 { background: var(--danger-bg); color: var(--danger); } .lvl-0 { background: var(--neutral-bg); color: var(--muted); }
+</style>
+<link href="../../src/styles/admin-theme.css" rel="stylesheet"/><link href="custom-elements.css" rel="stylesheet"/></head>
+<body class="admin-reference" data-reference-page="paiements" data-user="Compta"><tblr-app-shell aside-open="" class="reference-shell" label="Espace de travail"><a class="brand" href="index.html" slot="brand"><span class="logo">4</span><span>Glasman</span></a><tblr-command-bar class="admin-command" label="Demander à l'assistant" placeholder="Demander à Fil : « relance les factures de plus de 60 jours »" shortcut="" shortcut-label="Ctrl K" slot="header" value=""><tblr-avatar label="Fil" slot="mark" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar><tblr-icon aria-hidden="true" base-url="./icons" name="microphone" slot="submit-icon"></tblr-icon></tblr-command-bar><div class="who" slot="account"><tblr-avatar initials="CO" label="CO"></tblr-avatar><span class="text"><b>Compta</b><small>Comptabilité · Paris</small></span></div><tblr-icon base-url="./icons" name="layout-sidebar" slot="navigation-icon"></tblr-icon><span class="bell-icon" slot="aside-icon"><tblr-icon base-url="./icons" name="bell"></tblr-icon><span class="count">2</span></span><div class="rail" slot="navigation">
+<div class="rail-group">
+<div class="rail-title">Aujourd'hui</div>
+<tblr-nav-item href="direction.html" label="Briefing du matin"><tblr-icon aria-hidden="true" base-url="./icons" name="sunrise" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="notifications.html" label="Depuis hier"><tblr-icon aria-hidden="true" base-url="./icons" name="bell" slot="icon"></tblr-icon><span class="n hot" slot="suffix">2</span></tblr-nav-item>
+<tblr-nav-item href="notifications.html#journal" label="Journal de l'agent"><tblr-icon aria-hidden="true" base-url="./icons" name="history" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+<div class="rail-group">
+<div class="rail-title">Mon poste — Compta</div>
+<tblr-nav-item active="" href="paiements.html" label="Suivi des paiements"><tblr-icon aria-hidden="true" base-url="./icons" name="cash" slot="icon"></tblr-icon><span class="n hot" slot="suffix">61</span></tblr-nav-item>
+<tblr-nav-item href="#" label="À envoyer à Pennylane"><tblr-icon aria-hidden="true" base-url="./icons" name="send" slot="icon"></tblr-icon><span class="n" slot="suffix">14</span></tblr-nav-item>
+<tblr-nav-item href="#" label="Paiements à pointer"><tblr-icon aria-hidden="true" base-url="./icons" name="check" slot="icon"></tblr-icon><span class="n" slot="suffix">7</span></tblr-nav-item>
+<tblr-nav-item href="#" label="Promesses de paiement"><tblr-icon aria-hidden="true" base-url="./icons" name="heart-handshake" slot="icon"></tblr-icon><span class="n" slot="suffix">1</span></tblr-nav-item>
+</div>
+<details open="">
+<summary><tblr-icon aria-hidden="true" base-url="./icons" name="layout-list"></tblr-icon><span>Navigation classique</span></summary>
+<tblr-nav-item href="parc-machines.html" label="Clients"></tblr-nav-item>
+<div class="sub-title">Documents</div>
+<tblr-nav-item href="paiements.html" label="Factures"></tblr-nav-item>
+<tblr-nav-item href="#" label="Factures (VD)"></tblr-nav-item>
+<tblr-nav-item href="#" label="Factures (LOC)"></tblr-nav-item>
+<tblr-nav-item href="#" label="Factures d'acompte"></tblr-nav-item>
+<tblr-nav-item href="#" label="Avoirs"></tblr-nav-item>
+<div class="sub-title">Autres</div>
+<tblr-nav-item href="#" label="Relances (écran existant)"></tblr-nav-item>
+<tblr-nav-item href="#" label="Export Pennylane"></tblr-nav-item>
+</details>
+<div class="rail-group rail-foot">
+<div class="rail-title">Profils (démo)</div>
+<tblr-nav-item href="direction.html" label="Direction"><tblr-icon aria-hidden="true" base-url="./icons" name="briefcase" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="vente.html" label="Vente / ADV"><tblr-icon aria-hidden="true" base-url="./icons" name="file-invoice" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="preparation.html" label="Préparation"><tblr-icon aria-hidden="true" base-url="./icons" name="package" slot="icon"></tblr-icon></tblr-nav-item>
+<tblr-nav-item href="technicien.html" label="Technicien SAV"><tblr-icon aria-hidden="true" base-url="./icons" name="tool" slot="icon"></tblr-icon></tblr-nav-item>
+</div>
+</div><div class="work-content">
+<div class="page">
+<div class="page-head">
+<div>
+<div class="crumbs"><a href="#">Compta</a> / Suivi des paiements</div>
+<h1>Suivi des paiements</h1>
+<div class="muted" style="font-size:12.5px;margin-top:3px">Factures non soldées (Facture, VD, LOC), lues sur <code style="font-family:inherit">due_date</code>. Relances rédigées par l'agent, validées par vous.</div>
+</div>
+<div class="actions">
+<tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="filter"></tblr-icon> Toutes agences</tblr-button>
+<tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="download"></tblr-icon> Export balance âgée</tblr-button>
+<tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="send"></tblr-icon> Envoyer à Pennylane (14)</tblr-button>
+</div>
+</div>
+<!-- Balance âgée -->
+<tblr-card class="admin-panel">
+<div class="admin-card-heading" slot="header"><h2>Balance âgée</h2><span class="muted">376 900 € TTC non soldés · 209 factures · échu : 228 700 €</span></div>
+<div class="admin-card-content">
+<div aria-label="Répartition du reste à payer par ancienneté" class="aged-bar" id="aged-bar" role="img"><span class="a1" style="width: 39.3%;" title="Non échue : 148 200 €"></span><span class="a2" style="width: 24.5%;" title="0-30 jours : 92 400 €"></span><span class="a3" style="width: 16.3%;" title="30-60 jours : 61 300 €"></span><span class="a4" style="width: 10.3%;" title="60-90 jours : 38 900 €"></span><span class="a5" style="width: 9.6%;" title="Plus de 90 jours : 36 100 €"></span></div>
+<div class="aged-legend" id="aged-legend"><div class="seg"><span class="l"><span class="sw a1"></span>Non échue</span><span class="v">148 200 €</span><span class="c">39 % · 148 factures</span></div><div class="seg"><span class="l"><span class="sw a2"></span>0-30 jours</span><span class="v">92 400 €</span><span class="c">25 % · 27 factures</span></div><div class="seg"><span class="l"><span class="sw a3"></span>30-60 jours</span><span class="v">61 300 €</span><span class="c">16 % · 17 factures</span></div><div class="seg"><span class="l"><span class="sw a4"></span>60-90 jours</span><span class="v">38 900 €</span><span class="c">10 % · 10 factures</span></div><div class="seg"><span class="l"><span class="sw a5"></span>Plus de 90 jours</span><span class="v">36 100 €</span><span class="c">10 % · 7 factures</span></div></div>
+</div>
+</tblr-card>
+<section aria-label="Lecture de l'agent" class="agent-layer">
+<tblr-avatar label="Fil" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar>
+<div class="inner">
+<div class="meta"><b>Fil</b><time>08:10</time><span class="muted">lecture de la balance · propositions de relance</span></div>
+<p class="prose">Le délai moyen de paiement est monté à <b>41 jours</b> (+3 en un mois). Sur les six factures affichées, <b>trois méritent une relance aujourd'hui</b> : une de niveau 1 (courtoise) et deux de niveau 2 (ferme, e-mail + WhatsApp). Je n'en propose pas pour les trois autres : FAC-20931 n'est pas échue, Ets Rousseau a promis un virement le 10 octobre, et Maison Lenoir est au contentieux. J'ai rédigé les trois messages ; relisez-les, modifiez-les si besoin, puis validez en une fois.</p>
+<div class="chips">
+<tblr-suggestion data-fill="Relance les factures de plus de 60 jours" value="Relance les factures de plus de 60 jours"><tblr-icon aria-hidden="true" base-url="./icons" name="mail-forward" slot="icon"></tblr-icon> Relance les factures &gt; 60 jours</tblr-suggestion>
+<tblr-suggestion data-fill="Quels clients ont une promesse de paiement en retard ?" value="Quels clients ont une promesse de paiement en retard ?"><tblr-icon aria-hidden="true" base-url="./icons" name="heart-handshake" slot="icon"></tblr-icon> Promesses en retard</tblr-suggestion>
+<tblr-suggestion data-fill="Quel est le DSO par agence ?" value="Quel est le DSO par agence ?"><tblr-icon aria-hidden="true" base-url="./icons" name="hourglass" slot="icon"></tblr-icon> Délai de paiement par agence</tblr-suggestion>
+<tblr-suggestion data-fill="Pointe le virement de 3 890 € de Textile du Nord sur FAC-20931" value="Pointe le virement de 3 890 € de Textile du Nord sur FAC-20931"><tblr-icon aria-hidden="true" base-url="./icons" name="check" slot="icon"></tblr-icon> Pointer le virement Textile du Nord</tblr-suggestion>
+</div>
+</div>
+</section>
+<!-- Factures -->
+<tblr-card class="admin-panel">
+<div class="admin-card-heading" slot="header"><h2>Factures non soldées</h2><span class="muted">6 affichées sur 209 · tri : ancienneté</span><tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="adjustments"></tblr-icon> Colonnes</tblr-button></div>
+<div class="admin-card-content flush">
+<tblr-data-table aria-label="factures" authored="" class="admin-table"><table class="table" id="factures">
+<thead><tr><th><tblr-checkbox aria-label="Tout sélectionner" class="admin-check" id="all" label="Tout sélectionner"></tblr-checkbox></th><th>Facture</th><th>Client</th><th class="num">Total TTC</th><th class="num">Payé</th><th class="num">Reste</th><th>Échéance</th><th>Tranche</th><th>Relances</th><th>Situation</th><th>Proposition de l'agent</th></tr></thead>
+<tbody><tr><td><tblr-checkbox aria-label="Sélectionner FAC-20931" class="pick-fac admin-check" label="Sélectionner FAC-20931"></tblr-checkbox></td><td><span class="ref">FAC-20931</span><span class="sub">Facture</span></td><td>SARL Textile du Nord</td><td class="num">3 890 €</td><td class="num"><span class="muted">0 €</span></td><td class="num"><b>3 890 €</b></td><td>dans 12 j</td><td><tblr-badge color="secondary" light="">non échue</tblr-badge></td><td class="num" style="text-align:left">0</td><td><span class="muted">—</span></td><td><tblr-badge color="secondary" light="">Aucune</tblr-badge> <span class="muted">non échue · virement reçu ce matin, à pointer</span></td></tr><tr><td><tblr-checkbox aria-label="Sélectionner FAC-20874" class="pick-fac admin-check" label="Sélectionner FAC-20874"></tblr-checkbox></td><td><span class="ref">FAC-20874</span><span class="sub">Facture</span></td><td>Confection Bernard</td><td class="num">12 400 €</td><td class="num">6 200 €</td><td class="num"><b>6 200 €</b></td><td>il y a 8 j</td><td><tblr-badge color="info" light="">0-30</tblr-badge></td><td class="num" style="text-align:left">1 (dern. 01/10)</td><td><tblr-badge color="secondary" light="">paiement partiel</tblr-badge></td><td><tblr-badge color="info" light="">Niveau 1</tblr-badge> <span class="muted">e-mail courtois</span></td></tr><tr class="flag"><td><tblr-checkbox aria-label="Sélectionner FAC-20811" class="pick-fac admin-check" label="Sélectionner FAC-20811"></tblr-checkbox></td><td><span class="ref">FAC-20811</span><span class="sub">Facture</span></td><td>Atelier Ferreira</td><td class="num">1 240 €</td><td class="num"><span class="muted">0 €</span></td><td class="num"><b>1 240 €</b></td><td>il y a 34 j</td><td><tblr-badge color="warning" light="">30-60</tblr-badge></td><td class="num" style="text-align:left">2 (dern. 22/09)</td><td><span class="muted">—</span></td><td><tblr-badge color="warning" light="">Niveau 2</tblr-badge> <span class="muted">e-mail + WhatsApp, différé à demain</span></td></tr><tr class="flag"><td><tblr-checkbox aria-label="Sélectionner FACL-1190" class="pick-fac admin-check" label="Sélectionner FACL-1190"></tblr-checkbox></td><td><span class="ref">FACL-1190</span><span class="sub">Facture (LOC)</span></td><td>École de mode Nantes</td><td class="num">2 900 €</td><td class="num">1 450 €</td><td class="num"><b>1 450 €</b></td><td>il y a 41 j</td><td><tblr-badge color="warning" light="">30-60</tblr-badge></td><td class="num" style="text-align:left">1 (dern. 01/10)</td><td><tblr-badge color="secondary" light="">paiement partiel</tblr-badge></td><td><tblr-badge color="warning" light="">Niveau 2</tblr-badge> <span class="muted">e-mail, ton établissement public</span></td></tr><tr class="flag"><td><tblr-checkbox aria-label="Sélectionner FAC-20702" class="pick-fac admin-check" label="Sélectionner FAC-20702"></tblr-checkbox></td><td><span class="ref">FAC-20702</span><span class="sub">Facture</span></td><td>Ets Rousseau</td><td class="num">5 120 €</td><td class="num"><span class="muted">0 €</span></td><td class="num"><b>5 120 €</b></td><td>il y a 67 j</td><td><tblr-badge color="warning" light="">60-90</tblr-badge></td><td class="num" style="text-align:left">3 (dern. 15/09)</td><td><tblr-badge color="info" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="heart-handshake"></tblr-icon> Virement promis le 10/10</tblr-badge></td><td><tblr-badge color="secondary" light="">Attendre</tblr-badge> <span class="muted">promesse 10/10, vérif. le 11/10</span></td></tr><tr class="flag danger"><td><tblr-checkbox aria-label="Sélectionner FAC-20655" class="pick-fac admin-check" label="Sélectionner FAC-20655"></tblr-checkbox></td><td><span class="ref">FAC-20655</span><span class="sub">Facture</span></td><td>Maison Lenoir</td><td class="num">980 €</td><td class="num"><span class="muted">0 €</span></td><td class="num"><b>980 €</b></td><td>il y a 112 j</td><td><tblr-badge color="danger" light="">&gt; 90</tblr-badge></td><td class="num" style="text-align:left">3 (dern. 15/09)</td><td><tblr-badge color="danger" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="gavel"></tblr-icon> contentieux</tblr-badge></td><td><tblr-badge color="secondary" light="">Contentieux</tblr-badge> <span class="muted">aucune relance automatique</span></td></tr></tbody>
+</table></tblr-data-table>
+</div>
+</tblr-card>
+<div class="cols">
+<!-- Brouillons de relance -->
+<tblr-card class="admin-panel">
+<div class="admin-card-heading" slot="header"><h2>Relances rédigées par l'agent</h2><span class="muted">à valider en lot</span></div>
+<div class="admin-card-content">
+<div class="draft-item">
+<tblr-checkbox aria-label="Inclure FAC-20874" checked="" class="pick-draft admin-check" label="Inclure FAC-20874"></tblr-checkbox>
+<div>
+<div class="top-line"><span class="ref">FAC-20874</span> Confection Bernard · reste 6 200 € · échue depuis 8 j <tblr-badge color="info" light="">Niveau 1 · courtoise</tblr-badge><span class="channels"><tblr-badge color="secondary" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="mail"></tblr-icon> e-mail</tblr-badge></span></div>
+<div class="draft">
+<div class="hd"><span>À</span><b>compta@confection-bernard.fr</b><span>Objet</span><b>Facture FAC-20874 — solde de 6 200 €</b></div>
+<div class="bd" contenteditable="true">Bonjour, sauf erreur de notre part, le solde de 6 200 € de la facture FAC-20874 du 29 août (3 machines Jack + bâtis) reste à régler, l'échéance étant passée le 27 septembre. Pouvez-vous nous indiquer la date de règlement prévue ? Nous restons à votre disposition. Service comptabilité, Glasman</div>
+</div>
+<div class="why" style="margin-top:6px"><tblr-icon aria-hidden="true" base-url="./icons" name="info-circle"></tblr-icon> Note : Nadia K. appelle ce client jeudi ; si vous préférez attendre, décochez.</div>
+</div>
+</div>
+<div class="draft-item">
+<tblr-checkbox aria-label="Inclure FAC-20811" checked="" class="pick-draft admin-check" label="Inclure FAC-20811"></tblr-checkbox>
+<div>
+<div class="top-line"><span class="ref">FAC-20811</span> Atelier Ferreira · reste 1 240 € · échue depuis 34 j <tblr-badge color="warning" light="">Niveau 2 · ferme</tblr-badge><span class="channels"><tblr-badge color="secondary" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="mail"></tblr-icon> e-mail</tblr-badge><tblr-badge color="secondary" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="brand-whatsapp"></tblr-icon> WhatsApp</tblr-badge></span></div>
+<div class="draft">
+<div class="hd"><span>À</span><b>atelier.ferreira@… · 06 …</b><span>Objet</span><b>Deuxième rappel — facture FAC-20811 (1 240 €)</b></div>
+<div class="bd" contenteditable="true">Bonjour, malgré notre rappel du 22 septembre, la facture FAC-20811 de 1 240 € (Jack F4 + bâti) échue depuis 34 jours n'est pas réglée. Merci de procéder au paiement sous 8 jours ou de nous contacter pour convenir d'un échéancier. Lien de paiement : [lien]. Service comptabilité, Glasman</div>
+</div>
+<div class="why" style="margin-top:6px"><tblr-icon aria-hidden="true" base-url="./icons" name="info-circle"></tblr-icon> Yann installe leur machine aujourd'hui à 16:00 : le message partira demain matin si vous validez.</div>
+</div>
+</div>
+<div class="draft-item">
+<tblr-checkbox aria-label="Inclure FACL-1190" checked="" class="pick-draft admin-check" label="Inclure FACL-1190"></tblr-checkbox>
+<div>
+<div class="top-line"><span class="ref">FACL-1190</span> École de mode Nantes · reste 1 450 € · échue depuis 41 j <tblr-badge color="warning" light="">Niveau 2 · ferme</tblr-badge><span class="channels"><tblr-badge color="secondary" light=""><tblr-icon aria-hidden="true" base-url="./icons" name="mail"></tblr-icon> e-mail</tblr-badge></span></div>
+<div class="draft">
+<div class="hd"><span>À</span><b>intendance@ecole-mode-nantes.fr</b><span>Objet</span><b>Deuxième rappel — loyer FACL-1190 (1 450 €)</b></div>
+<div class="bd" contenteditable="true">Bonjour, le solde de 1 450 € de la facture de location FACL-1190 reste dû depuis 41 jours. Pour un établissement public, nous pouvons fournir les pièces nécessaires au mandatement si cela facilite le règlement. Merci de nous indiquer la date prévue. Service comptabilité, Glasman</div>
+</div>
+<div class="why" style="margin-top:6px"><tblr-icon aria-hidden="true" base-url="./icons" name="info-circle"></tblr-icon> Établissement public : pas de WhatsApp, ton adapté au mandatement.</div>
+</div>
+</div>
+<div class="draft-item off">
+<tblr-icon aria-hidden="true" base-url="./icons" name="hand-stop" style="color:var(--muted);font-size:1.1rem;margin-top:2px"></tblr-icon>
+<div>
+<div class="top-line"><span class="ref">FAC-20702</span> Ets Rousseau · 5 120 € · 67 j <tblr-badge color="secondary" light="">Pas de relance</tblr-badge></div>
+<div class="why">Promesse de virement pour le 10/10 enregistrée le 30/09. Si rien n'est reçu le 11/10, je vous proposerai la mise en demeure (niveau 3).</div>
+</div>
+</div>
+<div class="draft-item off">
+<tblr-icon aria-hidden="true" base-url="./icons" name="gavel" style="color:var(--muted);font-size:1.1rem;margin-top:2px"></tblr-icon>
+<div>
+<div class="top-line"><span class="ref">FAC-20655</span> Maison Lenoir · 980 € · 112 j <tblr-badge color="secondary" light="">Contentieux</tblr-badge></div>
+<div class="why">Dossier transmis au contentieux le 15/09. Aucune relance automatique ; Laurence D. a un devis en cours avec ce client, elle est informée.</div>
+</div>
+</div>
+</div>
+<div class="batch">
+<span><span class="n" id="n-drafts">3</span> relances sélectionnées</span>
+<span class="spacer" style="flex:1"></span>
+<tblr-button data-confirm="c-batch" data-done-label="Envoyées" variant="primary"><tblr-icon aria-hidden="true" base-url="./icons" name="send"></tblr-icon> Valider et envoyer</tblr-button>
+</div>
+<tblr-action-preview cancel-label="Annuler" class="admin-preview" confirm-label="Confirmer l'envoi" data-journal="3 relances validées : FAC-20874 (N1, e-mail), FAC-20811 (N2, e-mail + WhatsApp, différée au 06/10 09:00), FACL-1190 (N2, e-mail) — journal de relances mis à jour" hidden="" id="c-batch" slot="after-footer" title="Avant d'agir, voici ce que je vais faire">
+<div class="admin-confirm-heading" slot="header"><tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon> Avant d'agir, voici ce que je vais faire</div>
+<div class="admin-confirm-changes" slot="changes">
+<ul>
+<li><b>FAC-20874</b> Confection Bernard : e-mail niveau 1, maintenant.</li>
+<li><b>FAC-20811</b> Atelier Ferreira : e-mail + WhatsApp niveau 2, <b>demain 09:00</b> (installation aujourd'hui).</li>
+<li><b>FACL-1190</b> École de mode Nantes : e-mail niveau 2, maintenant.</li>
+<li>Noter chaque relance dans le journal de relances (niveau, date, canal) et planifier le niveau suivant à J+10.</li>
+</ul>
+
+</div>
+
+<div slot="exclusions"><div class="no">FAC-20931, FAC-20702 et FAC-20655 ne sont pas touchées. Aucun montant n'est modifié.</div></div><div slot="hint"><span class="hint">Consigné au journal</span></div></tblr-action-preview>
+<div class="done" hidden="" slot="after-footer"><tblr-icon aria-hidden="true" base-url="./icons" name="circle-check"></tblr-icon> 2 relances envoyées à <time>—</time>, 1 programmée demain 09:00. Journal de relances mis à jour. <a href="notifications.html#journal">Journal</a></div>
+</tblr-card>
+<!-- Promesses de paiement -->
+<div class="stack">
+<tblr-card class="admin-panel">
+<div class="admin-card-heading" slot="header"><h2>Promesses de paiement</h2><tblr-button size="sm" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="plus"></tblr-icon> Ajouter</tblr-button></div>
+<div class="admin-card-content flush">
+<tblr-data-table aria-label="Tableau de démonstration" authored="" class="admin-table"><table class="table">
+<thead><tr><th>Facture</th><th>Client</th><th class="num">Montant</th><th>Promis le</th><th>Pour le</th><th>Suivi</th></tr></thead>
+<tbody>
+<tr><td class="ref">FAC-20702</td><td>Ets Rousseau<span class="sub">par téléphone, M. Rousseau</span></td><td class="num">5 120 €</td><td>30/09</td><td><b>10/10</b></td><td><tblr-badge color="info" light="">en attente</tblr-badge><span class="sub">Fil vérifie le 11/10</span></td></tr>
+</tbody>
+</table></tblr-data-table>
+</div>
+</tblr-card>
+<tblr-card class="admin-panel">
+<div class="admin-card-heading" slot="header"><h2>Règles de relance</h2><span class="muted">appliquées par l'agent</span></div>
+<div class="admin-card-content">
+<dl class="kv">
+<dt><tblr-badge color="info" light="">Niveau 1</tblr-badge></dt><dd>échue de 1 à 30 j · e-mail courtois · J+3 après l'échéance</dd>
+<dt><tblr-badge color="warning" light="">Niveau 2</tblr-badge></dt><dd>30 à 60 j · e-mail ferme + WhatsApp (pro uniquement) · lien de paiement</dd>
+<dt><tblr-badge color="danger" light="">Niveau 3</tblr-badge></dt><dd>&gt; 60 j · mise en demeure, lettre + e-mail · validation Direction</dd>
+<dt><tblr-badge color="secondary" light="">Jamais</tblr-badge></dt><dd>promesse en cours, contentieux, litige ouvert, client en intervention le jour même</dd>
+</dl>
+</div>
+</tblr-card>
+</div>
+</div>
+</div>
+<div class="composer-wrap">
+<tblr-composer class="admin-composer" label="Votre demande" placeholder="Une consigne sur les paiements : « relance les factures de plus de 60 jours »…" rows="1" send-label="Envoyer"><div class="admin-composer-hint" slot="hint"><tblr-icon aria-hidden="true" base-url="./icons" name="shield-check"></tblr-icon> Aucune relance ne part sans votre validation ; le niveau 3 demande la Direction. <span class="right"><a href="notifications.html#journal">Journal des actions</a><a href="direction.html">Briefing Direction</a></span></div><tblr-avatar label="Fil" slot="mark" variant="agent"><tblr-icon aria-hidden="true" base-url="./icons" name="needle-thread" slot="icon"></tblr-icon></tblr-avatar><tblr-button class="mic" icon-only="" label="Dicter" slot="controls" title="Dicter" variant="secondary"><tblr-icon aria-hidden="true" base-url="./icons" name="microphone"></tblr-icon></tblr-button><tblr-icon aria-hidden="true" base-url="./icons" name="arrow-up" slot="submit-icon"></tblr-icon></tblr-composer>
+</div>
+</div><div aria-label="Ce qui a changé depuis hier" class="story" slot="aside">
+<tblr-notification-story appearance="narrative" class="story-sec" items='[{"id": 0, "title": "3 890 € reçus", "detail": "par virement de SARL Textile du Nord, à pointer sur FAC-20931.", "explanation": "", "timeLabel": "il y a 4 min", "severity": "success"}, {"id": 1, "title": "Échéance CB refusée", "detail": "Lemaire Création, 71,67 € sur CO-26429.", "explanation": "Laurence D. a envoyé un lien de paiement ce matin.", "timeLabel": "hier 16:05", "severity": "danger"}]'><div class="story-head" slot="header"><h2>Depuis hier</h2><a href="notifications.html">Tout voir</a></div><p class="story-lead" slot="lead"><b>2 choses ont changé</b> sur les paiements.</p><div class="act" slot="actions-0"><tblr-button data-fill="Pointe le virement de 3 890 € de Textile du Nord sur FAC-20931" size="sm" variant="secondary">Pointer</tblr-button></div></tblr-notification-story>
+<div class="story-sec">
+<div class="story-head"><h2>Journal de l'agent</h2><tblr-badge class="journal-count" color="secondary" light="">3</tblr-badge><a href="notifications.html#journal">Audit</a></div>
+<tblr-audit-log appearance="compact" entries='[{"action": "Balance âgée lue, 3 relances rédigées (non envoyées).", "outcome": "confirmed", "timeLabel": "08:10 · automatique"}, {"action": "Relance niveau 1 FAC-20874 envoyée par e-mail.", "outcome": "confirmed", "timeLabel": "01/10 09:30 · confirmé par Compta"}, {"action": "Promesse de paiement enregistrée : FAC-20702, virement le 10/10.", "outcome": "confirmed", "timeLabel": "30/09 11:12 · confirmé par Compta"}]'></tblr-audit-log>
+</div>
+</div></tblr-app-shell><script src="app.js" type="module"></script><div aria-live="polite" class="demo-status" hidden="" id="demo-status" role="status"></div></body></html>

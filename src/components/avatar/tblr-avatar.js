@@ -5,10 +5,10 @@ const stylesheetUrl = new URL('./tblr-avatar.css', import.meta.url);
 class TblrAvatar extends UIElement {
   static observedAttributes = ['initials', 'src', 'label', 'size', 'variant'];
   mount() {
-    this.template(stylesheetUrl, '<span part="avatar" class="avatar" role="img"><span part="initials" class="initials"></span><img part="image" hidden alt=""></span>');
+    this.template(stylesheetUrl, '<span part="avatar" class="avatar" role="img"><span class="fallback"><slot name="icon"><span part="initials" class="initials"></span></slot></span><img part="image" hidden alt=""></span>');
     this.root.querySelector('img').addEventListener('error', () => {
       this.root.querySelector('img').hidden = true;
-      this.root.querySelector('.initials').hidden = false;
+      this.root.querySelector('.fallback').hidden = false;
     });
   }
   update() {
@@ -19,7 +19,7 @@ class TblrAvatar extends UIElement {
     if (this.imageSource !== src) {
       this.imageSource = src;
       image.hidden = !src;
-      this.root.querySelector('.initials').hidden = Boolean(src);
+      this.root.querySelector('.fallback').hidden = Boolean(src);
       if (src) image.src = src;
       else image.removeAttribute('src');
     }

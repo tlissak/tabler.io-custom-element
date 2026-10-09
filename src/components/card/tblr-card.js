@@ -45,6 +45,7 @@ class TblrCard extends HTMLElement {
         <footer part="footer" class="card-footer" hidden>
           <slot name="footer">${footer ? '<span class="card-footer-text"></span>' : ''}</slot>
         </footer>
+        <div part="after-footer"><slot name="after-footer"></slot></div>
       </article>
     `;
 
