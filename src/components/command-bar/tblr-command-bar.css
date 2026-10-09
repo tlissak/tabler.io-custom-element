@@ -1,0 +1,8 @@
+@import url('../../styles/ui-base.css');
+.bar { display: flex; align-items: center; gap: 10px; padding: 4px 6px 4px 12px; background: var(--tblr-command-bar-bg, var(--tblr-body-bg, #f6f8fb)); min-height: var(--tblr-command-bar-height, 40px); }
+.bar:focus-within { border-color: var(--tblr-primary, #206bc4); box-shadow: var(--tblr-focus-ring, 0 0 0 .25rem rgb(32 107 196 / 25%)); }
+input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; }
+input:focus-visible { box-shadow: none; }
+kbd { flex: none; border: 1px solid var(--tblr-border-color, #dce1e7); border-radius: 3px; padding: 1px 5px; background: var(--tblr-bg-surface, #fff); color: var(--tblr-muted-color, #667382); font: inherit; font-size: 11px; }
+.button { min-height: 28px; }
+@media (max-width: 480px) { kbd { display: none; } }

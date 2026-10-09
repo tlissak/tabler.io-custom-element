@@ -1,0 +1,4 @@
+@import url('../../styles/ui-base.css');
+:host { display: inline-flex; }
+.button { gap: 6px; border-radius: var(--tblr-suggestion-radius, 15px); min-height: 30px; font-size: var(--tblr-font-size-sm, .8125rem); font-weight: 400; white-space: normal; text-align: start; }
+.button:hover:not(:disabled) { color: var(--tblr-primary, #206bc4); border-color: var(--tblr-primary, #206bc4); }

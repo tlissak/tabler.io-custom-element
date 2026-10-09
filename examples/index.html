@@ -337,6 +337,17 @@
             main { min-width: 0; padding: 16px; }
             .flex { grid-template-columns: minmax(0, 1fr); }
         }
+        .catalog-element { scroll-margin-top: 60px; }
+        .catalog-example { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 20px; border: 1px solid var(--tblr-border-color); border-radius: var(--tblr-radius-lg); background: var(--tblr-bg-surface); }
+        .catalog-example p { margin: 0; color: inherit; }
+        .catalog-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        .catalog-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 12px; }
+        .catalog-status { color: var(--tblr-muted-color) !important; font-size: 13px; overflow-wrap: anywhere; }
+        .catalog-code { margin-top: 12px; }
+        .catalog-code summary { cursor: pointer; margin-bottom: 8px; }
+        #catalog-shell { --tblr-app-shell-height: 380px; --tblr-sidebar-width: 150px; --tblr-story-width: 200px; }
+        #catalog-shell[collapsed] .catalog-nav-text { display: none; }
+        #catalog-shell nav a { white-space: nowrap; }
     </style>
 </head>
 <body>
@@ -375,6 +386,17 @@
                 <tblr-nav-item label="Flexbox" href="#flexbox"></tblr-nav-item>
                 <tblr-nav-item label="Pagination" href="#pagination"></tblr-nav-item>
                 <tblr-nav-item label="Modals" href="#modals"></tblr-nav-item>
+                <tblr-nav-item label="App Shell" href="#app-shell"></tblr-nav-item>
+                <tblr-nav-item label="Command Bar" href="#command-bar"></tblr-nav-item>
+                <tblr-nav-item label="Composer" href="#composer"></tblr-nav-item>
+                <tblr-nav-item label="Message" href="#message"></tblr-nav-item>
+                <tblr-nav-item label="Action Preview" href="#action-preview"></tblr-nav-item>
+                <tblr-nav-item label="Stat" href="#stat"></tblr-nav-item>
+                <tblr-nav-item label="Suggestion" href="#suggestion"></tblr-nav-item>
+                <tblr-nav-item label="Source List" href="#source-list"></tblr-nav-item>
+                <tblr-nav-item label="Notification Story" href="#notification-story"></tblr-nav-item>
+                <tblr-nav-item label="Audit Log" href="#audit-log"></tblr-nav-item>
+                <tblr-nav-item label="Avatar" href="#avatar"></tblr-nav-item>
                 <tblr-nav-item label="Workspace & Agent UI" href="#workspace-elements"></tblr-nav-item>
             </tblr-nav>
         </div>
@@ -1899,6 +1921,166 @@
                 <p>Do you really want to remove 84 files? This cannot be undone.</p>
             </tblr-modal>
         </section>
+        <section id="app-shell" class="catalog-element">
+            <h1 class="section-title">TBLR App Shell</h1>
+            <p>Responsive workspace with collapsible navigation and an updates drawer.</p>
+            <div class="catalog-example">
+<tblr-app-shell id="catalog-shell" label="Example workspace" aside-open>
+    <b slot="header">Example workspace</b>
+    <nav slot="navigation" aria-label="Example navigation"><a href="#command-bar" aria-label="Command bar"><span aria-hidden="true">&#8984;</span><span class="catalog-nav-text"> Command bar</span></a><br><a href="#composer" aria-label="Composer"><span aria-hidden="true">&#9998;</span><span class="catalog-nav-text"> Composer</span></a></nav>
+    <tblr-card title="Workspace content">Collapse the navigation or toggle the updates panel using the header buttons.</tblr-card>
+    <p slot="aside">Updates appear here. On mobile, panels open as dismissible dialogs.</p>
+</tblr-app-shell>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-app-shell aside-open&gt;
+  &lt;b slot=&quot;header&quot;&gt;Workspace&lt;/b&gt;
+  &lt;nav slot=&quot;navigation&quot;&gt;Navigation&lt;/nav&gt;
+  &lt;p&gt;Workspace content&lt;/p&gt;
+  &lt;p slot=&quot;aside&quot;&gt;Updates&lt;/p&gt;
+&lt;/tblr-app-shell&gt;</tblr-code-preview></details>
+        </section>
+        <section id="command-bar" class="catalog-element">
+            <h1 class="section-title">TBLR Command Bar</h1>
+            <p>Submit a text command. The combined workspace demonstration below owns Ctrl/Cmd K.</p>
+            <div class="catalog-example">
+<tblr-command-bar id="catalog-command" label="Example command" placeholder="Try: Show ready orders"></tblr-command-bar>
+<tblr-command-bar label="Disabled command" placeholder="Unavailable" disabled></tblr-command-bar>
+<p id="catalog-command-result" role="status" class="catalog-status">No command submitted.</p>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-command-bar label=&quot;Command&quot; placeholder=&quot;Ask the assistant&hellip;&quot;&gt;&lt;/tblr-command-bar&gt;
+&lt;!-- Listen for command-submit: event.detail.text --&gt;</tblr-code-preview></details>
+        </section>
+        <section id="composer" class="catalog-element">
+            <h1 class="section-title">TBLR Composer</h1>
+            <p>Enter sends, Shift+Enter adds a line. Sending displays a short local pending state.</p>
+            <div class="catalog-example">
+<tblr-composer id="catalog-composer" label="Example message" placeholder="Write a message&hellip;">
+    <div slot="suggestions" class="catalog-row"><tblr-suggestion text="Summarize orders" value="Summarize orders"></tblr-suggestion></div>
+    <span slot="hint">Local demonstration &middot; Enter sends &middot; Shift+Enter adds a line</span>
+</tblr-composer>
+<tblr-composer label="Pending composer" pending value="Waiting for a response&hellip;"></tblr-composer>
+<p id="catalog-composer-result" role="status" class="catalog-status">No message submitted.</p>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-composer label=&quot;Message&quot;&gt;
+  &lt;span slot=&quot;hint&quot;&gt;Enter sends; Shift+Enter adds a line.&lt;/span&gt;
+&lt;/tblr-composer&gt;
+&lt;!-- Listen for message-submit; set pending while handling it. --&gt;</tblr-code-preview></details>
+        </section>
+        <section id="message" class="catalog-element">
+            <h1 class="section-title">TBLR Message</h1>
+            <p>Agent, user, and system messages with authored content and optional sources.</p>
+            <div class="catalog-example">
+<tblr-message message-role="agent" author="Fil" timestamp="2026-10-09T07:58:00Z">
+    <p>Three fixture orders are ready for preparation.</p>
+    <tblr-source-list slot="sources" sources='[{"label":"Orders fixture"}]'></tblr-source-list>
+</tblr-message>
+<tblr-message message-role="user" author="Camille"><p>Show the ready orders.</p><tblr-avatar slot="avatar" initials="CM" label="Camille"></tblr-avatar></tblr-message>
+<tblr-message message-role="system" author="System"><p>No business action has been executed.</p></tblr-message>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-message message-role=&quot;agent&quot; author=&quot;Fil&quot;&gt;
+  &lt;p&gt;Application-authored message content.&lt;/p&gt;
+  &lt;tblr-source-list slot=&quot;sources&quot;&gt;&lt;/tblr-source-list&gt;
+&lt;/tblr-message&gt;</tblr-code-preview></details>
+        </section>
+        <section id="action-preview" class="catalog-element">
+            <h1 class="section-title">TBLR Action Preview</h1>
+            <p>Confirm or cancel a local simulation. Reset lets you exercise the flow again.</p>
+            <div class="catalog-example">
+<tblr-action-preview id="catalog-preview" title="Assign a demonstration order">
+    <p slot="changes">Assign fictional CMD-2048 to Camille.</p>
+    <p slot="exclusions">No business data or customer messages will change.</p>
+    <span slot="hint">Local simulation</span>
+</tblr-action-preview>
+<tblr-button id="catalog-preview-reset" variant="secondary">Reset preview</tblr-button>
+<tblr-action-preview state="error" title="Error state" result="The caller supplied this error." id="catalog-preview-error"><p>Retry returns this example to preview.</p></tblr-action-preview>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-action-preview title=&quot;Review changes&quot;&gt;
+  &lt;p slot=&quot;changes&quot;&gt;Proposed changes&lt;/p&gt;
+  &lt;p slot=&quot;exclusions&quot;&gt;Excluded changes&lt;/p&gt;
+&lt;/tblr-action-preview&gt;
+&lt;!-- confirm &#8594; pending &#8594; confirmed/error; cancel &#8594; cancelled --&gt;</tblr-code-preview></details>
+        </section>
+        <section id="stat" class="catalog-element">
+            <h1 class="section-title">TBLR Stat</h1>
+            <p>Values, trends, source notes, and formatting delegated through a value slot.</p>
+            <div class="catalog-example">
+<div class="catalog-stats">
+    <tblr-stat value="3" label="Ready orders" trend="up" description="+2 since yesterday"><span slot="source">Fixture data</span></tblr-stat>
+    <tblr-stat value="1" label="Stock risk" trend="down" description="One missing motor"></tblr-stat>
+    <tblr-stat label="Monthly revenue"><tblr-format-number slot="value" value="124580" currency-symbol="&euro;" symbol-position="right" symbol-space thousand-separator="space"></tblr-format-number><span slot="description">Formatted value</span></tblr-stat>
+</div>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-stat value=&quot;3&quot; label=&quot;Ready orders&quot; trend=&quot;up&quot; description=&quot;+2&quot;&gt;
+  &lt;span slot=&quot;source&quot;&gt;Fixture data&lt;/span&gt;
+&lt;/tblr-stat&gt;</tblr-code-preview></details>
+        </section>
+        <section id="suggestion" class="catalog-element">
+            <h1 class="section-title">TBLR Suggestion</h1>
+            <p>Keyboard-operable suggestion chips that emit a value for the consumer.</p>
+            <div class="catalog-example">
+<div class="catalog-row">
+    <tblr-suggestion id="catalog-suggestion" text="Review CMD-2048" value="Review CMD-2048"><span slot="icon" aria-hidden="true">&#8599;</span></tblr-suggestion>
+    <tblr-suggestion text="Show ready orders" value="Show ready orders" data-catalog-suggestion></tblr-suggestion>
+    <tblr-suggestion text="Unavailable" disabled></tblr-suggestion>
+</div>
+<p id="catalog-suggestion-result" role="status" class="catalog-status">No suggestion selected.</p>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-suggestion text=&quot;Review order&quot; value=&quot;CMD-2048&quot;&gt;
+  &lt;span slot=&quot;icon&quot; aria-hidden=&quot;true&quot;&gt;&#8599;&lt;/span&gt;
+&lt;/tblr-suggestion&gt;
+&lt;!-- Listen for suggestion-select: event.detail.value --&gt;</tblr-code-preview></details>
+        </section>
+        <section id="source-list" class="catalog-element">
+            <h1 class="section-title">TBLR Source List</h1>
+            <p>Caller-supplied provenance, safe links, timestamps, and the empty state.</p>
+            <div class="catalog-example">
+<tblr-source-list id="catalog-sources" label="Fixture sources"></tblr-source-list>
+<tblr-source-list label="Empty sources"></tblr-source-list>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-source-list sources=&#x27;[{&quot;label&quot;:&quot;Orders&quot;,&quot;url&quot;:&quot;./index.html&quot;,&quot;timestamp&quot;:&quot;2026-10-09T07:58:00Z&quot;}]&#x27;&gt;&lt;/tblr-source-list&gt;</tblr-code-preview></details>
+        </section>
+        <section id="notification-story" class="catalog-element">
+            <h1 class="section-title">TBLR Notification Story</h1>
+            <p>Narrative notifications, explanations, item actions, and a quiet summary.</p>
+            <div class="catalog-example">
+<tblr-notification-story id="catalog-story" title="Since yesterday" quiet-summary="Without you: two fixture orders were prepared.">
+    <tblr-button slot="actions-0" id="catalog-story-action" size="sm" variant="secondary">Review payment</tblr-button>
+</tblr-notification-story>
+<tblr-notification-story title="Empty story"></tblr-notification-story>
+<p id="catalog-story-result" role="status" class="catalog-status">Select a notification or its action.</p>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-notification-story title=&quot;Since yesterday&quot; quiet-summary=&quot;Two orders prepared.&quot;&gt;
+  &lt;tblr-button slot=&quot;actions-0&quot;&gt;Review&lt;/tblr-button&gt;
+&lt;/tblr-notification-story&gt;
+&lt;!-- Set .items; listen for notification-select. --&gt;</tblr-code-preview></details>
+        </section>
+        <section id="audit-log" class="catalog-element">
+            <h1 class="section-title">TBLR Audit Log</h1>
+            <p>Read-only supplied events with local filtering and a downloadable fixture export.</p>
+            <div class="catalog-example">
+<tblr-audit-log id="catalog-audit" title="Fixture audit" filterable exportable></tblr-audit-log>
+<tblr-audit-log title="Empty audit log"></tblr-audit-log>
+<p id="catalog-audit-result" role="status" class="catalog-status">Filter entries or export the fixture.</p>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-audit-log title=&quot;Audit log&quot; filterable exportable&gt;&lt;/tblr-audit-log&gt;
+&lt;!-- Set .entries; listen for filter-request and export-request. --&gt;</tblr-code-preview></details>
+        </section>
+        <section id="avatar" class="catalog-element">
+            <h1 class="section-title">TBLR Avatar</h1>
+            <p>Initials, sizes, agent identity, and initials fallback after an image fails.</p>
+            <div class="catalog-example">
+<div class="catalog-row">
+    <tblr-avatar initials="SM" size="sm" label="Small avatar"></tblr-avatar>
+    <tblr-avatar initials="CM" label="Camille Martin"></tblr-avatar>
+    <tblr-avatar initials="LG" size="lg" label="Large avatar"></tblr-avatar>
+    <tblr-avatar variant="agent" label="Fil"></tblr-avatar>
+    <tblr-avatar initials="FB" src="./missing-avatar-demo.png" label="Failed image fallback"></tblr-avatar>
+</div>
+            </div>
+            <details class="catalog-code"><summary>Sample code</summary><tblr-code-preview language="html" copy>&lt;tblr-avatar initials=&quot;CM&quot; label=&quot;Camille Martin&quot;&gt;&lt;/tblr-avatar&gt;
+&lt;tblr-avatar variant=&quot;agent&quot; label=&quot;Fil&quot;&gt;&lt;/tblr-avatar&gt;
+&lt;tblr-avatar initials=&quot;FB&quot; src=&quot;avatar.png&quot; label=&quot;Image fallback&quot;&gt;&lt;/tblr-avatar&gt;</tblr-code-preview></details>
+        </section>
         <section id="workspace-elements">
             <h1 class="section-title">Workspace &amp; Agent UI</h1>
             <p>All P1, P2, and P3 elements: responsive shell, command bar, composer, messages, action previews, stats, suggestions, sources, notification stories, audit logs, and avatars. The workflow uses fictional local data. <a href="./admin-theme.html">Compare the admin theme</a>.</p>
@@ -2021,5 +2203,6 @@
     }
 </script>
 <script type="module" src="./workspace-demo.js"></script>
+<script type="module" src="./workspace-elements.js"></script>
 </body>
 </html>

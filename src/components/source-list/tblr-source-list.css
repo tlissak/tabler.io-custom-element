@@ -1,0 +1,5 @@
+@import url('../../styles/ui-base.css');
+[part="sources"], ul, li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+ul { list-style: none; padding: 0; margin: 0; }
+li { border-radius: var(--tblr-radius-sm, 3px); background: var(--tblr-neutral-bg, #eef1f5); padding: 1px 6px; font-size: 12px; overflow-wrap: anywhere; }
+time { font-size: 11px; }

@@ -1,0 +1,11 @@
+@import url('../../styles/ui-base.css');
+.message { display: flex; gap: 12px; align-items: start; }
+.inner { min-width: 0; display: grid; gap: 10px; flex: 1; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; font-size: var(--tblr-font-size-sm, .8125rem); }
+.body { font-size: var(--tblr-prose-font-size, 15px); line-height: var(--tblr-prose-line-height, 1.55); overflow-wrap: anywhere; }
+.user { flex-direction: row-reverse; }
+.user .inner { flex: 0 1 560px; }
+.user header { justify-content: flex-end; }
+.user .body { padding: 10px 14px; border-radius: 10px 10px 2px 10px; background: var(--tblr-message-user-bg, var(--tblr-navy, #002148)); color: var(--tblr-message-user-color, #fff); }
+.system .body { color: var(--tblr-muted-color, #667382); }
+::slotted(p) { margin: 0; color: inherit; }

@@ -2408,6 +2408,9 @@
             },
             {
               "name": "timestamp"
+            },
+            {
+              "name": "message-role"
             }
           ],
           "js": {
@@ -2419,6 +2422,10 @@
               {
                 "name": "timestamp",
                 "type": "any"
+              },
+              {
+                "name": "messageRole",
+                "type": "string"
               }
             ],
             "events": []

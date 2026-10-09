@@ -1070,7 +1070,7 @@ is called. The gallery also shows empty, disabled, pending, and image-error stat
 | `tblr-app-shell` | `collapsed` / `.collapsed`, `aside-open` / `.asideOpen`, `navigation-open` / `.navigationOpen`, `label` | `header`, `navigation`, default workspace, `aside` | `navigation-toggle` `{collapsed, open}`, `aside-toggle` `{open}` |
 | `tblr-command-bar` | `label`, `placeholder`, `value`, `disabled`, `shortcut` (also reflected properties) | ? | `command-submit` `{text}` |
 | `tblr-composer` | `label`, `placeholder`, `value`, `disabled`, `pending` (also reflected properties), `send-label` | `suggestions`, `attachments`, `hint` | `message-submit` `{text}` |
-| `tblr-message` | `role="agent|user|system"`, `author`, `timestamp`; `.author`, `.timestamp` | `avatar`, default content, `sources`, `actions` | ? |
+| `tblr-message` | `message-role="agent|user|system"`, `author`, `timestamp`; `.messageRole`, `.author`, `.timestamp` | `avatar`, default content, `sources`, `actions` | ? |
 | `tblr-action-preview` | `state` / `.state` (`preview|pending|confirmed|cancelled|error`), `title`, `confirm-label`, `cancel-label`, `result` | `changes` (default content as fallback), `exclusions`, `hint` | `confirm` / `cancel` `{state}` |
 | `tblr-stat` | `value`, `label`, `trend="up|down|neutral"`, `description` (also reflected properties) | `value` (for `tblr-format-number`), `description`, `source` | ? |
 | `tblr-suggestion` | `text`, `value`, `disabled` (also reflected properties) | default text, `icon` | `suggestion-select` `{value}` |
@@ -1084,6 +1084,10 @@ carry data for the consumer; they do not authorize or execute server actions.
 Shell toggles reflect the state that was already changed. The audit filter both
 filters the supplied entries locally and emits the query; export only emits a
 request. Consumers choose how to download or persist data.
+
+Use `message-role` for the message type. The plan's `role="agent|user|system"`
+shorthand is accepted and normalized to `message-role` during upgrade, so the
+host does not retain an invalid ARIA role. Valid accessibility roles are preserved.
 
 Structured inputs:
 

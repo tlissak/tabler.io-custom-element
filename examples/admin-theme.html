@@ -7,11 +7,12 @@
   <link rel="stylesheet" href="../src/styles/admin-theme.css">
   <link rel="stylesheet" href="./workspace-demo.css">
   <style>
-    body { margin: 0; }
+    body { margin: 0; height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
     :not(:defined), [data-tblr-loading] { visibility: hidden; }
     .theme-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 8px 14px; background: var(--tblr-bg-surface); border-bottom: 1px solid var(--tblr-border-color); }
     .theme-tools a { color: var(--tblr-primary); }
-    [data-workspace-demo="admin"] tblr-app-shell { --tblr-app-shell-height: calc(100dvh - 50px); }
+    [data-workspace-demo="admin"] { min-height: 0; height: 100%; }
+    [data-workspace-demo="admin"] tblr-app-shell { height: 100%; --tblr-app-shell-height: 100%; }
   </style>
 </head>
 <body>

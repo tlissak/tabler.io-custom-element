@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-tblr-theme="admin">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="../src/styles/admin-theme.css"><style>body{margin:0}#fixture{padding:20px;display:grid;gap:12px}tblr-app-shell{--tblr-app-shell-height:400px}p{margin:0}</style></head>
+<body>
+<div id="fixture">
+  <tblr-command-bar id="command" shortcut label="First command"></tblr-command-bar>
+  <tblr-command-bar id="second-command" shortcut label="Second command"></tblr-command-bar>
+  <tblr-composer id="composer" label="Message"></tblr-composer>
+  <tblr-action-preview id="preview"><p slot="changes">An explicitly supplied change.</p></tblr-action-preview>
+  <tblr-source-list id="sources"></tblr-source-list>
+  <tblr-notification-story id="story"></tblr-notification-story>
+  <tblr-audit-log id="audit" filterable exportable></tblr-audit-log>
+  <tblr-suggestion id="suggestion" text="Review the order" value="CMD-2048"></tblr-suggestion>
+  <tblr-avatar id="avatar" initials="CM" src="./missing-avatar.png" label="Camille"></tblr-avatar>
+  <tblr-stat id="stat" label="Ready orders" trend="up"></tblr-stat>
+  <tblr-message id="message" author="&lt;img src=x onerror=alert(1)&gt;"><p>Application-authored content</p></tblr-message>
+  <tblr-app-shell id="shell"><b slot="header">Header</b><nav slot="navigation"><button id="nav-action">Navigation action</button></nav><div style="height:1200px">Scrollable workspace</div><div slot="aside"><button>Aside action</button></div></tblr-app-shell>
+</div>
+<script type="module">
+  // These assignments precede custom element definitions and exercise hydration.
+  document.querySelector('#composer').value = 'Before upgrade';
+  document.querySelector('#command').value = 'Pre-upgrade command';
+  document.querySelector('#stat').value = '3';
+  document.querySelector('#sources').sources = [{label:'<img src=x onerror=alert(1)>',url:'javascript:alert(1)'},{label:'Safe source',url:'./ui-elements.fixture.html',timestamp:'2026-10-09T07:58:00Z'}];
+  document.querySelector('#story').items = [{id:'stock',title:'<b>Stock</b>',detail:'<script>bad()</'+'script>',severity:'danger',explanation:'Why you: your agency'}];
+  document.querySelector('#audit').entries = [{actor:'Camille',action:'Review',outcome:'read',reference:'CMD-2048'},{actor:'Fil',action:'Assign',outcome:'confirmed',reference:'CMD-2049'}];
+  const {defineTblr} = await import('../src/main.js');
+  await defineTblr();
+  window.fixtureReady = true;
+</script>
+</body>
+</html>

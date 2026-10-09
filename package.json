@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "serve": "node server.js"
+    "serve": "node server.js",
+    "test:ui": "node tests/ui-elements.browser.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.0"
   },
   "web-types": "./web-types.json"
 }

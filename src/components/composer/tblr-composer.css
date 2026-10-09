@@ -1,0 +1,6 @@
+@import url('../../styles/ui-base.css');
+.composer { border-radius: var(--tblr-composer-radius, 10px); padding: var(--tblr-composer-padding, 12px); display: grid; gap: 8px; box-shadow: var(--tblr-composer-shadow, 0 6px 24px rgb(24 36 51 / 8%)); }
+form { display: flex; align-items: flex-end; gap: 8px; }
+textarea { flex: 1; min-width: 0; resize: vertical; border: 1px solid var(--tblr-border-color, #dce1e7); background: var(--tblr-bg-surface, #fff); border-radius: var(--tblr-radius, 4px); padding: 8px 10px; font-size: var(--tblr-prose-font-size, 15px); line-height: var(--tblr-prose-line-height, 1.55); }
+button { gap: 6px; }
+::slotted([slot="suggestions"]) { display: flex; flex-wrap: wrap; gap: 6px; }

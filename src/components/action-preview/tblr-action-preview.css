@@ -1,0 +1,9 @@
+@import url('../../styles/ui-base.css');
+section.surface { overflow: hidden; background: var(--tblr-action-preview-bg, var(--tblr-body-bg, #f6f8fb)); }
+header { padding: 10px 12px; border-bottom: 1px solid var(--tblr-border-color, #dce1e7); }
+.changes, .exclusions { padding: 10px 12px; }
+footer { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 12px; border-top: 1px solid var(--tblr-border-color, #dce1e7); }
+[part="hint"] { margin-left: auto; }
+[part="result"] { margin: 0; padding: 10px 12px; }
+[data-state="confirmed"] [part="result"] { background: var(--tblr-success-bg, #eaf7ec); color: var(--tblr-success-text, #1f8a33); }
+[data-state="error"] [part="result"] { background: var(--tblr-danger-bg, #fdecec); color: var(--tblr-danger, #d63939); }

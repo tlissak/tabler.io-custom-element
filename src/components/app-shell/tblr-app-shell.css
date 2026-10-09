@@ -1,0 +1,21 @@
+@import url('../../styles/ui-base.css');
+.shell { display: grid; grid-template-columns: var(--tblr-sidebar-width, 240px) minmax(0, 1fr) 0; grid-template-rows: minmax(var(--tblr-header-height, 65px), auto) minmax(0, 1fr); height: var(--tblr-app-shell-height, 100dvh); overflow: hidden; background: var(--tblr-body-bg, #f6f8fb); }
+:host([collapsed]) .shell { grid-template-columns: var(--tblr-sidebar-collapsed-width, 56px) minmax(0, 1fr) 0; }
+:host([aside-open]) .shell { grid-template-columns: var(--tblr-sidebar-width, 240px) minmax(0, 1fr) var(--tblr-story-width, 340px); }
+:host([collapsed][aside-open]) .shell { grid-template-columns: var(--tblr-sidebar-collapsed-width, 56px) minmax(0, 1fr) var(--tblr-story-width, 340px); }
+header { grid-column: 1 / -1; display: flex; gap: 10px; align-items: center; padding: 8px 12px; background: var(--tblr-bg-surface, #fff); border-bottom: 1px solid var(--tblr-border-color, #dce1e7); position: relative; }
+header::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; background: var(--tblr-brand-gradient, linear-gradient(90deg, #206bc4, #4299e1)); }
+.header-content { flex: 1; min-width: 0; }
+nav, aside { min-width: 0; overflow-y: auto; overflow-x: hidden; padding: 12px 8px; background: var(--tblr-bg-surface, #fff); }
+nav { border-right: 1px solid var(--tblr-border-color, #dce1e7); }
+aside { border-left: 1px solid var(--tblr-border-color, #dce1e7); }
+:host(:not([aside-open])) aside { display: none; }
+main { min-width: 0; overflow: auto; padding: var(--tblr-app-shell-workspace-padding, 20px 28px); }
+.mobile { grid-template-columns: minmax(0, 1fr) !important; }
+.mobile > nav, .mobile > aside { display: none; }
+.mobile main { padding: var(--tblr-app-shell-mobile-padding, 20px 14px); }
+dialog { position: fixed; margin: 0; inset: 0 auto 0 0; height: 100dvh; max-height: none; width: min(90vw, var(--tblr-sidebar-width, 240px)); max-width: none; border: 0; border-right: 1px solid var(--tblr-border-color, #dce1e7); padding: 12px; background: var(--tblr-bg-surface, #fff); color: inherit; overflow: auto; }
+dialog[part="aside-dialog"] { inset: 0 0 0 auto; width: min(90vw, var(--tblr-story-width, 340px)); }
+dialog::backdrop { background: rgb(24 36 51 / 45%); }
+.close { margin-bottom: 14px; }
+:host([collapsed]) nav ::slotted(*) { --tblr-nav-item-padding-x: 4px; --tblr-nav-item-icon-size: 20px; }

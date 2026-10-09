@@ -1,6 +1,6 @@
-# Admin theme: future custom elements
+# Admin theme: implemented custom elements and integration plan
 
-Reference: `../05-admin-theme/tokens.css`, `styles.css`, `README.md`, and the role and fallback-screen HTML files. The visual preset is implemented in `src/styles/admin-theme.css`; `examples/admin-theme.html` composes existing elements to demonstrate it. The reference remains unchanged.
+Reference: `../05-admin-theme/tokens.css`, `styles.css`, `README.md`, and the role and fallback-screen HTML files. The visual preset is implemented in `src/styles/admin-theme.css`; `examples/admin-theme.html` composes the implemented workspace elements to demonstrate it. The reference remains unchanged.
 
 ## Existing coverage
 
@@ -24,7 +24,9 @@ Implementation status: all eleven P1, P2, and P3 elements below are registered a
 | P2 | `tblr-audit-log` | `.journal`: chronological action outcomes | Structured entries: timestamp, actor, action, outcome, reference; read-only presentation; optional filters/export requests as events | Data table or semantic list, badge |
 | P3 | `tblr-avatar` | `.avatar`, `.agent-mark`: shared identity marker | Initials, image URL, accessible name, size; agent variant uses brand gradient; image failure falls back to initials | Icon |
 
-## Original delivery sequence (implemented)
+## Original rollout sequence
+
+The component library and both example workflows are complete. Migration of actual role screens and connection to application APIs remain application work; the source reference mockups are preserved.
 
 1. **Shell and command bar:** establish desktop 65px header, 240px rail / 56px collapsed rail, and 340px aside. On mobile, expose navigation and aside as dismissible panels; preserve the workspace and scroll position. Prototype with the preparation screen before migrating all roles.
 2. **Conversation and preview:** implement message, composer, and action-preview; reproduce one complete briefing → suggestion → preview → confirmation → result journey using fixture data. Keep network and business logic in the consuming application.
