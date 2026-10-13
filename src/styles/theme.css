@@ -56,4 +56,21 @@
   --tblr-icon-stroke-width: 2;
   --tblr-icon-placeholder-opacity: 0.45;
   --tblr-icon-base-url: 'https://cdn.jsdelivr.net/npm/@tabler/icons@3.44.0/icons';
+
+  /* Tokens sémantiques partagés avec les maquettes (maquette/00-analyse/kit/tokens.css), habillage 05 */
+  --success: #2fb344;
+  --success-bg: #eaf7ec;
+  --warning: #f59f00;
+  --warning-bg: #fff6d6;
+  --info: #4299e1;
+  --info-bg: #eaf5ff;
+  --danger-bg: #fdecec;
+  --neutral: #667382;
+  --neutral-bg: #eef1f5;
+  --brand-grad: linear-gradient(210deg, #061760, #1f5281 50%, #006f9b 79%, #019ce8 100%);
+  --logo-grad: linear-gradient(135deg, #39cefd, #03569b);
+  --navy: #002148;
+  --header-h: 65px;
+  --rail-w: 240px;
+  --rail-w-collapsed: 56px;
 }
