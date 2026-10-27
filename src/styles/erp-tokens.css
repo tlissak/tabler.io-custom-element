@@ -1,0 +1,35 @@
+/* F4 ERP design tokens. Source: /output/dashboard-ui.css.
+ * No resets or component selectors: safe to import in any page or shadow root. */
+:root, :host, [data-tblr-theme="erp"] {
+  color-scheme: light;
+  --ui-bg: #f5f6f8;
+  --ui-paper: #fff;
+  --ui-ink: #172536;
+  --ui-muted: #5c6b7c;
+  --ui-line: #e2e7ee;
+  --ui-accent: #234e83;
+  --ui-accent-hover: #193d69;
+  --ui-soft: #eaf1fb;
+  --ui-focus: #82a9dc;
+  --ui-success: #27644b;
+  --ui-success-bg: #edf7f0;
+  --ui-warning: #865d16;
+  --ui-warning-bg: #fff6df;
+  --ui-danger: #a13f28;
+  --ui-danger-bg: #fff2ea;
+  --ui-radius: 10px;
+  --ui-control-radius: 7px;
+  --ui-font: 'Segoe UI', Arial, sans-serif;
+  --ui-space-1: 4px;
+  --ui-space-2: 8px;
+  --ui-space-3: 12px;
+  --ui-space-4: 16px;
+  --ui-space-5: 20px;
+  --ui-space-6: 24px;
+  --ui-space-7: 30px;
+  --ui-header-height: 68px;
+  --ui-sidebar-width: 248px;
+  --ui-sidebar-collapsed-width: 64px;
+  --tblr-button-light-hover-bg:var(--ui-soft);
+  --tblr-button-light-color:var(--ui-accent);
+}

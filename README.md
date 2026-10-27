@@ -48,6 +48,19 @@ chart, navigation, and simulated workflows are preserved; see the
 smaller workspace demo with a standard/admin theme comparison. Reusable element
 APIs and implementation status are in [`ADMIN_THEME_PLAN.md`](ADMIN_THEME_PLAN.md).
 
+## F4 ERP preset
+
+Load `src/styles/erp-theme.css` for the slate blue UI shared with the `/output`
+ERP templates. Loading the stylesheet activates it for the document; it also
+supports `data-tblr-theme="erp"` within another themed container. Tokens live in
+`src/styles/erp-tokens.css`, independently of application CSS. The preset maps
+the palette, Segoe UI typography, 10 px cards, 7 px controls, forms, badges,
+tabs and tables through CSS variables, including Shadow DOM components.
+Import `erpThemeStylesheetUrl` from `src/main.js` to obtain its URL; JavaScript
+does not inject CSS. Use the F4 catalogue at `/module/F4UI/index.html` for examples
+and `/module/F4UI/README.md` for native HTML components and integration guidance.
+The standard and admin stylesheets remain available separately.
+
 ## Standard CDN usage
 
 Live examples: https://tlissak.github.io/tabler.io-custom-element/examples/index.html
